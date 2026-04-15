@@ -1,5 +1,26 @@
 [
   {
+    "call_id": "019d9284-7bf4-744a-b3ff-06bdaf8e9e09",
+    "type": "webCall",
+    "started_at": "2026-04-15T19:00:49.776Z",
+    "ended_at": "2026-04-15T19:01:30.706Z",
+    "duration": 40.93,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d9284-7bf4-744a-b3ff-06bdaf8e9e09-1776279693318-52c9a592-e224-4414-83e1-e3f4056b7310-mono.wav",
+    "call_reason": "technology_assessment",
+    "call_reason_detail": "User sought help in organizing and understanding generated code, mentioning use of Visual Studio.",
+    "sentiment": "neutral",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a caller who wanted to better organize and understand generated code, and mentioned using Visual Studio.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "software development"
+    ],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "key_insights": "Caller may be seeking guidance on code comprehension tools or methodologies, possibly related to CMA projects."
+  },
+  {
     "call_id": "019d9262-7390-7000-8bd5-4c59b54f1aac",
     "type": "webCall",
     "started_at": "2026-04-15T18:23:39.226Z",
