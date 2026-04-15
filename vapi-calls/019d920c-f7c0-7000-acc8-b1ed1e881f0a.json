@@ -1,0 +1,33 @@
+{
+  "call_id": "019d920c-f7c0-7000-acc8-b1ed1e881f0a",
+  "type": "webCall",
+  "started_at": "2026-04-15T16:50:19.480Z",
+  "ended_at": "2026-04-15T16:53:13.551Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 174.071,
+  "recording_url": "https://storage.vapi.ai/019d920c-f7c0-7000-acc8-b1ed1e881f0a-1776271996180-4d73b5cc-b993-4478-8664-c003672740d5-mono.wav",
+  "cost": 0.2769,
+  "transcript": "AI: Hello. I am Lisa. Your guide to the Fraunhofer Center for Manufacturing Advancement Technology Portfolio. We have over 55 projects spanning AI, manufacturing, health care, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: Interested in knowing about text entry. Can you tell me about that? Text Sentry.\nAI: Hold on a sec.\nAI: Just a sec.\nAI: I'm not finding a match for text\nAI: entry in our knowledge base. Can you give me a bit more context? Is this related to cybersecurity, data protection, Manufacturing. Or something else? That'll help me search more effectively or point you toward a related project that might interest you.\nUser: I'm interested in the project relating to data space I think there is 1.\nAI: Give me a moment.\nAI: 1 moment.\nAI: I'm having trouble pinpointing that 1.\nAI: Do you remember any other details? Like whether it's focused on manufacturing data, cybersecurity, supply chain, or something else. Or maybe the project name itself. That would help me track it down for you.\nUser: It's definitely called text sentry.\nAI: 1 moment.\nAI: I'm being honest with you.\nAI: I'm not finding text entry in our knowledge base. Even trying different search angles. It's possible it's a project that's either very new, uses a different name in our system, or maybe it's not yet part of our 55 plus portfolio. Do you have any other details? Like who leads it, what domain it's in, or where you heard about it? That might help me track it down.\nUser: Can you tell me about the projects that are run by Prahlad Menon?\nAI: Give me a moment.\nAI: I'm not finding results for Prahlad Menon in our knowledge base either. That's interesting. He may be involved in projects under a different role title. Or perhaps the project information is cataloged differently than I'm searching. Do you know what domain or technology area Prahlad works in? Or maybe the project name itself. That would help me track down what he's leading.\n",
+  "timestamp": "2026-04-15T16:53:19.340320+00:00",
+  "analysis": {
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "Caller asked about a specific project named 'Text Sentry' and projects led by Prahlad Menon.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller inquired about a project called 'Text Sentry' and projects led by Prahlad Menon, but Lisa could not locate either in the Fraunhofer CMA knowledge base.",
+    "key_insights": "The requested project and leader are not found in the current portfolio database, suggesting they may be new, renamed, or outside the listed projects.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "cybersecurity",
+      "data protection",
+      "manufacturing"
+    ],
+    "projects_discussed": [
+      "Text Sentry"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should note that 'Text Sentry' and Prahlad Menon are not currently in the database and may require external verification or updated portfolio information."
+  }
+}
