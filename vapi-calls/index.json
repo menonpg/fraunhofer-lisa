@@ -1,5 +1,28 @@
 [
   {
+    "call_id": "019d92ce-2d08-7000-9f6d-c6de4a808c46",
+    "type": "webCall",
+    "started_at": "2026-04-15T20:21:19.320Z",
+    "ended_at": "2026-04-15T20:22:24.492Z",
+    "duration": 65.172,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d92ce-2d08-7000-9f6d-c6de4a808c46-1776284547103-26e54eb7-ec08-499c-84b8-7495df1b2341-mono.wav",
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "Caller asked about healthcare projects and requested details on any available project from the knowledge base.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller inquired about Fraunhofer CMA's healthcare projects and then requested details on any project available in the knowledge base, but Lisa was unable to retrieve specific project information due to a temporary connection issue.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "healthcare",
+      "biotech",
+      "medical device"
+    ],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "key_insights": "Knowledge base connection issue prevented retrieval of project details; caller showed interest in healthcare domain."
+  },
+  {
     "call_id": "019d92a9-a5b2-700d-afcc-29b9baa5bd93",
     "type": "webCall",
     "started_at": "2026-04-15T19:41:25.207Z",
