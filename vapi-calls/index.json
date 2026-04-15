@@ -1,5 +1,36 @@
 [
   {
+    "call_id": "019d934c-d59d-7ff6-9de3-7542e6727305",
+    "type": "inboundPhoneCall",
+    "started_at": "2026-04-15T22:39:39.603Z",
+    "ended_at": "2026-04-15T22:43:26.813Z",
+    "duration": 227.21,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d934c-d59d-7ff6-9de3-7542e6727305-1776293009384-92c72c33-dcaf-48ed-9f64-b4dd08ee1681-mono.wav",
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "Caller explored multiple technology domains including aerospace, space technology, and healthcare projects.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller expressed interest in aerospace and space technology projects, particularly a blockchain-based intersatellite communication initiative, and later inquired about a pharmaceutical vial filling automation project in healthcare.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "aerospace",
+      "space technology",
+      "health care",
+      "pharmaceutical manufacturing"
+    ],
+    "projects_discussed": [
+      "fiber placement",
+      "computer vision for defect prediction",
+      "engine test cell optimization",
+      "satellite anomaly prediction",
+      "blockchain intersatellite communication",
+      "pharmaceutical vial filling automation"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller showed interest in both aerospace/space technology and healthcare manufacturing, indicating potential cross-domain engagement."
+  },
+  {
     "call_id": "019d92e8-251b-7aa8-a848-75124214e7d1",
     "type": "inboundPhoneCall",
     "started_at": "2026-04-15T20:49:40.809Z",
