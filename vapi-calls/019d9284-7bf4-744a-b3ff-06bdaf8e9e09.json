@@ -1,0 +1,29 @@
+{
+  "call_id": "019d9284-7bf4-744a-b3ff-06bdaf8e9e09",
+  "type": "webCall",
+  "started_at": "2026-04-15T19:00:49.776Z",
+  "ended_at": "2026-04-15T19:01:30.706Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 40.93,
+  "recording_url": "https://storage.vapi.ai/019d9284-7bf4-744a-b3ff-06bdaf8e9e09-1776279693318-52c9a592-e224-4414-83e1-e3f4056b7310-mono.wav",
+  "cost": 0.0683,
+  "transcript": "AI: Hello, I am Lisa. Your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, healthcare, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: Organizing and understanding all the aspects of the code that were generated, you know, making sure I understand everything.\nAI: I wanna make sure I'm helping you with the right thing. Are you asking about 1, a specific CMA project\nUser: I use visual studio\nAI: that\n",
+  "timestamp": "2026-04-15T19:01:37.597449+00:00",
+  "analysis": {
+    "call_reason": "technology_assessment",
+    "call_reason_detail": "User sought help in organizing and understanding generated code, mentioning use of Visual Studio.",
+    "sentiment": "neutral",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a caller who wanted to better organize and understand generated code, and mentioned using Visual Studio.",
+    "key_insights": "Caller may be seeking guidance on code comprehension tools or methodologies, possibly related to CMA projects.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "software development"
+    ],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "learning": "Lisa should note that the caller is focused on code organization and comprehension, and uses Visual Studio, which may guide relevant project recommendations."
+  }
+}
