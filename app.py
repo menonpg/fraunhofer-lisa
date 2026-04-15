@@ -486,7 +486,8 @@ def vapi_webhook():
 
         if function_name == "soul_query":
             query = params.get("query", "")
-            mode = params.get("mode", "auto")
+            # ALWAYS use RAG mode for soul_query — the knowledge is in Qdrant
+            mode = "RAG"
             if query:
                 # Inject Fraunhofer CMA context into the query
                 fraunhofer_context = (
