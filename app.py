@@ -53,6 +53,21 @@ LIVEAVATAR_API_KEY = os.environ.get("LIVEAVATAR_API_KEY", "810d1e58-289a-11f1-8d
 app = Flask(__name__)
 CORS(app)
 
+@app.before_request
+def log_vapi_requests():
+    """Log all incoming /vapi/ requests for debugging."""
+    if '/vapi/' in request.path:
+        body_size = request.content_length or 0
+        print(f"📨 INCOMING: {request.method} {request.path} | size={body_size}")
+        try:
+            data = request.get_json(silent=True)
+            if data:
+                msg_type = data.get('message', {}).get('type', 'unknown')
+                func_name = data.get('message', {}).get('functionCall', {}).get('name', '')
+                print(f"   type={msg_type} func={func_name}")
+        except:
+            pass
+
 # --- In-memory caches ---
 _calls_cache = []
 _calls_lock = threading.Lock()
