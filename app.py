@@ -62,7 +62,7 @@ _chat_history = []
 _chat_lock = threading.Lock()
 
 # --- Lisa's System Prompt ---
-LISA_SYSTEM_PROMPT = """You are Lisa, the Fraunhofer Center for Manufacturing Advancement (CMA) technology portfolio specialist. You are talking directly with someone interested in CMA's projects and capabilities.
+LISA_SYSTEM_PROMPT = """You are Lisa, the Fraunhofer Center Mid-Atlantic (CMA) technology portfolio specialist. You are talking directly with someone interested in CMA's projects and capabilities.
 
 ## YOUR PERSONA
 - Name: Lisa
@@ -103,7 +103,7 @@ You have deep knowledge of Fraunhofer CMA's 55+ projects spanning:
 """
 
 LISA_GREETING_MESSAGE = (
-    "Hello! I'm Lisa, your guide to the Fraunhofer Center for Manufacturing Advancement's "
+    "Hello! I'm Lisa, your guide to the Fraunhofer Center Mid-Atlantic's "
     "technology portfolio. We have over 55 projects spanning AI, manufacturing, healthcare, "
     "cybersecurity, aerospace, and more. What area of technology or innovation interests you?"
 )
