@@ -303,6 +303,44 @@ def soul_query(question, mode="auto"):
         agent.mode = original_mode
 
 
+def soul_query_concise(question, mode="RAG"):
+    """Like soul_query but returns a shorter answer suitable for voice/VAPI."""
+    agent = get_soul_agent()
+    if not agent:
+        return {"answer": "Soul agent not available", "route": "error", "total_ms": 0}
+    original_mode = agent.mode
+    agent.mode = mode
+    try:
+        # Ask with a conciseness instruction baked in
+        concise_question = (
+            f"{question}\n\n"
+            "IMPORTANT: Give a SHORT, concise answer (3-5 sentences max). "
+            "Just state the key facts: project name, what it does, who it's for, and main outcome. "
+            "No markdown formatting. No bullet points. Plain text only."
+        )
+        result = agent.ask(concise_question, remember=False)
+        # Strip any markdown that slipped through
+        answer = result.get("answer", "")
+        answer = re.sub(r'[#*_~`]', '', answer)
+        answer = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', answer)  # links
+        answer = re.sub(r'\n{2,}', '\n', answer).strip()
+        # Truncate if still too long (voice can't read novels)
+        if len(answer) > 800:
+            sentences = answer.split('. ')
+            truncated = []
+            length = 0
+            for s in sentences:
+                if length + len(s) > 750:
+                    break
+                truncated.append(s)
+                length += len(s) + 2
+            answer = '. '.join(truncated) + '.'
+        result["answer"] = answer
+        return result
+    finally:
+        agent.mode = original_mode
+
+
 def soul_remember(text):
     agent = get_soul_agent()
     if agent:
@@ -501,7 +539,7 @@ def vapi_webhook():
                     f"[FRAUNHOFER CMA CONTEXT]\n{fraunhofer_context}\n\n"
                     f"[USER QUESTION]\n{query}"
                 )
-                result = soul_query(augmented_query, mode=mode)
+                result = soul_query_concise(augmented_query, mode=mode)
                 return jsonify({"results": [{"toolCallId": func_call.get("id", ""), "result": result["answer"]}]})
             return jsonify({"results": [{"toolCallId": func_call.get("id", ""), "result": "Please provide a question."}]})
 
