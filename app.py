@@ -901,6 +901,45 @@ def api_query_fast():
     return jsonify({"answer": answer, "elapsed_ms": int(elapsed * 1000)})
 
 
+@app.route("/vapi/function", methods=["POST"])
+def vapi_function():
+    """Dedicated endpoint for VAPI function/tool calls — handles all possible formats."""
+    data = request.json or {}
+    print(f"🔧 /vapi/function raw keys: {list(data.keys())}")
+
+    # Extract function call from various possible formats
+    msg = data.get("message", {})
+    func_call = msg.get("functionCall", data.get("functionCall", {}))
+
+    if not func_call:
+        tc = msg.get("toolCalls", data.get("toolCalls", []))
+        if tc:
+            func_call = tc[0].get("function", {})
+            func_call["id"] = tc[0].get("id", "")
+
+    function_name = func_call.get("name", "")
+    params = func_call.get("parameters", func_call.get("arguments", {}))
+    if isinstance(params, str):
+        import json as _json
+        params = _json.loads(params)
+    tool_call_id = func_call.get("id", "")
+
+    print(f"🔧 /vapi/function: name={function_name}, query={params.get('query','')[:80]}, id={tool_call_id}")
+
+    query = params.get("query", "")
+    if query:
+        answer = soul_query_fast(query)
+        answer = re.sub(r'[#*_~`|]', '', answer)
+        answer = answer.replace('\n', ' ').replace('\r', ' ')
+        answer = re.sub(r' {2,}', ' ', answer).strip()
+        if len(answer) > 2000:
+            answer = answer[:2000]
+        print(f"🔧 Result: {len(answer)} chars")
+        return jsonify({"results": [{"toolCallId": tool_call_id, "result": answer}]})
+
+    return jsonify({"results": [{"toolCallId": tool_call_id, "result": "No query provided"}]})
+
+
 # --- Main ---
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
