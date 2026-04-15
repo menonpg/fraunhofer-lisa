@@ -1,5 +1,26 @@
 [
   {
+    "call_id": "019d9262-7390-7000-8bd5-4c59b54f1aac",
+    "type": "webCall",
+    "started_at": "2026-04-15T18:23:39.226Z",
+    "ended_at": "2026-04-15T18:24:43.831Z",
+    "duration": 64.605,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d9262-7390-7000-8bd5-4c59b54f1aac-1776277486443-ff9f34ec-7e66-48b9-a372-2efcdd1740c5-mono.wav",
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "User requested information on all healthcare projects in Fraunhofer CMA's portfolio",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a user who asked for details on all healthcare projects, but she was unable to retrieve the specific results and requested more detail to refine the search.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "healthcare"
+    ],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "key_insights": "Database access issues prevented retrieval of healthcare project information; user interest is in healthcare domain broadly."
+  },
+  {
     "call_id": "019d9261-e8d1-700d-ab92-5f202482d230",
     "type": "webCall",
     "started_at": "2026-04-15T18:23:03.722Z",
