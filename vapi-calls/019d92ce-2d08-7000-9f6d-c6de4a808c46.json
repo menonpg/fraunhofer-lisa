@@ -1,0 +1,31 @@
+{
+  "call_id": "019d92ce-2d08-7000-9f6d-c6de4a808c46",
+  "type": "webCall",
+  "started_at": "2026-04-15T20:21:19.320Z",
+  "ended_at": "2026-04-15T20:22:24.492Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 65.172,
+  "recording_url": "https://storage.vapi.ai/019d92ce-2d08-7000-9f6d-c6de4a808c46-1776284547103-26e54eb7-ec08-499c-84b8-7495df1b2341-mono.wav",
+  "cost": 0.1053,
+  "transcript": "User: They have\nAI: Hello. I am Lisa. Your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, healthcare, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: your health care projects.\nAI: Let me look that up. I'm not finding specific health care projects in our\nAI: current knowledge base. However, Fraunhofer CMA works across biotech, medical device\nUser: Can you tell me about any 1 project in your knowledge base Anything that you can retrieve. Truthfully, tell me if you can retrieve from the knowledge base.\nAI: Let me look that up. I'm being honest with you.\nAI: The search tool isn't returning any results from the knowledge base right now. I'm unable to retrieve specific project details at this moment. This could be a temporary issue with the knowledge base connection. This could be a temporary issue with the knowledge base\n",
+  "timestamp": "2026-04-15T20:22:30.108860+00:00",
+  "analysis": {
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "Caller asked about healthcare projects and requested details on any available project from the knowledge base.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller inquired about Fraunhofer CMA's healthcare projects and then requested details on any project available in the knowledge base, but Lisa was unable to retrieve specific project information due to a temporary connection issue.",
+    "key_insights": "Knowledge base connection issue prevented retrieval of project details; caller showed interest in healthcare domain.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "healthcare",
+      "biotech",
+      "medical device"
+    ],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "learning": "Lisa should note that the caller was specifically interested in healthcare projects and that the knowledge base connection issue needs to be resolved for future inquiries."
+  }
+}
