@@ -1,0 +1,32 @@
+{
+  "call_id": "019d9229-f35c-7000-87ad-2bda2449c152",
+  "type": "webCall",
+  "started_at": "2026-04-15T17:21:56.500Z",
+  "ended_at": "2026-04-15T17:23:23.423Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 86.923,
+  "recording_url": "https://storage.vapi.ai/019d9229-f35c-7000-87ad-2bda2449c152-1776273806004-033d6435-db79-4527-aace-be1bdb5a9f2a-mono.wav",
+  "cost": 0.1441,
+  "transcript": "AI: Hello. I am Lisa. Your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, health care, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: Please tell me about what health care projects you've done\nAI: 1 moment.\nAI: Just a sec.\nAI: I apologize. I'm not finding specific health care project results in our knowledge base at the moment. That's unusual given our broad portfolio. Could you tell me if there's a specific health care challenge or technology area you're interested in? Like diagnostics, medical devices, health informatics, or biotech? That might help me search more effectively.\nUser: Tell me about anything, any 1 project.\nAI: Hold on a sec.\nAI: Give me a moment.\nAI: I apologize. I'm encountering difficulty accessing the project knowledge base right now. That the system should have information on our 55 plus projects across AI, manufacturing, cybersecurity,\n",
+  "timestamp": "2026-04-15T17:23:28.545195+00:00",
+  "analysis": {
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "User asked about healthcare projects and then requested information on any single project.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a caller who initially inquired about healthcare projects in Fraunhofer CMA's portfolio, then asked for details on any one project. Lisa was unable to access the project knowledge base during the call.",
+    "key_insights": "Caller is interested in healthcare but open to learning about any project; technical issues prevented sharing project details.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "health care",
+      "AI",
+      "manufacturing",
+      "cybersecurity"
+    ],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "learning": "Lisa should ensure the project knowledge base is accessible before calls and be prepared with example projects across domains, especially healthcare."
+  }
+}
