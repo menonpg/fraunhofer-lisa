@@ -1,5 +1,29 @@
 [
   {
+    "call_id": "019d9229-f35c-7000-87ad-2bda2449c152",
+    "type": "webCall",
+    "started_at": "2026-04-15T17:21:56.500Z",
+    "ended_at": "2026-04-15T17:23:23.423Z",
+    "duration": 86.923,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d9229-f35c-7000-87ad-2bda2449c152-1776273806004-033d6435-db79-4527-aace-be1bdb5a9f2a-mono.wav",
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "User asked about healthcare projects and then requested information on any single project.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a caller who initially inquired about healthcare projects in Fraunhofer CMA's portfolio, then asked for details on any one project. Lisa was unable to access the project knowledge base during the call.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "health care",
+      "AI",
+      "manufacturing",
+      "cybersecurity"
+    ],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "key_insights": "Caller is interested in healthcare but open to learning about any project; technical issues prevented sharing project details."
+  },
+  {
     "call_id": "019d921a-12e3-7eeb-bed2-55d61d506a2e",
     "type": "webCall",
     "started_at": "2026-04-15T17:04:35.994Z",
