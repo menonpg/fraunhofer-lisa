@@ -1,5 +1,28 @@
 [
   {
+    "call_id": "019d9212-bf44-7ddb-bc37-132fd7315b3d",
+    "type": "webCall",
+    "started_at": "2026-04-15T16:56:36.256Z",
+    "ended_at": "2026-04-15T16:57:26.676Z",
+    "duration": 50.42,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d9212-bf44-7ddb-bc37-132fd7315b3d-1776272249297-b9c83ce7-b1bc-4e0a-8b3d-71e7371171b8-mono.wav",
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "User asked about specific technology relating to data spaces and a project called TextCentury",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a caller who was interested in data spaces and a project named TextCentury, but could not find it in the knowledge base and requested clarification.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "data spaces"
+    ],
+    "projects_discussed": [
+      "TextCentury"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller is specifically interested in data spaces and a project called TextCentury, which may not be in the current portfolio database."
+  },
+  {
     "call_id": "full-avatar-1776272177781",
     "type": "fullAvatar",
     "started_at": "",
