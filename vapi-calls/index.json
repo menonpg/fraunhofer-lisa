@@ -1,0 +1,27 @@
+[
+  {
+    "call_id": "019d920c-f7c0-7000-acc8-b1ed1e881f0a",
+    "type": "webCall",
+    "started_at": "2026-04-15T16:50:19.480Z",
+    "ended_at": "2026-04-15T16:53:13.551Z",
+    "duration": 174.071,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d920c-f7c0-7000-acc8-b1ed1e881f0a-1776271996180-4d73b5cc-b993-4478-8664-c003672740d5-mono.wav",
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "Caller asked about a specific project named 'Text Sentry' and projects led by Prahlad Menon.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller inquired about a project called 'Text Sentry' and projects led by Prahlad Menon, but Lisa could not locate either in the Fraunhofer CMA knowledge base.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "cybersecurity",
+      "data protection",
+      "manufacturing"
+    ],
+    "projects_discussed": [
+      "Text Sentry"
+    ],
+    "language_primary": "en",
+    "key_insights": "The requested project and leader are not found in the current portfolio database, suggesting they may be new, renamed, or outside the listed projects."
+  }
+]
