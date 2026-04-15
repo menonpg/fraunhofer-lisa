@@ -1,0 +1,32 @@
+{
+  "call_id": "019d925d-f850-722b-ae00-2212e2ee94fe",
+  "type": "inboundPhoneCall",
+  "started_at": "2026-04-15T18:18:46.508Z",
+  "ended_at": "2026-04-15T18:20:15.699Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 89.191,
+  "recording_url": "https://storage.vapi.ai/019d925d-f850-722b-ae00-2212e2ee94fe-1776277218281-e0058fc4-3e52-4dc3-85c8-ed3fbbaaea42-mono.wav",
+  "cost": 0.1671,
+  "transcript": "AI: Hello. I am Lisa, your guide to the Fraunhofer Center Mid Atlantic Technology portfolio. We have over 55 projects, spanning AI, manufacturing, health care, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: I'm interested in health care.\nAI: Great. Health care is a major focus area for us. We have several projects spanning medical devices, diagnostics, biotech, and clinical applications What specific health care challenge or technology are you curious about? For example, are you interested in\nUser: Give me anyone.\nAI: hold on a sec.\nAI: Just a sec.\nAI: I apologize. I'm having trouble pulling up specific health care projects at the moment. Let me try a broader search to show you what we're working on across the portfolio. Could you tell me if there's a particular health care application you're most\nUser: Anything. Anything at all.\nAI: Just a sec.\nAI: I apologize. I'm unable to retrieve project information from our knowledge base right now. This is unusual. And I wanna be honest with you rather than guess. Our portfolio does span AI, manufacturing, healthcare, cybersecurity,\n",
+  "timestamp": "2026-04-15T18:20:21.325469+00:00",
+  "analysis": {
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "Caller expressed interest in healthcare domain within Fraunhofer CMA's technology portfolio.",
+    "sentiment": "neutral",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a caller interested in healthcare projects, but was unable to retrieve specific project information during the call.",
+    "key_insights": "Caller had no specific healthcare challenge in mind and was open to any project information; technical issue prevented sharing details.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "health care",
+      "AI",
+      "manufacturing",
+      "cybersecurity"
+    ],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "learning": "Lisa should follow up with healthcare project details once the knowledge base issue is resolved."
+  }
+}
