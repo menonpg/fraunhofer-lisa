@@ -1,5 +1,28 @@
 [
   {
+    "call_id": "019d921a-12e3-7eeb-bed2-55d61d506a2e",
+    "type": "webCall",
+    "started_at": "2026-04-15T17:04:35.994Z",
+    "ended_at": "2026-04-15T17:05:27.305Z",
+    "duration": 51.311,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d921a-12e3-7eeb-bed2-55d61d506a2e-1776272729876-e831cf2b-caa9-4396-a400-999eaf4c8105-mono.wav",
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "User asked about data spaces technology and a project called Text Sentry",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a caller who was curious about data spaces technology and a project named Text Sentry, but could not locate them in the knowledge base.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "data spaces"
+    ],
+    "projects_discussed": [
+      "Text Sentry"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller may have misremembered or misheard project names; voice transcription errors possible."
+  },
+  {
     "call_id": "019d9214-7768-7992-9b2f-69e456e59807",
     "type": "inboundPhoneCall",
     "started_at": "2026-04-15T16:58:28.346Z",
