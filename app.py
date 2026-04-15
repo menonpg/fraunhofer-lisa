@@ -874,14 +874,6 @@ def startup():
 startup()
 
 
-# --- Main ---
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))
-    print(f"🔬 Lisa — Fraunhofer CMA Webhook Server starting on port {port}")
-    print(f"   Collection: {QDRANT_COLLECTION}")
-    app.run(host="0.0.0.0", port=port)
-
-
 @app.route("/api/query-fast", methods=["POST"])
 def api_query_fast():
     """Test endpoint for soul_query_fast."""
@@ -894,3 +886,11 @@ def api_query_fast():
     answer = soul_query_fast(question)
     elapsed = _t.time() - start
     return jsonify({"answer": answer, "elapsed_ms": int(elapsed * 1000)})
+
+
+# --- Main ---
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    print(f"🔬 Lisa — Fraunhofer CMA Webhook Server starting on port {port}")
+    print(f"   Collection: {QDRANT_COLLECTION}")
+    app.run(host="0.0.0.0", port=port)
