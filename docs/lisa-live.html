@@ -382,7 +382,7 @@
             text-align: center;
         }
 
-        /* VAPI indicator */
+        /* Voice indicator */
         .vapi-indicator {
             display: none;
             align-items: center;
@@ -456,8 +456,8 @@
 
         <!-- Mode Tabs -->
         <div class="tabs">
-            <button class="tab on" onclick="setMode('audio')" id="audioTab">🔊 Voice (VAPI)</button>
-            <button class="tab" onclick="setMode('video')" id="videoTab">🎥 Video (VAPI + Avatar)</button>
+            <button class="tab on" onclick="setMode('audio')" id="audioTab">🔊 Voice</button>
+            <button class="tab" onclick="setMode('video')" id="videoTab">🎥 Video + Avatar</button>
             <button class="tab" onclick="setMode('full-avatar')" id="fullAvatarTab">🧑‍💼 Full Avatar</button>
         </div>
 
@@ -472,10 +472,10 @@
             <button class="cam-tog" onclick="toggleCamera()">📷 Enable</button>
         </div>
 
-        <!-- VAPI Call Indicator -->
+        <!-- Voice Call Indicator -->
         <div class="vapi-indicator" id="vapiIndicator">
             <div class="vapi-pulse"></div>
-            <span id="vapiStatus">VAPI Connected</span>
+            <span id="vapiStatus">Voice Connected</span>
         </div>
 
         <!-- Settings -->
@@ -536,7 +536,7 @@
                             <option value="">Auto (best available)</option>
                         </select>
                     </div>
-                    <p class="setting-hint">Browser TTS voice for non-VAPI modes</p>
+                    <p class="setting-hint">Browser TTS voice for non-voice modes</p>
                 </div>
 
                 <div style="margin-top:10px">
@@ -581,14 +581,14 @@
 
         <div class="ibar">
             <button class="mic" id="micBtn" onclick="toggleMic()" disabled title="Click to speak">🎤</button>
-            <input type="text" id="messageInput" placeholder="Type your message (or use voice via VAPI)..." disabled onkeypress="if(event.key==='Enter'){event.preventDefault();sendTextMessage();}">
+            <input type="text" id="messageInput" placeholder="Type your message (or use voice)..." disabled onkeypress="if(event.key==='Enter'){event.preventDefault();sendTextMessage();}">
             <button class="ibtn" id="sendBtn" onclick="sendTextMessage()" disabled>Send</button>
             <button class="clr" onclick="clearChat()">Clear</button>
         </div>
     </div>
 </div>
 
-<div class="ftr">Lisa — Fraunhofer CMA Voice AI · VAPI + soul.py</div>
+<div class="ftr">Lisa — Fraunhofer CMA Voice AI · Voice AI + soul.py</div>
 
 <script>
 // ══════════════════════════════════════════════════════════════════
@@ -879,7 +879,7 @@ async function initVapi() {
         vapiCallActive = true;
         updateStatus('📞 Connected to Lisa', 'active');
         document.getElementById('vapiIndicator').classList.add('active');
-        document.getElementById('vapiStatus').textContent = 'VAPI Call Active — Speaking with Lisa';
+        document.getElementById('vapiStatus').textContent = 'Voice Call Active — Speaking with Lisa';
         if (mode === 'video' && avatarWs) {
             captureVapiAudioForAvatar(vapi);
         }
@@ -1481,7 +1481,7 @@ function sendTextMessage() {
     })
     .catch(err => {
         isProcessing = false;
-        addMessage('assistant', '⚠️ Text endpoint unavailable. Use voice through the VAPI call instead.');
+        addMessage('assistant', '⚠️ Text endpoint unavailable. Use voice instead.');
         updateStatus('✅ Session active — Lisa is ready', 'active');
     });
 }

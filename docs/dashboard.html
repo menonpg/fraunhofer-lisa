@@ -410,7 +410,7 @@
 </div>
 
 <div class="ftr">
-    Lisa — Fraunhofer CMA Dashboard · Powered by <a href="https://github.com/menonpg/fraunhofer-lisa">VAPI + soul.py</a>
+    Lisa — Fraunhofer CMA Dashboard · Powered by <a href="https://github.com/menonpg/fraunhofer-lisa">Voice AI + soul.py</a>
 </div>
 
 <script>
@@ -664,7 +664,7 @@ async function loadHealth() {
             const vapiOk = data.vapi === 'ok' || data.vapi === 'connected' || data.vapi === true;
             cards += '<div class="health-card">' +
                 '<div class="icon">📞</div>' +
-                '<div class="label">VAPI</div>' +
+                '<div class="label">Voice Engine</div>' +
                 '<div class="value ' + (vapiOk ? 'ok' : 'warn') + '">' + (vapiOk ? 'CONNECTED' : String(data.vapi).toUpperCase()) + '</div>' +
             '</div>';
         }
