@@ -1,5 +1,31 @@
 [
   {
+    "call_id": "019d9214-7768-7992-9b2f-69e456e59807",
+    "type": "inboundPhoneCall",
+    "started_at": "2026-04-15T16:58:28.346Z",
+    "ended_at": "2026-04-15T16:59:40.933Z",
+    "duration": 72.587,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d9214-7768-7992-9b2f-69e456e59807-1776272383520-de847a91-db23-4555-b309-0e9319a13e3a-mono.wav",
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "Caller asked about 'text entry' technology and requested information on related projects.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a caller who inquired about 'text entry' and requested details on related projects, but no exact match was found in the portfolio.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "human-computer interaction",
+      "accessibility",
+      "data input",
+      "AI",
+      "health care",
+      "manufacturing"
+    ],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "key_insights": "Caller may be interested in human-computer interaction or accessibility-related projects; unclear exact project name due to possible transcription error."
+  },
+  {
     "call_id": "019d9212-bf44-7ddb-bc37-132fd7315b3d",
     "type": "webCall",
     "started_at": "2026-04-15T16:56:36.256Z",
