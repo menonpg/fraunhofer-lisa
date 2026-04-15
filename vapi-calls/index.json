@@ -1,5 +1,33 @@
 [
   {
+    "call_id": "019d92e0-01d5-700d-ae1d-09dc06ccf8dc",
+    "type": "inboundPhoneCall",
+    "started_at": "2026-04-15T20:40:47.449Z",
+    "ended_at": "2026-04-15T20:42:47.338Z",
+    "duration": 119.889,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d92e0-01d5-700d-ae1d-09dc06ccf8dc-1776285769892-ee5b9179-bb18-4e1c-a1b1-b57d7ccfa6ca-mono.wav",
+    "call_reason": "technology_assessment",
+    "call_reason_detail": "Caller asked about the Text Sentry product's application to data spaces and inquired about the Medigo healthcare IoT project.",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "Lisa spoke with a caller who wanted details on the Text Sentry product in relation to data spaces and later asked about the Medigo project. Lisa provided information on both topics, and the caller expressed thanks.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "data spaces",
+      "secure document processing",
+      "intelligent data retrieval",
+      "healthcare IoT",
+      "organ transport"
+    ],
+    "projects_discussed": [
+      "PACT 24.2",
+      "Medigo"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller is interested in secure document processing and intelligent data retrieval in data spaces, as well as healthcare IoT for organ transport."
+  },
+  {
     "call_id": "019d92ce-2d08-7000-9f6d-c6de4a808c46",
     "type": "webCall",
     "started_at": "2026-04-15T20:21:19.320Z",
