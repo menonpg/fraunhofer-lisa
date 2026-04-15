@@ -341,6 +341,38 @@ def soul_query_concise(question, mode="RAG"):
         agent.mode = original_mode
 
 
+def soul_query_fast(question):
+    """Ultra-fast search: skip LLM synthesis, return raw Qdrant results directly.
+    This is for VAPI tool calls where speed matters — let VAPI's own LLM synthesize."""
+    agent = get_soul_agent()
+    if not agent:
+        return "No knowledge base available."
+    try:
+        # Direct retrieval from Qdrant — no LLM call
+        if hasattr(agent, '_rag') and agent._rag:
+            chunks = agent._rag.retrieve(question, k=5)
+            if chunks:
+                # Build a plain text summary from raw chunks
+                results = []
+                for i, chunk in enumerate(chunks[:5], 1):
+                    text = chunk.get("text", chunk) if isinstance(chunk, dict) else str(chunk)
+                    # Trim each chunk
+                    if len(text) > 400:
+                        text = text[:400] + "..."
+                    results.append(f"Result {i}: {text}")
+                return "\n\n".join(results)
+            else:
+                return "No matching projects found in the knowledge base."
+        else:
+            # Fallback to full query if no RAG available
+            result = agent.ask(question, remember=False)
+            return result.get("answer", "No results.")
+    except Exception as e:
+        print(f"⚠️ soul_query_fast error: {e}")
+        traceback.print_exc()
+        return f"Search error: {e}"
+
+
 def soul_remember(text):
     agent = get_soul_agent()
     if agent:
@@ -524,23 +556,13 @@ def vapi_webhook():
 
         if function_name == "soul_query":
             query = params.get("query", "")
-            # ALWAYS use RAG mode for soul_query — the knowledge is in Qdrant
-            mode = "RAG"
             if query:
-                # Inject Fraunhofer CMA context into the query
-                fraunhofer_context = (
-                    "You are searching the Fraunhofer CMA project knowledge base. "
-                    "This contains information about 55+ technology projects spanning "
-                    "AI/ML, advanced manufacturing, healthcare, cybersecurity, aerospace, "
-                    "energy, and more. Each project has details about purpose, approach, "
-                    "outcomes, partners, and technology readiness levels (TRL)."
-                )
-                augmented_query = (
-                    f"[FRAUNHOFER CMA CONTEXT]\n{fraunhofer_context}\n\n"
-                    f"[USER QUESTION]\n{query}"
-                )
-                result = soul_query_concise(augmented_query, mode=mode)
-                return jsonify({"results": [{"toolCallId": func_call.get("id", ""), "result": result["answer"]}]})
+                print(f"   🔍 soul_query_fast: {query[:100]}")
+                # Use fast direct Qdrant search — skip LLM synthesis
+                # VAPI's own LLM will synthesize from the raw results
+                answer = soul_query_fast(query)
+                print(f"   ✅ Result length: {len(answer)} chars")
+                return jsonify({"results": [{"toolCallId": func_call.get("id", ""), "result": answer}]})
             return jsonify({"results": [{"toolCallId": func_call.get("id", ""), "result": "Please provide a question."}]})
 
     return jsonify({"status": "ok"})
