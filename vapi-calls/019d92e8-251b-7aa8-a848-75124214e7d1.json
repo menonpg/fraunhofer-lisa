@@ -1,0 +1,38 @@
+{
+  "call_id": "019d92e8-251b-7aa8-a848-75124214e7d1",
+  "type": "inboundPhoneCall",
+  "started_at": "2026-04-15T20:49:40.809Z",
+  "ended_at": "2026-04-15T20:51:38.777Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 117.968,
+  "recording_url": "https://storage.vapi.ai/019d92e8-251b-7aa8-a848-75124214e7d1-1776286301403-0d4f6310-b5c9-4ed8-a95f-7a948c55002c-mono.wav",
+  "cost": 0.2006,
+  "transcript": "AI: Hello, I am Lisa, your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, health care, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: I wanna know about all your projects relating to the use of AI in general. So tell me broadly the thematic areas associated with AI very briefly.\nAI: Let me look that up.\nAI: Great. Our AI initiatives span several key thematic areas. Core AI ML. Audio processing, natural language processing, NLP, generative AI, computer vision, and retrieval augmented generation. RAG.\nUser: Can you tell me about the specific projects relating to generative AI?\nAI: Let me look that up.\nAI: We have 2 projects focused on generative AI. STAR is an AI testing tool. That uses synthetic image generation to robustly test vision systems, helping catch failures before real world deployment. Packed 24.2. Text says Sentry applies generative AI and REG. Retrieval augmented generation. To securely extract insights from confidential documents across distributed data silos. While respecting access controls.\nUser: Okay. Thank you.\nAI: You're welcome. Feel free to reach out anytime you'd like to learn more about our projects. Or explore other areas of technology. I'm here to help.\n",
+  "timestamp": "2026-04-15T20:51:44.841870+00:00",
+  "analysis": {
+    "call_reason": "technology_assessment",
+    "call_reason_detail": "Caller requested thematic areas and specific projects related to AI, particularly generative AI.",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "Lisa spoke with a caller who wanted an overview of Fraunhofer CMA's AI thematic areas and details on generative AI projects. Lisa provided information on core AI domains and described two specific generative AI projects: STAR and Sentry.",
+    "key_insights": "Caller has interest in generative AI and may be a potential lead for AI-related projects.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "AI",
+      "machine learning",
+      "audio processing",
+      "natural language processing",
+      "generative AI",
+      "computer vision",
+      "retrieval augmented generation"
+    ],
+    "projects_discussed": [
+      "STAR",
+      "Sentry"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should remember that the caller was specifically interested in generative AI projects and responded positively to concise thematic and project descriptions."
+  }
+}
