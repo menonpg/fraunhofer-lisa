@@ -1,5 +1,29 @@
 [
   {
+    "call_id": "019d925d-f850-722b-ae00-2212e2ee94fe",
+    "type": "inboundPhoneCall",
+    "started_at": "2026-04-15T18:18:46.508Z",
+    "ended_at": "2026-04-15T18:20:15.699Z",
+    "duration": 89.191,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d925d-f850-722b-ae00-2212e2ee94fe-1776277218281-e0058fc4-3e52-4dc3-85c8-ed3fbbaaea42-mono.wav",
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "Caller expressed interest in healthcare domain within Fraunhofer CMA's technology portfolio.",
+    "sentiment": "neutral",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a caller interested in healthcare projects, but was unable to retrieve specific project information during the call.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "health care",
+      "AI",
+      "manufacturing",
+      "cybersecurity"
+    ],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "key_insights": "Caller had no specific healthcare challenge in mind and was open to any project information; technical issue prevented sharing details."
+  },
+  {
     "call_id": "019d925c-e089-7000-b287-3843d8a8ef22",
     "type": "inboundPhoneCall",
     "started_at": "2026-04-15T18:17:33.773Z",
