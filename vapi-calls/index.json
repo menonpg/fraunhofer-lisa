@@ -1,5 +1,34 @@
 [
   {
+    "call_id": "019d92a9-a5b2-700d-afcc-29b9baa5bd93",
+    "type": "webCall",
+    "started_at": "2026-04-15T19:41:25.207Z",
+    "ended_at": "2026-04-15T19:42:53.909Z",
+    "duration": 88.702,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d92a9-a5b2-700d-afcc-29b9baa5bd93-1776282176483-4ee26414-cc90-4c8a-92d9-9b3ee93ceb8a-mono.wav",
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "User requested information on specific projects, starting with 'Healthy Meat' and then healthcare-related projects.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller asked Lisa about the 'Healthy Meat' project and healthcare-related projects, but due to a technical issue, Lisa could not retrieve specific project details.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "AI",
+      "manufacturing",
+      "healthcare",
+      "cybersecurity",
+      "aerospace",
+      "energy",
+      "robotics"
+    ],
+    "projects_discussed": [
+      "Healthy Meat"
+    ],
+    "language_primary": "en",
+    "key_insights": "System knowledge base was inaccessible during the call, preventing project detail retrieval."
+  },
+  {
     "call_id": "019d92a3-0177-722b-b1da-fa6f5c2e45c7",
     "type": "webCall",
     "started_at": "2026-04-15T19:34:09.891Z",
