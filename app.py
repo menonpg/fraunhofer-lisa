@@ -726,7 +726,7 @@ def _chat_with_anthropic(messages):
 
 @app.route("/api/chat", methods=["POST"])
 def api_chat():
-    """Conversational chat endpoint."""
+    """Conversational chat endpoint with RAG context injection."""
     data = request.json or {}
     user_message = data.get("message", "").strip()
     response_style = data.get("response_style", "normal")
@@ -734,11 +734,30 @@ def api_chat():
     if not user_message:
         return jsonify({"error": "Provide a 'message' field"}), 400
 
+    # Inject RAG context before sending to LLM
+    rag_context = ""
+    try:
+        agent = get_soul_agent()
+        if agent and hasattr(agent, '_rag') and agent._rag:
+            rag_result = agent._rag.retrieve(user_message, k=5)
+            if rag_result and "No relevant memories" not in rag_result:
+                rag_context = rag_result
+    except Exception as e:
+        print(f"⚠️ Chat RAG retrieval error: {e}")
+
     with _chat_lock:
         _chat_history.append({"role": "user", "content": user_message})
         history_snapshot = list(_chat_history)
 
     system_prompt = _build_chat_system_prompt(response_style)
+    if rag_context:
+        system_prompt += (
+            "\n\n## KNOWLEDGE BASE CONTEXT\n"
+            "Use the following project information from the Fraunhofer CMA knowledge base to answer. "
+            "Only reference projects that appear in this context. Do NOT invent projects.\n\n"
+            + rag_context
+        )
+
     messages = [{"role": "system", "content": system_prompt}] + history_snapshot
 
     assistant_message = None
