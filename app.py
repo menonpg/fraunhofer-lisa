@@ -386,6 +386,47 @@ def soul_remember(text):
         agent.remember(text)
 
 
+# Separate Qdrant collection for call history (keeps project KB clean)
+_calls_rag = None
+_calls_rag_lock = threading.Lock()
+
+def _get_calls_rag():
+    global _calls_rag
+    with _calls_rag_lock:
+        if _calls_rag is not None:
+            return _calls_rag
+        try:
+            from soul_engine.rag_memory import RAGMemory
+            _calls_rag = RAGMemory(
+                memory_path=str(SOUL_DIR / "MEMORY_CALLS.md"),
+                mode="qdrant" if (QDRANT_URL and os.environ.get("AZURE_EMBEDDING_ENDPOINT")) else "bm25",
+                collection_name="fraunhofer_cma_calls",
+                qdrant_url=QDRANT_URL,
+                qdrant_api_key=QDRANT_API_KEY,
+                azure_embedding_endpoint=os.environ.get("AZURE_EMBEDDING_ENDPOINT", ""),
+                azure_embedding_key=os.environ.get("AZURE_EMBEDDING_KEY", ""),
+                k=5,
+            )
+            print(f"🧠 Calls RAG ready (collection=fraunhofer_cma_calls)")
+            return _calls_rag
+        except Exception as e:
+            print(f"⚠️ Calls RAG init failed: {e}")
+            return None
+
+def _index_to_calls_collection(text):
+    rag = _get_calls_rag()
+    if rag:
+        rag.append(text)
+
+def _search_calls_collection(query, k=5):
+    rag = _get_calls_rag()
+    if rag:
+        result = rag.retrieve(query, k=k)
+        if result and "No relevant memories" not in result:
+            return result
+    return ""
+
+
 # ============================================================================
 # Call Analysis
 # ============================================================================
@@ -536,10 +577,17 @@ def vapi_webhook():
                     a = metadata.get("analysis", {})
                     name_part = f", Name: {a['caller_name']}" if a.get("caller_name") else ""
                     domains = ", ".join(a.get("domains_discussed", [])) if a.get("domains_discussed") else "general"
-                    # NOTE: Do NOT index call transcripts/summaries into Qdrant.
-                    # The project knowledge base should contain ONLY project data.
-                    # Call data is stored in GitHub and the calls API instead.
-                    print(f"📝 Call {call_id[:12]} analyzed (not indexed to RAG to keep KB clean)")
+                    # Index call data into SEPARATE calls collection (not the project KB)
+                    memory_entry = (
+                        f"Call ({metadata.get('type','?')}, {metadata.get('started_at','')[:10]}): "
+                        f"{a.get('summary', 'No summary')} "
+                        f"[Reason: {a.get('call_reason','?')}, Sentiment: {a.get('sentiment','?')}"
+                        f"{name_part}, Domains: {domains}]"
+                    )
+                    _index_to_calls_collection(memory_entry)
+                    if transcript and len(transcript.strip()) > 50:
+                        _index_to_calls_collection(f"Transcript ({call_id[:12]}): {transcript[:2000]}")
+                    print(f"🧠 Indexed call {call_id[:12]} to calls collection")
             except Exception as e:
                 print(f"❌ Index failed: {e}")
 
@@ -729,8 +777,9 @@ def api_chat():
     if not user_message:
         return jsonify({"error": "Provide a 'message' field"}), 400
 
-    # Inject RAG context before sending to LLM
+    # Inject RAG context before sending to LLM — search BOTH collections
     rag_context = ""
+    calls_context = ""
     try:
         agent = get_soul_agent()
         if agent and hasattr(agent, '_rag') and agent._rag:
@@ -739,6 +788,10 @@ def api_chat():
                 rag_context = rag_result
     except Exception as e:
         print(f"⚠️ Chat RAG retrieval error: {e}")
+    try:
+        calls_context = _search_calls_collection(user_message, k=3)
+    except Exception as e:
+        print(f"⚠️ Chat calls retrieval error: {e}")
 
     with _chat_lock:
         _chat_history.append({"role": "user", "content": user_message})
@@ -747,10 +800,16 @@ def api_chat():
     system_prompt = _build_chat_system_prompt(response_style)
     if rag_context:
         system_prompt += (
-            "\n\n## KNOWLEDGE BASE CONTEXT\n"
+            "\n\n## PROJECT KNOWLEDGE BASE\n"
             "Use the following project information from the Fraunhofer CMA knowledge base to answer. "
             "Only reference projects that appear in this context. Do NOT invent projects.\n\n"
             + rag_context
+        )
+    if calls_context:
+        system_prompt += (
+            "\n\n## CALL HISTORY\n"
+            "The following is from past caller conversations. Use this to answer questions about previous calls.\n\n"
+            + calls_context
         )
 
     messages = [{"role": "system", "content": system_prompt}] + history_snapshot
