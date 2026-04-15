@@ -1,0 +1,31 @@
+{
+  "call_id": "019d921a-12e3-7eeb-bed2-55d61d506a2e",
+  "type": "webCall",
+  "started_at": "2026-04-15T17:04:35.994Z",
+  "ended_at": "2026-04-15T17:05:27.305Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 51.311,
+  "recording_url": "https://storage.vapi.ai/019d921a-12e3-7eeb-bed2-55d61d506a2e-1776272729876-e831cf2b-caa9-4396-a400-999eaf4c8105-mono.wav",
+  "cost": 0.0749,
+  "transcript": "AI: Hello? I am Lisa. Your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, health care, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: Particularly interested in the data spaces technology and your technology called text Sentry.\nAI: 1 moment.\nAI: I wasn't able to find those specific projects in our knowledge base.\nAI: It's possible the names might be slightly different, Voice transcription sometimes garbles terminology. Do you remember any other details about these projects?\n",
+  "timestamp": "2026-04-15T17:05:38.353486+00:00",
+  "analysis": {
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "User asked about data spaces technology and a project called Text Sentry",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a caller who was curious about data spaces technology and a project named Text Sentry, but could not locate them in the knowledge base.",
+    "key_insights": "Caller may have misremembered or misheard project names; voice transcription errors possible.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "data spaces"
+    ],
+    "projects_discussed": [
+      "Text Sentry"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should verify if 'data spaces' and 'Text Sentry' exist under different names in the portfolio and clarify naming conventions with the caller."
+  }
+}
