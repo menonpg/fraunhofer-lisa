@@ -1,5 +1,33 @@
 [
   {
+    "call_id": "019d9355-4c72-799e-8608-ad8cbfaadab8",
+    "type": "inboundPhoneCall",
+    "started_at": "2026-04-15T22:48:54.324Z",
+    "ended_at": "2026-04-15T22:50:02.081Z",
+    "duration": 67.757,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d9355-4c72-799e-8608-ad8cbfaadab8-1776293404750-9c74c814-d789-4bde-9c30-6d277a88815b-mono.wav",
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "Asked for details about NASA projects in the Fraunhofer CMA portfolio",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "The caller asked Lisa for information about NASA projects, and Lisa provided details on three NASA-funded initiatives, including blockchain for intersatellite messaging and NLP-based software review tools.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "aerospace",
+      "blockchain",
+      "natural language processing",
+      "software assurance"
+    ],
+    "projects_discussed": [
+      "blockchain for intersatellite messaging",
+      "software requirements review tools",
+      "third NASA SBIR project"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller is specifically interested in NASA-related technology projects; Lisa provided concise descriptions and current phases of each project."
+  },
+  {
     "call_id": "019d934c-d59d-7ff6-9de3-7542e6727305",
     "type": "inboundPhoneCall",
     "started_at": "2026-04-15T22:39:39.603Z",
