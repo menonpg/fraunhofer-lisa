@@ -1,5 +1,31 @@
 [
   {
+    "call_id": "full-avatar-1776272177781",
+    "type": "fullAvatar",
+    "started_at": "",
+    "ended_at": "",
+    "duration": 0,
+    "ended_reason": "",
+    "recording_url": "",
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "Caller wanted information about a project called 'Text Sentry' and later about healthcare-related data spaces.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller asked Lisa about a project named 'Text Sentry', which Lisa could not find in the CMA portfolio, and then inquired about healthcare-related data spaces, prompting Lisa to describe a GAIA-X-based trusted medical data space initiative.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "healthcare",
+      "AI",
+      "cybersecurity",
+      "data spaces"
+    ],
+    "projects_discussed": [
+      "trusted medical data space"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller may have misnamed a project; interest shifted from text analysis to healthcare data spaces, indicating potential cross-domain curiosity."
+  },
+  {
     "call_id": "019d920c-f7c0-7000-acc8-b1ed1e881f0a",
     "type": "webCall",
     "started_at": "2026-04-15T16:50:19.480Z",
