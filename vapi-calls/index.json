@@ -1,5 +1,24 @@
 [
   {
+    "call_id": "019d9261-c237-7000-9899-6b551a7c829d",
+    "type": "webCall",
+    "started_at": "2026-04-15T18:22:54.367Z",
+    "ended_at": "2026-04-15T18:22:59.333Z",
+    "duration": 4.966,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d9261-c237-7000-9899-6b551a7c829d-1776277381913-5850c7a6-638f-445c-938e-75ad98d60afd-mono.wav",
+    "call_reason": "other",
+    "call_reason_detail": "No substantive discussion occurred; only greeting exchanged",
+    "sentiment": "neutral",
+    "resolution": "abandoned",
+    "summary": "Lisa initiated the call with a greeting, but no further conversation took place.",
+    "caller_type": "unknown",
+    "domains_discussed": [],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "key_insights": null
+  },
+  {
     "call_id": "019d925d-f850-722b-ae00-2212e2ee94fe",
     "type": "inboundPhoneCall",
     "started_at": "2026-04-15T18:18:46.508Z",
