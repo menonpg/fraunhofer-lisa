@@ -1,5 +1,35 @@
 [
   {
+    "call_id": "019d92e8-251b-7aa8-a848-75124214e7d1",
+    "type": "inboundPhoneCall",
+    "started_at": "2026-04-15T20:49:40.809Z",
+    "ended_at": "2026-04-15T20:51:38.777Z",
+    "duration": 117.968,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d92e8-251b-7aa8-a848-75124214e7d1-1776286301403-0d4f6310-b5c9-4ed8-a95f-7a948c55002c-mono.wav",
+    "call_reason": "technology_assessment",
+    "call_reason_detail": "Caller requested thematic areas and specific projects related to AI, particularly generative AI.",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "Lisa spoke with a caller who wanted an overview of Fraunhofer CMA's AI thematic areas and details on generative AI projects. Lisa provided information on core AI domains and described two specific generative AI projects: STAR and Sentry.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "AI",
+      "machine learning",
+      "audio processing",
+      "natural language processing",
+      "generative AI",
+      "computer vision",
+      "retrieval augmented generation"
+    ],
+    "projects_discussed": [
+      "STAR",
+      "Sentry"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller has interest in generative AI and may be a potential lead for AI-related projects."
+  },
+  {
     "call_id": "019d92e0-01d5-700d-ae1d-09dc06ccf8dc",
     "type": "inboundPhoneCall",
     "started_at": "2026-04-15T20:40:47.449Z",
