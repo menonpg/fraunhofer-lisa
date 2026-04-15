@@ -1,0 +1,36 @@
+{
+  "call_id": "019d9355-4c72-799e-8608-ad8cbfaadab8",
+  "type": "inboundPhoneCall",
+  "started_at": "2026-04-15T22:48:54.324Z",
+  "ended_at": "2026-04-15T22:50:02.081Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 67.757,
+  "recording_url": "https://storage.vapi.ai/019d9355-4c72-799e-8608-ad8cbfaadab8-1776293404750-9c74c814-d789-4bde-9c30-6d277a88815b-mono.wav",
+  "cost": 0.1038,
+  "transcript": "AI: Hello. I am Lisa, your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, health care, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: Can you tell me about the NASA project?\nAI: Let me look that up.\nAI: We have 3 NASA projects. The main ones are blockchain for intersatellite messaging. Project number 3, which solves satellite communication challenges using block to reduce information loss. Funded by NASA S TTR phase 1, and currently in demonstration stage, and software requirements review tools project number 7, which uses natural language processing to help NASA's software assurance engineers catch defects earlier. Currently in basic research phase, We also have a third project in development funded by NASA SBIR.\n",
+  "timestamp": "2026-04-15T22:50:07.584339+00:00",
+  "analysis": {
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "Asked for details about NASA projects in the Fraunhofer CMA portfolio",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "The caller asked Lisa for information about NASA projects, and Lisa provided details on three NASA-funded initiatives, including blockchain for intersatellite messaging and NLP-based software review tools.",
+    "key_insights": "Caller is specifically interested in NASA-related technology projects; Lisa provided concise descriptions and current phases of each project.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "aerospace",
+      "blockchain",
+      "natural language processing",
+      "software assurance"
+    ],
+    "projects_discussed": [
+      "blockchain for intersatellite messaging",
+      "software requirements review tools",
+      "third NASA SBIR project"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should note the caller's interest in NASA projects and be prepared to elaborate on project phases and funding sources for aerospace-related initiatives."
+  }
+}
