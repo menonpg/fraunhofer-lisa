@@ -118,8 +118,10 @@
             padding: 14px 16px;
             margin-bottom: 10px;
             transition: 0.15s;
+            cursor: pointer;
         }
         .call-card:hover { border-color: var(--pri); }
+        .call-card.expanded { border-color: var(--pri); background: rgba(0,0,0,0.3); }
         .call-meta {
             display: flex;
             align-items: center;
@@ -152,6 +154,43 @@
         .sentiment-negative { background: rgba(252,129,129,0.2); color: var(--err); }
         .sentiment-neutral { background: rgba(255,255,255,0.1); color: var(--tx2); }
         .call-summary { font-size: 0.85rem; color: var(--tx); line-height: 1.5; margin-top: 6px; }
+        .call-expand-hint { font-size: 0.68rem; color: var(--tx2); margin-top: 4px; font-style: italic; }
+        .call-transcript {
+            display: none;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--bd);
+        }
+        .call-card.expanded .call-transcript { display: block; }
+        .call-card.expanded .call-expand-hint { display: none; }
+        .transcript-text {
+            font-size: 0.82rem;
+            color: var(--tx2);
+            line-height: 1.6;
+            white-space: pre-wrap;
+            font-family: system-ui, sans-serif;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 6px;
+        }
+        .transcript-text .speaker-user { color: var(--pri); font-weight: 600; }
+        .transcript-text .speaker-ai { color: var(--warn); font-weight: 600; }
+        .call-analysis {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px;
+        }
+        .analysis-item {
+            background: rgba(255,255,255,0.04);
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+        }
+        .analysis-item .label { color: var(--tx2); font-size: 0.68rem; text-transform: uppercase; }
+        .analysis-item .value { color: var(--tx); margin-top: 2px; }
         .no-data { text-align: center; color: var(--tx2); padding: 40px; font-size: 0.9rem; }
 
         /* SOUL AGENT TAB */
@@ -414,12 +453,15 @@ async function loadCalls() {
         calls.forEach(call => {
             const card = document.createElement('div');
             card.className = 'call-card';
+            card.onclick = () => card.classList.toggle('expanded');
 
             const callId = call.call_id || call.id || 'unknown';
-            const timestamp = call.timestamp || call.created_at || '';
+            const timestamp = call.timestamp || call.started_at || '';
             const duration = call.duration || call.durationSeconds || call.duration_seconds || 0;
-            const summary = call.summary || call.transcript || 'No summary available';
-            const sentiment = (call.sentiment || 'neutral').toLowerCase();
+            const analysis = call.analysis || {};
+            const summary = analysis.summary || call.summary || 'No summary available';
+            const sentiment = (analysis.sentiment || call.sentiment || 'neutral').toLowerCase();
+            const transcript = call.transcript || '';
 
             let timeDisplay = '';
             if (timestamp) {
@@ -439,8 +481,39 @@ async function loadCalls() {
             }
 
             let sentimentClass = 'sentiment-neutral';
-            if (sentiment.includes('positive') || sentiment.includes('good')) sentimentClass = 'sentiment-positive';
+            if (sentiment.includes('positive') || sentiment.includes('good') || sentiment.includes('reassured')) sentimentClass = 'sentiment-positive';
             else if (sentiment.includes('negative') || sentiment.includes('bad')) sentimentClass = 'sentiment-negative';
+
+            // Format transcript with speaker highlighting
+            let transcriptHtml = '';
+            if (transcript) {
+                transcriptHtml = escapeHtml(transcript)
+                    .replace(/(User:|Human:|Caller:)/g, '<span class="speaker-user">$1</span>')
+                    .replace(/(AI:|Assistant:|Lisa:|Bot:)/g, '<span class="speaker-ai">$1</span>');
+            }
+
+            // Build analysis detail items
+            let analysisHtml = '';
+            const analysisFields = [
+                ['call_reason', 'Reason'],
+                ['caller_type', 'Caller Type'],
+                ['resolution', 'Resolution'],
+                ['projects_discussed', 'Projects'],
+                ['domains_discussed', 'Domains'],
+                ['key_insights', 'Insights'],
+                ['learning', 'Learning']
+            ];
+            const detailItems = analysisFields
+                .filter(([k]) => analysis[k] && analysis[k] !== 'null' && analysis[k] !== null)
+                .map(([k, label]) => {
+                    let val = analysis[k];
+                    if (Array.isArray(val)) val = val.join(', ');
+                    return '<div class="analysis-item"><div class="label">' + label + '</div><div class="value">' + escapeHtml(String(val)) + '</div></div>';
+                })
+                .join('');
+            if (detailItems) {
+                analysisHtml = '<div class="call-analysis">' + detailItems + '</div>';
+            }
 
             card.innerHTML =
                 '<div class="call-meta">' +
@@ -449,7 +522,15 @@ async function loadCalls() {
                     (durationDisplay ? '<span class="call-duration">⏱ ' + durationDisplay + '</span>' : '') +
                     '<span class="call-sentiment ' + sentimentClass + '">' + sentiment + '</span>' +
                 '</div>' +
-                '<div class="call-summary">' + escapeHtml(summary).substring(0, 300) + (summary.length > 300 ? '...' : '') + '</div>';
+                '<div class="call-summary">' + escapeHtml(summary) + '</div>' +
+                '<div class="call-expand-hint">Click to view full transcript</div>' +
+                '<div class="call-transcript">' +
+                    analysisHtml +
+                    (transcript ?
+                        '<div style="margin-top:10px;font-size:0.78rem;color:var(--pri);font-weight:600">📝 Full Transcript</div>' +
+                        '<div class="transcript-text">' + transcriptHtml + '</div>'
+                        : '<div style="color:var(--tx2);font-size:0.82rem;margin-top:8px">No transcript available</div>') +
+                '</div>';
 
             container.appendChild(card);
         });
