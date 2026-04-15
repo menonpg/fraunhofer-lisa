@@ -561,7 +561,7 @@ def vapi_webhook():
         params = func_call.get("parameters", {})
         print(f"   Parsed: name={function_name}, params={params}")
 
-        if function_name == "soul_query":
+        if function_name in ("soul_query", "search_projects"):
             query = params.get("query", "")
             if query:
                 print(f"   🔍 soul_query_fast: {query[:100]}")
