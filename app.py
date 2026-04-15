@@ -536,15 +536,10 @@ def vapi_webhook():
                     a = metadata.get("analysis", {})
                     name_part = f", Name: {a['caller_name']}" if a.get("caller_name") else ""
                     domains = ", ".join(a.get("domains_discussed", [])) if a.get("domains_discussed") else "general"
-                    memory_entry = (
-                        f"Call ({metadata.get('type','?')}, {metadata.get('started_at','')[:10]}): "
-                        f"{a.get('summary', 'No summary')} "
-                        f"[Reason: {a.get('call_reason','?')}, Sentiment: {a.get('sentiment','?')}"
-                        f"{name_part}, Domains: {domains}]"
-                    )
-                    soul_remember(memory_entry)
-                    soul_remember(f"Transcript ({call_id[:12]}): {transcript[:2000]}")
-                    print(f"🧠 Indexed call {call_id[:12]}")
+                    # NOTE: Do NOT index call transcripts/summaries into Qdrant.
+                    # The project knowledge base should contain ONLY project data.
+                    # Call data is stored in GitHub and the calls API instead.
+                    print(f"📝 Call {call_id[:12]} analyzed (not indexed to RAG to keep KB clean)")
             except Exception as e:
                 print(f"❌ Index failed: {e}")
 
