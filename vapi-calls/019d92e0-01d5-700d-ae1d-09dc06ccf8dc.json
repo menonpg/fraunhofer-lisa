@@ -1,0 +1,36 @@
+{
+  "call_id": "019d92e0-01d5-700d-ae1d-09dc06ccf8dc",
+  "type": "inboundPhoneCall",
+  "started_at": "2026-04-15T20:40:47.449Z",
+  "ended_at": "2026-04-15T20:42:47.338Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 119.889,
+  "recording_url": "https://storage.vapi.ai/019d92e0-01d5-700d-ae1d-09dc06ccf8dc-1776285769892-ee5b9179-bb18-4e1c-a1b1-b57d7ccfa6ca-mono.wav",
+  "cost": 0.1829,
+  "transcript": "AI: Hello. I am Lisa, your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, health care, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: I want to specifically know about the text century product and its application to the data spaces.\nAI: Let me look that up.\nAI: I found a related project. Packed 24.2. Which addresses policy aware ARAG, retrieval augmented generation. Specifically in a data spaces context. This project focuses on secure document processing, and intelligent data retrieval, while maintaining data sovereignty and access governance. However, I don't see a project called Text Century in the results. Could you clarify? Are you referring to PACT? Or is Text Century a different product name?\nUser: It's text Sentry, s e n t r y, but anyway, I think you found it. Tell me a little bit about the Medigol project, m e d I g o.\nAI: Let me look that up.\nAI: Great. Medigo is a health care IoT project that built a real time organ tracking system using GPS temperature, and impact sensors to monitor transplant delivery. Fraunhofer CMA helped them prototype the platform, which successfully secured funding and now enables CareDx to transport hundreds of organs per month safely and transparently.\nUser: Alright. Well, thank you so much.\nAI: You're welcome. Feel free to reach out anytime you'd like to learn more\n",
+  "timestamp": "2026-04-15T20:42:53.105785+00:00",
+  "analysis": {
+    "call_reason": "technology_assessment",
+    "call_reason_detail": "Caller asked about the Text Sentry product's application to data spaces and inquired about the Medigo healthcare IoT project.",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "Lisa spoke with a caller who wanted details on the Text Sentry product in relation to data spaces and later asked about the Medigo project. Lisa provided information on both topics, and the caller expressed thanks.",
+    "key_insights": "Caller is interested in secure document processing and intelligent data retrieval in data spaces, as well as healthcare IoT for organ transport.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "data spaces",
+      "secure document processing",
+      "intelligent data retrieval",
+      "healthcare IoT",
+      "organ transport"
+    ],
+    "projects_discussed": [
+      "PACT 24.2",
+      "Medigo"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should note that the caller clarified 'Text Sentry' as the product name and showed interest in both data spaces security and healthcare IoT organ tracking."
+  }
+}
