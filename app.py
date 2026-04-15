@@ -806,7 +806,7 @@ def api_tts_pcm():
 @app.route("/api/avatar/token", methods=["GET"])
 def api_avatar_token():
     """Create a LiveAvatar session token for the frontend."""
-    avatar_id = request.args.get("avatar_id", "fc9c1f9f-bc99-4fd9-a6b2-8b4b5669a046")
+    avatar_id = request.args.get("avatar_id", "513fd1b7-7ef9-466d-9af2-344e51eeb833")  # Ann Therapist
 
     if not LIVEAVATAR_API_KEY:
         return jsonify({"error": "LiveAvatar API key not configured"}), 500
