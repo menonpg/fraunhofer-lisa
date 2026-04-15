@@ -348,25 +348,27 @@ def soul_query_fast(question):
     if not agent:
         return "No knowledge base available."
     try:
-        # Direct retrieval from Qdrant — no LLM call
-        if hasattr(agent, '_rag') and agent._rag:
-            chunks = agent._rag.retrieve(question, k=5)
-            if chunks:
-                # Build a plain text summary from raw chunks
-                results = []
-                for i, chunk in enumerate(chunks[:5], 1):
-                    text = chunk.get("text", chunk) if isinstance(chunk, dict) else str(chunk)
-                    # Trim each chunk
-                    if len(text) > 400:
-                        text = text[:400] + "..."
-                    results.append(f"Result {i}: {text}")
-                return "\n\n".join(results)
+        # Direct Qdrant vector search — bypass LLM synthesis entirely
+        if hasattr(agent, '_rag') and agent._rag and hasattr(agent._rag, '_qdrant') and agent._rag._qdrant:
+            rag = agent._rag
+            vec = rag._embed([question])[0]
+            raw_results = rag._qdrant.search(rag.collection, vec, 5)
+            if raw_results:
+                chunks = []
+                for i, r in enumerate(raw_results[:5], 1):
+                    text = r.get("payload", {}).get("text", "")
+                    if len(text) > 500:
+                        text = text[:500] + "..."
+                    chunks.append(f"Result {i}: {text}")
+                return "\n\n".join(chunks)
             else:
                 return "No matching projects found in the knowledge base."
         else:
-            # Fallback to full query if no RAG available
-            result = agent.ask(question, remember=False)
-            return result.get("answer", "No results.")
+            # Fallback: use retrieve() which returns a formatted string — still no LLM
+            result_text = agent._rag.retrieve(question, k=5) if hasattr(agent, '_rag') else ""
+            if result_text and "No relevant memories" not in result_text:
+                return result_text
+            return "No matching projects found in the knowledge base."
     except Exception as e:
         print(f"⚠️ soul_query_fast error: {e}")
         traceback.print_exc()
