@@ -1,0 +1,39 @@
+{
+  "call_id": "019d934c-d59d-7ff6-9de3-7542e6727305",
+  "type": "inboundPhoneCall",
+  "started_at": "2026-04-15T22:39:39.603Z",
+  "ended_at": "2026-04-15T22:43:26.813Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 227.21,
+  "recording_url": "https://storage.vapi.ai/019d934c-d59d-7ff6-9de3-7542e6727305-1776293009384-92c72c33-dcaf-48ed-9f64-b4dd08ee1681-mono.wav",
+  "cost": 0.3853,
+  "transcript": "AI: Hello, I am Lisa, your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, health care, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: Aerospace.\nAI: Let me look that up.\nAI: We have aerospace focused projects in fiber placement. Computer vision for defect prediction. And engine test cell optimization work with partners like Rolls Royce. Both leverage AI and advanced manufacturing techniques. Would you like details on either of these, or are you interested in related areas like space technology or manufacturing?\nUser: Space technology.\nAI: Let me look that up.\nAI: We have 2 space technology projects. Satellite anomaly prediction uses AI, CHML to forecast space weather damage 13 days ahead. Helping operators protect their assets. Blockchain solution for intersatellite communication develops secure messaging between satellites to overcome bandwidth and latency challenges. With NASA and satellite operators as customers. Which interests you more?\nUser: Tell me more about the blockchain product.\nAI: Let me look that up. Based on what we have, the blockchain intersatellite communication project is at demonstration stage. TRL 3 led by Gino and Josh. It solves a critical challenge Satellites struggle to communicate with each other across vast distances due to low bandwidth and high latency. The blockchain based messaging network ensures information isn't lost during transmission between satellites, with NASA and other satellite operators as customers. It's an innovative approach to making satellite networks more reliable and resilient.\nUser: Tell me something about health care.\nAI: Let me look that up.\nAI: We have 5 health care projects spanning organ transport tracking with IoT, health literacy mobile apps, telehealth simulations, AI powered surgical augmented reality, and pharmaceutical vial filling automation. They partner with organizations like NIH, CareDx, and Greenville Health System. Which area resonates with you?\nUser: And then more about the file project.\nAI: I wanna make sure I understand. When you say file project, do you mean 1 of the health care projects I just mentioned? Or are you looking for something in a different domain, like manufacturing or cybersecurity? Could you clarify which 1 interests you?\nUser: Yeah. I meant that vial. With a metron.\nAI: Let me look that up. Based on our portfolio, the pharmaceutical vial filling project uses a AI and process control for predictive alerts during manufacturing. It helps detect issues before they impact production. Improving quality and efficiency in pharmaceutical manufacturing. It combines AIML with manufacturing expertise to monitor vial filling operations in real time. Do you want to know about partnerships or technical approach for that project?\n",
+  "timestamp": "2026-04-15T22:43:33.030086+00:00",
+  "analysis": {
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "Caller explored multiple technology domains including aerospace, space technology, and healthcare projects.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller expressed interest in aerospace and space technology projects, particularly a blockchain-based intersatellite communication initiative, and later inquired about a pharmaceutical vial filling automation project in healthcare.",
+    "key_insights": "Caller showed interest in both aerospace/space technology and healthcare manufacturing, indicating potential cross-domain engagement.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "aerospace",
+      "space technology",
+      "health care",
+      "pharmaceutical manufacturing"
+    ],
+    "projects_discussed": [
+      "fiber placement",
+      "computer vision for defect prediction",
+      "engine test cell optimization",
+      "satellite anomaly prediction",
+      "blockchain intersatellite communication",
+      "pharmaceutical vial filling automation"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should note the caller's interest in blockchain intersatellite communication and pharmaceutical vial filling automation, as well as their curiosity across multiple domains."
+  }
+}
