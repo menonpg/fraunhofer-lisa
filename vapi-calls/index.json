@@ -1,5 +1,24 @@
 [
   {
+    "call_id": "019d9261-e8d1-700d-ab92-5f202482d230",
+    "type": "webCall",
+    "started_at": "2026-04-15T18:23:03.722Z",
+    "ended_at": "2026-04-15T18:23:16.263Z",
+    "duration": 12.541,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d9261-e8d1-700d-ab92-5f202482d230-1776277398829-ea0d3b70-32ec-48f0-85d4-7ee3a5f7d696-mono.wav",
+    "call_reason": "general_question",
+    "call_reason_detail": "Caller initiated contact but conversation ended before reason was stated",
+    "sentiment": "neutral",
+    "resolution": "abandoned",
+    "summary": "Lisa greeted the caller and began introducing the Fraunhofer Center Mid Atlantic Technology Portfolio, but the call ended before any details or questions were exchanged.",
+    "caller_type": "unknown",
+    "domains_discussed": [],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "key_insights": "The call terminated early, preventing any meaningful discussion."
+  },
+  {
     "call_id": "019d9261-c237-7000-9899-6b551a7c829d",
     "type": "webCall",
     "started_at": "2026-04-15T18:22:54.367Z",
