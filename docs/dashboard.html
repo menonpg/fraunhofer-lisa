@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lisa — Fraunhofer CMA Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --pri: #179C7D;
+            --pri2: #128a6d;
+            --navy: #003366;
+            --card: rgba(255,255,255,0.06);
+            --tx: #fff;
+            --tx2: rgba(255,255,255,0.6);
+            --bd: rgba(23,156,125,0.2);
+            --ok: #48bb78;
+            --warn: #ed8936;
+            --err: #fc8181;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #001a33, #003366);
+            color: var(--tx);
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        .hdr {
+            background: rgba(0,0,0,0.25);
+            border-bottom: 1px solid var(--bd);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .hdr a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--pri);
+        }
+        .hdr h1 { font-size: 1.15rem; color: var(--pri); font-weight: 600; }
+        .hdr small { font-size: 0.72rem; color: var(--tx2); }
+        .hdr .back-link {
+            margin-left: auto;
+            font-size: 0.78rem;
+            color: var(--tx2);
+            text-decoration: none;
+        }
+        .hdr .back-link:hover { color: var(--pri); }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 2px;
+            padding: 12px 24px 0;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .tab {
+            padding: 8px 20px;
+            border: 1px solid var(--bd);
+            border-bottom: none;
+            background: rgba(0,0,0,0.15);
+            color: var(--tx2);
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: 0.15s;
+        }
+        .tab:hover { color: var(--tx); background: rgba(255,255,255,0.04); }
+        .tab.on { background: var(--card); color: var(--pri); border-color: var(--pri); }
+
+        /* CONTENT */
+        .content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px 24px;
+        }
+        .panel {
+            display: none;
+            background: var(--card);
+            border: 1px solid var(--bd);
+            border-radius: 0 10px 10px 10px;
+            padding: 20px;
+            min-height: 400px;
+        }
+        .panel.on { display: block; }
+
+        /* CALLS TAB */
+        .calls-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .calls-header h2 { font-size: 1rem; color: var(--pri); }
+        .refresh-btn {
+            padding: 6px 14px;
+            background: var(--pri);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .refresh-btn:hover { background: var(--pri2); }
+
+        .call-card {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--bd);
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            transition: 0.15s;
+        }
+        .call-card:hover { border-color: var(--pri); }
+        .call-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .call-id {
+            font-family: monospace;
+            font-size: 0.72rem;
+            color: var(--tx2);
+            background: rgba(255,255,255,0.06);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .call-time { font-size: 0.78rem; color: var(--tx2); }
+        .call-duration {
+            font-size: 0.72rem;
+            color: var(--pri);
+            background: rgba(23,156,125,0.15);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        .call-sentiment {
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        .sentiment-positive { background: rgba(72,187,120,0.2); color: var(--ok); }
+        .sentiment-negative { background: rgba(252,129,129,0.2); color: var(--err); }
+        .sentiment-neutral { background: rgba(255,255,255,0.1); color: var(--tx2); }
+        .call-summary { font-size: 0.85rem; color: var(--tx); line-height: 1.5; margin-top: 6px; }
+        .no-data { text-align: center; color: var(--tx2); padding: 40px; font-size: 0.9rem; }
+
+        /* SOUL AGENT TAB */
+        .query-box {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .query-box input {
+            flex: 1;
+            padding: 10px 14px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--bd);
+            border-radius: 8px;
+            color: var(--tx);
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .query-box input:focus { border-color: var(--pri); }
+        .query-box input::placeholder { color: var(--tx2); }
+        .query-box button {
+            padding: 10px 20px;
+            background: var(--pri);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .query-box button:hover { background: var(--pri2); }
+        .query-box button:disabled { background: rgba(255,255,255,0.1); color: var(--tx2); cursor: not-allowed; }
+
+        .response-area {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--bd);
+            border-radius: 8px;
+            padding: 16px 20px;
+            min-height: 200px;
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+        .response-area h1, .response-area h2, .response-area h3 { color: var(--pri); margin: 12px 0 6px; }
+        .response-area h1 { font-size: 1.2rem; }
+        .response-area h2 { font-size: 1.05rem; }
+        .response-area h3 { font-size: 0.95rem; }
+        .response-area p { margin-bottom: 8px; }
+        .response-area ul, .response-area ol { margin: 8px 0 8px 20px; }
+        .response-area li { margin-bottom: 4px; }
+        .response-area code {
+            background: rgba(255,255,255,0.08);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.82rem;
+        }
+        .response-area pre {
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 8px 0;
+        }
+        .response-area pre code { background: none; padding: 0; }
+        .response-area a { color: var(--pri); }
+        .response-area blockquote {
+            border-left: 3px solid var(--pri);
+            padding-left: 12px;
+            margin: 8px 0;
+            color: var(--tx2);
+        }
+        .response-placeholder { color: var(--tx2); text-align: center; padding: 40px; }
+
+        .query-history {
+            margin-top: 16px;
+        }
+        .query-history h3 { font-size: 0.82rem; color: var(--tx2); margin-bottom: 8px; }
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            background: rgba(0,0,0,0.15);
+            border-radius: 6px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            color: var(--tx2);
+            transition: 0.15s;
+        }
+        .history-item:hover { background: rgba(23,156,125,0.1); color: var(--tx); }
+
+        /* HEALTH TAB */
+        .health-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+        .health-card {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--bd);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .health-card .icon { font-size: 2rem; margin-bottom: 8px; }
+        .health-card .label { font-size: 0.78rem; color: var(--tx2); margin-bottom: 4px; }
+        .health-card .value { font-size: 1.2rem; font-weight: 700; }
+        .health-card .value.ok { color: var(--ok); }
+        .health-card .value.err { color: var(--err); }
+        .health-card .value.warn { color: var(--warn); }
+        .health-raw {
+            margin-top: 20px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--bd);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .health-raw h3 { font-size: 0.85rem; color: var(--pri); margin-bottom: 8px; }
+        .health-raw pre {
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            overflow-x: auto;
+            color: var(--tx2);
+        }
+
+        /* LOADING */
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-top-color: var(--pri);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* FOOTER */
+        .ftr {
+            text-align: center;
+            padding: 16px;
+            font-size: 0.65rem;
+            color: var(--tx2);
+        }
+        .ftr a { color: var(--pri); text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="hdr">
+    <a href="index.html">
+        <span style="font-size:1.2rem">🏛️</span>
+        <h1>Lisa — Fraunhofer CMA Dashboard</h1>
+    </a>
+    <small>Call Analytics & Soul Agent</small>
+    <a href="index.html" class="back-link">← Back to Home</a>
+</div>
+
+<div class="tabs">
+    <div class="tab on" onclick="switchTab('calls')">📞 Calls</div>
+    <div class="tab" onclick="switchTab('soul')">🧠 Soul Agent</div>
+    <div class="tab" onclick="switchTab('health')">💚 Health</div>
+</div>
+
+<div class="content">
+    <!-- CALLS PANEL -->
+    <div class="panel on" id="panel-calls">
+        <div class="calls-header">
+            <h2>📞 Recent Calls</h2>
+            <button class="refresh-btn" onclick="loadCalls()">🔄 Refresh</button>
+        </div>
+        <div id="callsList">
+            <div class="no-data"><span class="spinner"></span> Loading calls...</div>
+        </div>
+    </div>
+
+    <!-- SOUL AGENT PANEL -->
+    <div class="panel" id="panel-soul">
+        <h2 style="font-size:1rem;color:var(--pri);margin-bottom:12px">🧠 Query the Soul Agent</h2>
+        <p style="font-size:0.8rem;color:var(--tx2);margin-bottom:16px">
+            Ask Lisa's soul agent anything about Fraunhofer CMA projects, technology domains, or capabilities.
+        </p>
+        <div class="query-box">
+            <input type="text" id="queryInput" placeholder="e.g. What AI projects does Fraunhofer CMA have?" onkeypress="if(event.key==='Enter') submitQuery()">
+            <button id="queryBtn" onclick="submitQuery()">Ask</button>
+        </div>
+        <div class="response-area" id="responseArea">
+            <div class="response-placeholder">
+                <div style="font-size:2rem;margin-bottom:8px">🏛️</div>
+                <p>Ask a question above to query Lisa's knowledge base</p>
+            </div>
+        </div>
+        <div class="query-history" id="queryHistory" style="display:none">
+            <h3>Recent Queries</h3>
+            <div id="historyList"></div>
+        </div>
+    </div>
+
+    <!-- HEALTH PANEL -->
+    <div class="panel" id="panel-health">
+        <div class="calls-header">
+            <h2>💚 System Health</h2>
+            <button class="refresh-btn" onclick="loadHealth()">🔄 Refresh</button>
+        </div>
+        <div class="health-grid" id="healthGrid">
+            <div class="no-data"><span class="spinner"></span> Checking health...</div>
+        </div>
+        <div class="health-raw" id="healthRaw" style="display:none">
+            <h3>Raw Response</h3>
+            <pre id="healthJson"></pre>
+        </div>
+    </div>
+</div>
+
+<div class="ftr">
+    Lisa — Fraunhofer CMA Dashboard · Powered by <a href="https://github.com/menonpg/fraunhofer-lisa">VAPI + soul.py</a>
+</div>
+
+<script>
+const WEBHOOK_BASE = 'https://lisa-webhook-production.up.railway.app';
+let queryHistoryList = [];
+
+// ══════════════════════════════════════════════════════════════
+// TAB SWITCHING
+// ══════════════════════════════════════════════════════════════
+function switchTab(name) {
+    document.querySelectorAll('.tab').forEach((t, i) => {
+        const names = ['calls', 'soul', 'health'];
+        t.classList.toggle('on', names[i] === name);
+    });
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+    document.getElementById('panel-' + name).classList.add('on');
+
+    if (name === 'health') loadHealth();
+}
+
+// ══════════════════════════════════════════════════════════════
+// CALLS TAB
+// ══════════════════════════════════════════════════════════════
+async function loadCalls() {
+    const container = document.getElementById('callsList');
+    container.innerHTML = '<div class="no-data"><span class="spinner"></span> Loading calls...</div>';
+
+    try {
+        const resp = await fetch(WEBHOOK_BASE + '/api/calls');
+        const data = await resp.json();
+
+        const calls = Array.isArray(data) ? data : (data.calls || []);
+
+        if (calls.length === 0) {
+            container.innerHTML = '<div class="no-data">No calls recorded yet. Start a voice consultation to see data here.</div>';
+            return;
+        }
+
+        container.innerHTML = '';
+        calls.forEach(call => {
+            const card = document.createElement('div');
+            card.className = 'call-card';
+
+            const callId = call.call_id || call.id || 'unknown';
+            const timestamp = call.timestamp || call.created_at || '';
+            const duration = call.duration || call.durationSeconds || call.duration_seconds || 0;
+            const summary = call.summary || call.transcript || 'No summary available';
+            const sentiment = (call.sentiment || 'neutral').toLowerCase();
+
+            let timeDisplay = '';
+            if (timestamp) {
+                try {
+                    const d = new Date(timestamp);
+                    timeDisplay = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+                } catch(e) {
+                    timeDisplay = timestamp;
+                }
+            }
+
+            let durationDisplay = '';
+            if (typeof duration === 'number' && duration > 0) {
+                const mins = Math.floor(duration / 60);
+                const secs = Math.floor(duration % 60);
+                durationDisplay = mins > 0 ? mins + 'm ' + secs + 's' : secs + 's';
+            }
+
+            let sentimentClass = 'sentiment-neutral';
+            if (sentiment.includes('positive') || sentiment.includes('good')) sentimentClass = 'sentiment-positive';
+            else if (sentiment.includes('negative') || sentiment.includes('bad')) sentimentClass = 'sentiment-negative';
+
+            card.innerHTML =
+                '<div class="call-meta">' +
+                    '<span class="call-id">' + callId.substring(0, 16) + '</span>' +
+                    (timeDisplay ? '<span class="call-time">' + timeDisplay + '</span>' : '') +
+                    (durationDisplay ? '<span class="call-duration">⏱ ' + durationDisplay + '</span>' : '') +
+                    '<span class="call-sentiment ' + sentimentClass + '">' + sentiment + '</span>' +
+                '</div>' +
+                '<div class="call-summary">' + escapeHtml(summary).substring(0, 300) + (summary.length > 300 ? '...' : '') + '</div>';
+
+            container.appendChild(card);
+        });
+    } catch(e) {
+        container.innerHTML = '<div class="no-data">⚠️ Failed to load calls: ' + escapeHtml(e.message) + '</div>';
+    }
+}
+
+// ══════════════════════════════════════════════════════════════
+// SOUL AGENT TAB
+// ══════════════════════════════════════════════════════════════
+async function submitQuery() {
+    const input = document.getElementById('queryInput');
+    const btn = document.getElementById('queryBtn');
+    const area = document.getElementById('responseArea');
+    const question = input.value.trim();
+
+    if (!question) return;
+
+    btn.disabled = true;
+    btn.textContent = '⏳ Thinking...';
+    area.innerHTML = '<div style="text-align:center;padding:40px"><span class="spinner"></span> Lisa is thinking...</div>';
+
+    try {
+        const resp = await fetch(WEBHOOK_BASE + '/api/query', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question: question })
+        });
+        const data = await resp.json();
+
+        const answer = data.response || data.answer || data.text || JSON.stringify(data, null, 2);
+
+        // Render markdown
+        if (typeof marked !== 'undefined' && typeof marked.parse === 'function') {
+            area.innerHTML = marked.parse(answer);
+        } else {
+            area.innerHTML = '<p>' + escapeHtml(answer).replace(/\n/g, '<br>') + '</p>';
+        }
+
+        // Add to history
+        queryHistoryList.unshift(question);
+        if (queryHistoryList.length > 10) queryHistoryList.pop();
+        renderHistory();
+
+    } catch(e) {
+        area.innerHTML = '<div class="no-data">⚠️ Error: ' + escapeHtml(e.message) + '</div>';
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Ask';
+    input.value = '';
+    input.focus();
+}
+
+function renderHistory() {
+    const container = document.getElementById('historyList');
+    const wrapper = document.getElementById('queryHistory');
+    if (queryHistoryList.length === 0) { wrapper.style.display = 'none'; return; }
+    wrapper.style.display = 'block';
+    container.innerHTML = '';
+    queryHistoryList.forEach(q => {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        item.textContent = '🔍 ' + q;
+        item.onclick = () => {
+            document.getElementById('queryInput').value = q;
+            submitQuery();
+        };
+        container.appendChild(item);
+    });
+}
+
+// ══════════════════════════════════════════════════════════════
+// HEALTH TAB
+// ══════════════════════════════════════════════════════════════
+async function loadHealth() {
+    const grid = document.getElementById('healthGrid');
+    const raw = document.getElementById('healthRaw');
+    grid.innerHTML = '<div class="no-data"><span class="spinner"></span> Checking health...</div>';
+    raw.style.display = 'none';
+
+    try {
+        const resp = await fetch(WEBHOOK_BASE + '/api/health');
+        const data = await resp.json();
+
+        const status = data.status || (resp.ok ? 'healthy' : 'unhealthy');
+        const isOk = status === 'healthy' || status === 'ok' || status === 'up';
+
+        let cards = '';
+
+        // Overall status
+        cards += '<div class="health-card">' +
+            '<div class="icon">' + (isOk ? '✅' : '❌') + '</div>' +
+            '<div class="label">Overall Status</div>' +
+            '<div class="value ' + (isOk ? 'ok' : 'err') + '">' + status.toUpperCase() + '</div>' +
+        '</div>';
+
+        // Version
+        if (data.version) {
+            cards += '<div class="health-card">' +
+                '<div class="icon">📦</div>' +
+                '<div class="label">Version</div>' +
+                '<div class="value ok">' + escapeHtml(data.version) + '</div>' +
+            '</div>';
+        }
+
+        // Uptime
+        if (data.uptime || data.uptime_seconds) {
+            const uptime = data.uptime || formatUptime(data.uptime_seconds);
+            cards += '<div class="health-card">' +
+                '<div class="icon">⏱</div>' +
+                '<div class="label">Uptime</div>' +
+                '<div class="value ok">' + escapeHtml(String(uptime)) + '</div>' +
+            '</div>';
+        }
+
+        // Soul agent status
+        if (data.soul_agent !== undefined || data.soul !== undefined) {
+            const soulStatus = data.soul_agent || data.soul || 'unknown';
+            const soulOk = soulStatus === 'ok' || soulStatus === 'connected' || soulStatus === 'healthy' || soulStatus === true;
+            cards += '<div class="health-card">' +
+                '<div class="icon">🧠</div>' +
+                '<div class="label">Soul Agent</div>' +
+                '<div class="value ' + (soulOk ? 'ok' : 'warn') + '">' + (soulOk ? 'CONNECTED' : String(soulStatus).toUpperCase()) + '</div>' +
+            '</div>';
+        }
+
+        // VAPI status
+        if (data.vapi !== undefined) {
+            const vapiOk = data.vapi === 'ok' || data.vapi === 'connected' || data.vapi === true;
+            cards += '<div class="health-card">' +
+                '<div class="icon">📞</div>' +
+                '<div class="label">VAPI</div>' +
+                '<div class="value ' + (vapiOk ? 'ok' : 'warn') + '">' + (vapiOk ? 'CONNECTED' : String(data.vapi).toUpperCase()) + '</div>' +
+            '</div>';
+        }
+
+        // Any other keys as generic cards
+        const knownKeys = ['status', 'version', 'uptime', 'uptime_seconds', 'soul_agent', 'soul', 'vapi'];
+        Object.keys(data).forEach(key => {
+            if (knownKeys.includes(key)) return;
+            cards += '<div class="health-card">' +
+                '<div class="icon">📋</div>' +
+                '<div class="label">' + escapeHtml(key) + '</div>' +
+                '<div class="value ok">' + escapeHtml(String(data[key])).substring(0, 50) + '</div>' +
+            '</div>';
+        });
+
+        grid.innerHTML = cards;
+
+        // Raw JSON
+        raw.style.display = 'block';
+        document.getElementById('healthJson').textContent = JSON.stringify(data, null, 2);
+
+    } catch(e) {
+        grid.innerHTML = '<div class="no-data">⚠️ Health check failed: ' + escapeHtml(e.message) + '</div>';
+    }
+}
+
+function formatUptime(seconds) {
+    if (!seconds) return 'unknown';
+    const d = Math.floor(seconds / 86400);
+    const h = Math.floor((seconds % 86400) / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    let parts = [];
+    if (d > 0) parts.push(d + 'd');
+    if (h > 0) parts.push(h + 'h');
+    parts.push(m + 'm');
+    return parts.join(' ');
+}
+
+// ══════════════════════════════════════════════════════════════
+// UTILITY
+// ══════════════════════════════════════════════════════════════
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+// ══════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════
+loadCalls();
+</script>
+
+</body>
+</html>

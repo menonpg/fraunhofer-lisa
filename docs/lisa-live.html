@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lisa — Fraunhofer CMA Voice Consultation</title>
+    <script src="https://cdn.jsdelivr.net/npm/livekit-client@2/dist/livekit-client.umd.min.js"></script>
+    <style>
+        :root {
+            --pri: #179C7D;
+            --pri2: #128a6d;
+            --navy: #003366;
+            --card: rgba(255,255,255,0.06);
+            --tx: #fff;
+            --tx2: rgba(255,255,255,0.6);
+            --bd: rgba(23,156,125,0.2);
+            --ok: #48bb78;
+            --warn: #ed8936;
+            --err: #fc8181;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #001a33, #003366);
+            color: var(--tx);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .hdr {
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid var(--bd);
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        .hdr a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--pri);
+        }
+        .hdr h1 { font-size: 1.1rem; color: var(--pri); font-weight: 600; }
+        .hdr small { font-size: 0.72rem; color: var(--tx2); }
+        .hdr .back-link {
+            margin-left: auto;
+            font-size: 0.78rem;
+            color: var(--tx2);
+            text-decoration: none;
+        }
+        .hdr .back-link:hover { color: var(--pri); }
+
+        /* LAYOUT */
+        .wrap {
+            flex: 1;
+            display: flex;
+            gap: 0;
+            padding: 12px 20px;
+            min-height: 0;
+        }
+
+        /* LEFT SIDEBAR */
+        .side {
+            width: 300px;
+            min-width: 200px;
+            max-width: 50vw;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow-y: auto;
+        }
+        .vid-box {
+            background: var(--card);
+            border: 1px solid var(--bd);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            height: 230px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .vid-box video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        .ph {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--tx2);
+            font-size: 0.82rem;
+            text-align: center;
+        }
+        .ph .ico { font-size: 2.8rem; }
+
+        .tabs { display: flex; gap: 4px; }
+        .tab {
+            flex: 1;
+            padding: 6px;
+            border: 1px solid var(--bd);
+            background: 0;
+            color: var(--tx2);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            transition: 0.15s;
+        }
+        .tab.on { background: var(--pri); color: #fff; border-color: var(--pri); }
+
+        .cam-box {
+            background: var(--card);
+            border: 1px solid var(--bd);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            height: 95px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cam-box video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+            transform: scaleX(-1);
+        }
+        .cam-lbl {
+            position: absolute;
+            bottom: 4px;
+            left: 6px;
+            font-size: 0.62rem;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .cam-tog {
+            position: absolute;
+            top: 4px;
+            right: 6px;
+            background: rgba(0,0,0,0.4);
+            border: 0;
+            color: #fff;
+            font-size: 0.65rem;
+            padding: 3px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .sel {
+            background: var(--card);
+            border: 1px solid var(--bd);
+            border-radius: 6px;
+            padding: 6px 8px;
+        }
+        .sel summary {
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.78rem;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .sel summary::-webkit-details-marker { display: none; }
+        .sel .arrow { margin-left: auto; font-size: 0.6rem; transition: transform 0.2s; }
+        .sel[open] .arrow { transform: rotate(90deg); }
+        .sel label { font-size: 0.68rem; color: var(--tx2); display: block; margin-bottom: 2px; }
+        .sel select, .sel input[type=text] {
+            width: 100%;
+            padding: 4px 6px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--bd);
+            border-radius: 4px;
+            color: var(--tx);
+            font-size: 0.78rem;
+            outline: 0;
+        }
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 0;
+        }
+        .setting-row label { font-size: 0.72rem; color: var(--tx2); }
+        .setting-hint { font-size: 0.65rem; color: var(--tx2); margin-top: 3px; }
+
+        /* Toggle switch */
+        .toggle { position: relative; width: 44px; height: 24px; display: inline-block; vertical-align: middle; }
+        .toggle input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 24px;
+            transition: 0.3s;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: #fff;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        .toggle input:checked + .toggle-slider { background: var(--pri); }
+        .toggle input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+        /* Resize handle */
+        .resize-handle {
+            width: 6px;
+            cursor: col-resize;
+            background: transparent;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .resize-handle::after {
+            content: '';
+            width: 2px;
+            height: 32px;
+            background: var(--bd);
+            border-radius: 2px;
+            transition: background 0.15s;
+        }
+        .resize-handle:hover::after, .resize-handle.dragging::after {
+            background: var(--pri);
+            width: 3px;
+            height: 48px;
+        }
+
+        .cbtn {
+            width: 100%;
+            padding: 7px;
+            border: 0;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .c-go { background: var(--pri); color: #fff; }
+        .c-go:hover { background: var(--pri2); }
+        .c-stop { background: var(--err); color: #fff; }
+        .c-stop:hover { background: #e53e3e; }
+        .c-rst { background: 0; color: var(--tx2); border: 1px solid var(--bd); font-size: 0.72rem; }
+        .c-rst:hover { border-color: var(--warn); color: var(--warn); }
+        .c-off { background: rgba(255,255,255,0.06); color: var(--tx2); cursor: not-allowed; }
+
+        /* RIGHT: CHAT */
+        .chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+            min-height: 0;
+        }
+        .sbar {
+            background: var(--card);
+            border: 1px solid var(--bd);
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 0.78rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--tx2); }
+        .sdot.active { background: var(--ok); }
+        .sdot.warning { background: var(--warn); animation: pls 1s infinite; }
+        .sdot.error { background: var(--err); }
+        @keyframes pls { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+        .msgs {
+            flex: 1;
+            background: var(--card);
+            border: 1px solid var(--bd);
+            border-radius: 10px;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 0;
+        }
+        .msg { display: flex; flex-direction: column; gap: 2px; max-width: 85%; }
+        .msg.user { align-self: flex-end; }
+        .msg.assistant { align-self: flex-start; }
+        .msg-lbl { font-size: 0.65rem; color: var(--tx2); padding: 0 3px; }
+        .msg.user .msg-lbl { text-align: right; }
+        .msg-bub { padding: 8px 11px; border-radius: 10px; font-size: 0.88rem; line-height: 1.45; }
+        .msg.user .msg-bub { background: var(--pri); color: #fff; border-bottom-right-radius: 3px; }
+        .msg.assistant .msg-bub { background: rgba(255,255,255,0.1); color: var(--tx); border-bottom-left-radius: 3px; }
+
+        .ibar { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+        .ibar input[type=text] {
+            flex: 1;
+            padding: 8px 10px;
+            background: var(--card);
+            border: 1px solid var(--bd);
+            border-radius: 6px;
+            color: var(--tx);
+            font-size: 0.88rem;
+            outline: 0;
+        }
+        .ibar input:focus { border-color: var(--pri); }
+        .ibar input::placeholder { color: var(--tx2); }
+        .ibar input:disabled { opacity: 0.4; cursor: not-allowed; }
+        .ibtn {
+            padding: 8px 14px;
+            background: var(--pri);
+            color: #fff;
+            border: 0;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .ibtn:hover { background: var(--pri2); }
+        .ibtn:disabled { background: rgba(255,255,255,0.06); color: var(--tx2); cursor: not-allowed; }
+        .clr {
+            padding: 8px;
+            background: 0;
+            color: var(--tx2);
+            border: 1px solid var(--bd);
+            border-radius: 6px;
+            font-size: 0.72rem;
+            cursor: pointer;
+        }
+        .clr:hover { border-color: var(--pri); color: var(--pri); }
+        .mic {
+            padding: 8px;
+            background: 0;
+            color: var(--tx2);
+            border: 1px solid var(--bd);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .mic:hover:not(:disabled) { border-color: var(--pri); background: rgba(23,156,125,0.1); }
+        .mic.recording { border-color: var(--err); background: rgba(252,129,129,0.1); animation: pls 0.8s infinite; }
+        .mic:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        .empty {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--tx2);
+            font-size: 0.88rem;
+            text-align: center;
+        }
+
+        /* VAPI indicator */
+        .vapi-indicator {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: rgba(23,156,125,0.1);
+            border: 1px solid var(--bd);
+            border-radius: 6px;
+            font-size: 0.72rem;
+            color: var(--pri);
+        }
+        .vapi-indicator.active { display: flex; }
+        .vapi-pulse {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--pri);
+            animation: pls 1.2s infinite;
+        }
+
+        /* FOOTER */
+        .ftr {
+            text-align: center;
+            padding: 5px;
+            font-size: 0.62rem;
+            color: var(--tx2);
+            border-top: 1px solid var(--bd);
+            flex-shrink: 0;
+        }
+
+        /* MOBILE */
+        @media (max-width: 700px) {
+            .wrap { flex-direction: column; padding: 8px; gap: 8px; }
+            .resize-handle { display: none; }
+            .side {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 4px;
+                max-height: none;
+                overflow: visible;
+            }
+            .vid-box { flex: 1; min-width: 140px; height: 160px; }
+            .cam-box { display: none; }
+            .sel { display: none; }
+            .tabs, .cbtn { flex: 1; min-width: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hdr">
+    <a href="index.html">
+        <span style="font-size:1.2rem">🏛️</span>
+        <h1>Lisa — Fraunhofer CMA</h1>
+    </a>
+    <small>Technology Portfolio Voice AI</small>
+    <a href="index.html" class="back-link">← Back to Home</a>
+</div>
+
+<div class="wrap">
+    <div class="side">
+        <!-- Avatar Video -->
+        <div class="vid-box">
+            <video id="videoElement" autoplay playsinline></video>
+            <div class="ph" id="avatarPlaceholder">
+                <div class="ico">🏛️</div>
+                <p>Lisa will appear here<br>when video mode is active</p>
+            </div>
+        </div>
+
+        <!-- Mode Tabs -->
+        <div class="tabs">
+            <button class="tab on" onclick="setMode('audio')" id="audioTab">🔊 Voice (VAPI)</button>
+            <button class="tab" onclick="setMode('video')" id="videoTab">🎥 Video (VAPI + Avatar)</button>
+            <button class="tab" onclick="setMode('full-avatar')" id="fullAvatarTab">🧑‍💼 Full Avatar</button>
+        </div>
+
+        <!-- User Camera -->
+        <div class="cam-box" id="patientContainer">
+            <video id="patientVideo" autoplay playsinline muted></video>
+            <div class="ph" id="patientPlaceholder" style="font-size:0.7rem">
+                <div class="ico" style="font-size:1.5rem">👤</div>
+                <p>Your camera</p>
+            </div>
+            <div class="cam-lbl">You</div>
+            <button class="cam-tog" onclick="toggleCamera()">📷 Enable</button>
+        </div>
+
+        <!-- VAPI Call Indicator -->
+        <div class="vapi-indicator" id="vapiIndicator">
+            <div class="vapi-pulse"></div>
+            <span id="vapiStatus">VAPI Connected</span>
+        </div>
+
+        <!-- Settings -->
+        <details class="sel" id="settingsPanel">
+            <summary>⚙️ Settings <span class="arrow">▶</span></summary>
+            <div style="padding-top:8px">
+                <label>Avatar (Video Mode)</label>
+                <select id="avatarSelect">
+                    <option value="fc9c1f9f-bc99-4fd9-a6b2-8b4b5669a046" selected>Ann Doctor Sitting</option>
+                    <option value="567e8371-f69f-49ec-9f2d-054083431165">Ann Doctor Standing</option>
+                    <option value="513fd1b7-7ef9-466d-9af2-344e51eeb833">Ann Therapist</option>
+                    <option value="bd43ce31-7425-4379-8407-60f029548e61">Dexter Doctor Sitting</option>
+                    <option value="5761a14c-8720-4ce1-8c2b-3f351718fc79">Dexter Doctor Standing</option>
+                    <option value="0f563214-1cb5-4dc0-a2f9-43f44e5e6b57">Judy Doctor Standing</option>
+                    <option value="07faa1c4-b7e1-4d26-a38a-337364dee160">Judy Doctor Sitting</option>
+                </select>
+
+                <div style="margin-top:10px">
+                    <div class="setting-row">
+                        <label>Auto-listen (Continuous)</label>
+                        <label class="toggle">
+                            <input type="checkbox" id="autoContinueChk">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <p class="setting-hint">Auto-listen after each response (mic + browser TTS)</p>
+                </div>
+
+                <div style="margin-top:10px">
+                    <div class="setting-row">
+                        <label>Speech Speed</label>
+                        <span style="display:flex;align-items:center;gap:4px">
+                            <input type="range" id="speechSpeed" min="0.5" max="2.5" step="0.1" value="1.0" style="width:80px" oninput="document.getElementById('speedVal').textContent=parseFloat(this.value).toFixed(1)+'x'">
+                            <span id="speedVal" style="font-size:.7rem;color:var(--tx2);min-width:28px">1.0x</span>
+                        </span>
+                    </div>
+                    <p class="setting-hint">TTS playback rate</p>
+                </div>
+
+                <div style="margin-top:10px">
+                    <div class="setting-row">
+                        <label>Response Style</label>
+                        <select id="responseStyle" style="width:100px;padding:2px 4px;background:rgba(0,0,0,.2);border:1px solid var(--bd);border-radius:3px;color:var(--tx);font-size:.72rem">
+                            <option value="normal" selected>Normal</option>
+                            <option value="brief">Brief</option>
+                            <option value="verbose">Detailed</option>
+                        </select>
+                    </div>
+                    <p class="setting-hint">How detailed Lisa's answers are</p>
+                </div>
+
+                <div style="margin-top:10px">
+                    <div class="setting-row">
+                        <label>TTS Voice</label>
+                        <select id="voiceSelect" style="width:140px;padding:2px 4px;background:rgba(0,0,0,.2);border:1px solid var(--bd);border-radius:3px;color:var(--tx);font-size:.72rem">
+                            <option value="">Auto (best available)</option>
+                        </select>
+                    </div>
+                    <p class="setting-hint">Browser TTS voice for non-VAPI modes</p>
+                </div>
+
+                <div style="margin-top:10px">
+                    <label>LiveAvatar Token Server</label>
+                    <input type="text" id="tokenServer" value="https://lisa-webhook-production.up.railway.app" placeholder="Token server URL">
+                    <p class="setting-hint">Server that proxies LiveAvatar API keys</p>
+                </div>
+
+                <div style="margin-top:10px">
+                    <label>LiveAvatar API Key (optional override)</label>
+                    <input type="text" id="liveAvatarKey" value="810d1e58-289a-11f1-8d28-066a7fa2e369" placeholder="Enter key or leave blank for server proxy" style="font-size:0.7rem">
+                    <p class="setting-hint">Only needed if token server is unavailable</p>
+                </div>
+            </div>
+        </details>
+
+        <!-- Controls -->
+        <button class="cbtn c-go" id="startBtn" onclick="startSession()">▶ Start Consultation</button>
+        <button class="cbtn c-stop c-off" id="stopBtn" onclick="stopSession()" disabled>⏹ End Session</button>
+        <button class="cbtn c-rst" id="resetBtn" onclick="hardReset()">🗑️ Reset</button>
+    </div>
+
+    <div class="resize-handle" id="resizeHandle"></div>
+
+    <div class="chat">
+        <div class="sbar">
+            <div class="sdot" id="statusDot"></div>
+            <span id="statusText">Press Start to meet Lisa</span>
+        </div>
+
+        <div class="msgs" id="chatMessages">
+            <div class="empty" id="emptyState">
+                <div>
+                    <div style="font-size:2rem;margin-bottom:0.5rem">🏛️</div>
+                    <p>Start a session to explore<br>Fraunhofer CMA's technology portfolio</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="ibar">
+            <button class="mic" id="micBtn" onclick="toggleMic()" disabled title="Click to speak">🎤</button>
+            <input type="text" id="messageInput" placeholder="Type your message (or use voice via VAPI)..." disabled onkeypress="if(event.key==='Enter'){event.preventDefault();sendTextMessage();}">
+            <button class="ibtn" id="sendBtn" onclick="sendTextMessage()" disabled>Send</button>
+            <button class="clr" onclick="clearChat()">Clear</button>
+        </div>
+    </div>
+</div>
+
+<div class="ftr">Lisa — Fraunhofer CMA Voice AI · VAPI + soul.py</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════════
+let mode = 'audio';
+let isSessionActive = false;
+let isProcessing = false;
+let isSpeaking = false;
+let vapiInstance = null;
+let vapiCallActive = false;
+
+// Speech recognition & TTS state
+let recognition = null;
+let isRecording = false;
+let ttsUnlocked = false;
+let availableVoices = [];
+let voiceModeStream = null;
+
+// LiveAvatar state
+let liveKitRoom = null;
+let avatarWs = null;
+let laSessionToken = null;
+let cameraStream = null;
+let cameraEnabled = false;
+
+const VAPI_PUBLIC_KEY = 'b4495ffc-e56b-4009-ab06-0e10795bc383';
+const VAPI_ASSISTANT_ID = '31354497-47e2-49d1-992d-22b3d5153f72';
+const WEBHOOK_BASE = 'https://lisa-webhook-production.up.railway.app';
+const LIVEAVATAR_KEY = '810d1e58-289a-11f1-8d28-066a7fa2e369';
+
+// ══════════════════════════════════════════════════════════════════
+// AUTO-CONTINUE TOGGLE
+// ══════════════════════════════════════════════════════════════════
+document.addEventListener('change', function(e) {
+    if (e.target && e.target.id === 'autoContinueChk') {
+        if (e.target.checked && isSessionActive && !isProcessing && !isSpeaking && !isRecording) {
+            updateStatus('🎤 Listening... (continuous)', 'warning');
+            startListening();
+        } else if (!e.target.checked && isRecording && !isProcessing) {
+            if (recognition) { try { recognition.stop(); } catch(ex) {} }
+            updateStatus('✅ Session active — Lisa is ready', 'active');
+        }
+    }
+});
+
+// ══════════════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════════════
+function updateStatus(text, state) {
+    document.getElementById('statusText').textContent = text;
+    const dot = document.getElementById('statusDot');
+    dot.className = 'sdot' + (state === 'active' ? ' active' : state === 'warning' ? ' warning' : state === 'error' ? ' error' : '');
+}
+
+function addMessage(role, content) {
+    const container = document.getElementById('chatMessages');
+    const empty = document.getElementById('emptyState');
+    if (empty) empty.remove();
+    const div = document.createElement('div');
+    div.className = 'msg ' + role;
+    const cleaned = content.replace(/\\n/g, '<br>').replace(/\n/g, '<br>');
+    div.innerHTML =
+        '<div class="msg-lbl">' + (role === 'user' ? 'You' : '🏛️ Lisa') + '</div>' +
+        '<div class="msg-bub">' + cleaned + '</div>';
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+
+function setMode(newMode) {
+    mode = newMode;
+    document.getElementById('audioTab').classList.toggle('on', mode === 'audio');
+    document.getElementById('videoTab').classList.toggle('on', mode === 'video');
+    document.getElementById('fullAvatarTab').classList.toggle('on', mode === 'full-avatar');
+}
+
+function enableInputs() {
+    document.getElementById('messageInput').disabled = false;
+    document.getElementById('sendBtn').disabled = false;
+    var mic = document.getElementById('micBtn');
+    if (mic) mic.disabled = false;
+}
+
+function disableInputs() {
+    document.getElementById('messageInput').disabled = true;
+    document.getElementById('sendBtn').disabled = true;
+    var mic = document.getElementById('micBtn');
+    if (mic) mic.disabled = true;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// BROWSER TTS (SpeechSynthesis)
+// ══════════════════════════════════════════════════════════════════
+function loadVoices() {
+    availableVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+    var sel = document.getElementById('voiceSelect');
+    if (sel && availableVoices.length > 0) {
+        while (sel.options.length > 1) sel.remove(1);
+        availableVoices.forEach(function(v, i) {
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = v.name + ' (' + v.lang + ')';
+            sel.appendChild(opt);
+        });
+    }
+}
+if (window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
+}
+
+function unlockTTS() {
+    if (ttsUnlocked || !window.speechSynthesis) return;
+    window.speechSynthesis.speak(new SpeechSynthesisUtterance(''));
+    ttsUnlocked = true;
+}
+
+function stripMarkdown(text) {
+    return text.replace(/[*_~`#]/g, '').replace(/\\n/g, ' ').trim();
+}
+
+function speakText(text) {
+    if (!window.speechSynthesis || !text) return;
+    text = stripMarkdown(text);
+    window.speechSynthesis.cancel();
+
+    var speed = parseFloat(document.getElementById('speechSpeed').value) || 1.0;
+
+    isSpeaking = true;
+    updateStatus('🔊 Lisa is speaking...', 'active');
+
+    var utter = new SpeechSynthesisUtterance(text);
+    utter.rate = speed;
+    utter.pitch = 1.05;
+    utter.volume = 1.0;
+
+    if (availableVoices.length === 0) loadVoices();
+
+    var voiceSel = document.getElementById('voiceSelect');
+    var selectedIdx = voiceSel ? voiceSel.value : '';
+    var voice;
+    if (selectedIdx !== '' && availableVoices[parseInt(selectedIdx)]) {
+        voice = availableVoices[parseInt(selectedIdx)];
+    } else {
+        voice = availableVoices.find(function(v) {
+            return v.name.includes('Samantha') || v.name.includes('Karen') ||
+                   v.name.includes('Moira') || v.name.includes('Victoria') ||
+                   v.name.toLowerCase().includes('zira') || v.name.toLowerCase().includes('jenny');
+        }) || availableVoices.find(function(v) { return v.lang && v.lang.startsWith('en'); });
+    }
+    if (voice) utter.voice = voice;
+    utter.onerror = function() { /* swallow */ };
+    window.speechSynthesis.speak(utter);
+
+    var speakTime = Math.max(3000, (text.split(' ').length * 400) + 1500) / speed;
+    setTimeout(function() {
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        isSpeaking = false;
+        isProcessing = false;
+
+        var autoContinue = document.getElementById('autoContinueChk');
+        if (autoContinue && autoContinue.checked && isSessionActive && !isRecording) {
+            updateStatus('🎤 Your turn...', 'warning');
+            setTimeout(function() { startListening(); }, 600);
+        } else {
+            updateStatus('✅ Session active — Lisa is ready', 'active');
+        }
+    }, speakTime);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// SPEECH RECOGNITION (Web Speech API)
+// ══════════════════════════════════════════════════════════════════
+function initRecognition() {
+    var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRec) return false;
+    recognition = new SpeechRec();
+    recognition.lang = 'en-US';
+    recognition.continuous = false;
+    recognition.interimResults = true;
+
+    recognition.onstart = function() {
+        isRecording = true;
+        updateMicUI(true);
+        var autoContinue = document.getElementById('autoContinueChk');
+        if (autoContinue && autoContinue.checked) {
+            updateStatus('🎤 Listening... (continuous)', 'warning');
+        } else {
+            updateStatus('🎤 Listening...', 'warning');
+        }
+    };
+
+    recognition.onresult = function(e) {
+        var lastIdx = e.results.length - 1;
+        var result = e.results[lastIdx];
+        var transcript = result[0].transcript;
+
+        document.getElementById('messageInput').value = transcript + (result.isFinal ? '' : '...');
+
+        if (result.isFinal) {
+            var autoContinue = document.getElementById('autoContinueChk');
+            if (autoContinue && autoContinue.checked && recognition) {
+                try { recognition.stop(); } catch(ex) {}
+            }
+            document.getElementById('messageInput').value = transcript;
+            sendTextMessage();
+        }
+    };
+
+    recognition.onerror = function(e) {
+        isRecording = false;
+        updateMicUI(false);
+        if (e.error !== 'no-speech' && e.error !== 'aborted') {
+            updateStatus('🎤 Mic error: ' + e.error, 'warning');
+        }
+        var autoContinue = document.getElementById('autoContinueChk');
+        if (e.error === 'no-speech' && autoContinue && autoContinue.checked && isSessionActive && !isProcessing && !isSpeaking) {
+            setTimeout(function() { startListening(); }, 500);
+        }
+    };
+
+    recognition.onend = function() {
+        isRecording = false;
+        updateMicUI(false);
+        var autoContinue = document.getElementById('autoContinueChk');
+        if (autoContinue && autoContinue.checked && isSessionActive && !isProcessing && !isSpeaking) {
+            setTimeout(function() { startListening(); }, 300);
+        } else if (isSessionActive) {
+            updateStatus('✅ Session active — Lisa is ready', 'active');
+        }
+    };
+
+    return true;
+}
+
+function updateMicUI(active) {
+    var btn = document.getElementById('micBtn');
+    if (!btn) return;
+    if (active) { btn.classList.add('recording'); btn.title = 'Recording… click to stop'; }
+    else { btn.classList.remove('recording'); btn.title = 'Click to speak'; }
+}
+
+function startListening() {
+    if (isRecording || isProcessing || isSpeaking) return;
+    if (window.speechSynthesis && (window.speechSynthesis.speaking || window.speechSynthesis.pending)) {
+        setTimeout(function() { startListening(); }, 500);
+        return;
+    }
+    if (!recognition && !initRecognition()) { alert('Voice input requires Chrome or Edge.'); return; }
+
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+
+    var autoContinue = document.getElementById('autoContinueChk');
+    recognition.continuous = !!(autoContinue && autoContinue.checked);
+
+    try {
+        recognition.start();
+        isRecording = true;
+        updateMicUI(true);
+        if (autoContinue && autoContinue.checked) {
+            updateStatus('🎤 Listening... (continuous)', 'warning');
+        }
+    } catch(e) { console.log('recognition start error:', e); }
+}
+
+function toggleMic() {
+    if (isRecording) { if (recognition) recognition.stop(); return; }
+    if (!recognition && !initRecognition()) { alert('Voice input requires Chrome or Edge.'); return; }
+    startListening();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// VAPI INTEGRATION
+// ══════════════════════════════════════════════════════════════════
+async function initVapi() {
+    if (vapiInstance) return vapiInstance;
+
+    const mod = await import('https://esm.sh/@vapi-ai/web@2.5.2');
+    const VapiClass = mod.default || mod.Vapi;
+    const vapi = new VapiClass(VAPI_PUBLIC_KEY);
+
+    vapi.on('call-start', () => {
+        vapiCallActive = true;
+        updateStatus('📞 Connected to Lisa', 'active');
+        document.getElementById('vapiIndicator').classList.add('active');
+        document.getElementById('vapiStatus').textContent = 'VAPI Call Active — Speaking with Lisa';
+        if (mode === 'video' && avatarWs) {
+            captureVapiAudioForAvatar(vapi);
+        }
+    });
+
+    vapi.on('call-end', () => {
+        vapiCallActive = false;
+        stopAudioBridge();
+        document.getElementById('vapiIndicator').classList.remove('active');
+        if (isSessionActive) {
+            updateStatus('📞 Call ended', 'warning');
+        }
+    });
+
+    vapi.on('speech-start', () => {
+        isSpeaking = true;
+        updateStatus('🔊 Lisa is speaking...', 'active');
+    });
+
+    vapi.on('speech-end', () => {
+        isSpeaking = false;
+        if (isSessionActive) {
+            updateStatus('🎤 Listening...', 'warning');
+        }
+    });
+
+    vapi.on('message', (msg) => {
+        if (msg.type === 'transcript') {
+            if (msg.transcriptType === 'final') {
+                if (msg.role === 'user') {
+                    addMessage('user', msg.transcript);
+                } else if (msg.role === 'assistant') {
+                    addMessage('assistant', msg.transcript);
+                    if (mode === 'video' && avatarWs && avatarWs.readyState === WebSocket.OPEN) {
+                        sendTextToAvatar(msg.transcript);
+                    }
+                }
+            }
+        }
+        if (msg.type === 'function-call') {
+            console.log('VAPI function call:', msg);
+        }
+    });
+
+    vapi.on('volume-level', (level) => {});
+
+    vapi.on('error', (err) => {
+        console.error('VAPI error:', err);
+        updateStatus('⚠️ Voice error: ' + (err.message || 'Unknown'), 'error');
+    });
+
+    vapiInstance = vapi;
+    return vapiInstance;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// LIVEAVATAR INTEGRATION (Video Mode)
+// ══════════════════════════════════════════════════════════════════
+async function startLiveAvatar() {
+    try {
+        updateStatus('🔑 Getting LiveAvatar session...', 'warning');
+
+        const avatarId = document.getElementById('avatarSelect').value;
+        const manualKey = document.getElementById('liveAvatarKey').value.trim() || LIVEAVATAR_KEY;
+
+        let tokenData;
+        try {
+            const tokenResp = await fetch(WEBHOOK_BASE + '/api/avatar/token?avatar_id=' + encodeURIComponent(avatarId));
+            const serverData = await tokenResp.json();
+            if (!serverData.error && serverData.session_token) {
+                tokenData = serverData;
+            } else {
+                throw new Error(serverData.error || 'No session token from server');
+            }
+        } catch(serverErr) {
+            console.log('Server token proxy failed, falling back to client-side key:', serverErr.message);
+            if (!manualKey) {
+                throw new Error('LiveAvatar API key required. Paste your key in Settings → LiveAvatar API Key, or use Audio mode.');
+            }
+            const tokenResp = await fetch('https://api.liveavatar.com/v1/sessions/token', {
+                method: 'POST',
+                headers: {
+                    'X-API-KEY': manualKey,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ avatar_id: avatarId, mode: 'LITE' })
+            });
+            const clientData = await tokenResp.json();
+            if (clientData.code !== 1000 || !clientData.data) {
+                throw new Error(clientData.message || 'Failed to get session token');
+            }
+            tokenData = clientData.data;
+        }
+        const sessionToken = tokenData.session_token;
+
+        if (!sessionToken) throw new Error('No session token received');
+        laSessionToken = sessionToken;
+
+        updateStatus('📡 Starting video avatar...', 'warning');
+
+        const startResp = await fetch('https://api.liveavatar.com/v1/sessions/start', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + sessionToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        });
+        const startData = await startResp.json();
+
+        if (startData.code !== 1000) throw new Error(startData.message || 'LiveAvatar failed');
+
+        if (startData.data.ws_url) {
+            avatarWs = new WebSocket(startData.data.ws_url);
+            avatarWs.onopen = () => console.log('LiveAvatar WS connected');
+            avatarWs.onmessage = (evt) => {
+                try {
+                    const msg = JSON.parse(evt.data);
+                    console.log('LiveAvatar event:', msg);
+                    if (msg.type === 'agent.speak_ended' || (msg.event_id && msg.task)) {
+                        isSpeaking = false;
+                        isProcessing = false;
+                        var autoContinue = document.getElementById('autoContinueChk');
+                        if (autoContinue && autoContinue.checked && isSessionActive && !isRecording) {
+                            updateStatus('🎤 Your turn...', 'warning');
+                            startListening();
+                        } else {
+                            updateStatus('✅ Session active — Lisa is ready', 'active');
+                        }
+                    }
+                } catch(e) {}
+            };
+            avatarWs.onerror = (e) => console.warn('LiveAvatar WS error:', e);
+            avatarWs.onclose = () => { avatarWs = null; };
+        }
+
+        liveKitRoom = new LivekitClient.Room();
+        liveKitRoom.on(LivekitClient.RoomEvent.TrackSubscribed, (track) => {
+            if (track.kind === 'video') {
+                track.attach(document.getElementById('videoElement'));
+                document.getElementById('videoElement').style.display = 'block';
+                document.getElementById('avatarPlaceholder').style.display = 'none';
+            } else if (track.kind === 'audio') {
+                if (!vapiCallActive) {
+                    track.attach();
+                }
+            }
+        });
+        await liveKitRoom.connect(startData.data.livekit_url, startData.data.livekit_client_token);
+
+        updateStatus('🎥 Video avatar connected', 'active');
+        return true;
+
+    } catch(e) {
+        console.error('LiveAvatar error:', e);
+        updateStatus('⚠️ Video unavailable — using audio only', 'warning');
+        addMessage('assistant', '⚠️ Video avatar unavailable (' + e.message + '). Continuing with voice only.');
+        mode = 'audio';
+        document.getElementById('audioTab').classList.add('on');
+        document.getElementById('videoTab').classList.remove('on');
+        document.getElementById('fullAvatarTab').classList.remove('on');
+        return false;
+    }
+}
+
+function sendTextToAvatar(text) {
+    console.log('Avatar text (display only):', text);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// VAPI → LiveAvatar AUDIO BRIDGE
+// ══════════════════════════════════════════════════════════════════
+let audioBridgeCtx = null;
+let audioBridgeSource = null;
+let audioBridgeProcessor = null;
+
+function captureVapiAudioForAvatar(vapiInstance) {
+    const pollForAudioTrack = setInterval(() => {
+        if (!vapiCallActive || !avatarWs) {
+            clearInterval(pollForAudioTrack);
+            return;
+        }
+
+        const audioEl = document.querySelector('audio[data-participant-id]');
+        if (!audioEl || !audioEl.srcObject) return;
+
+        clearInterval(pollForAudioTrack);
+        console.log('🔊 Found VAPI audio track, starting avatar audio bridge');
+
+        try {
+            const stream = audioEl.srcObject;
+            const audioTrack = stream.getAudioTracks()[0];
+            if (!audioTrack) {
+                console.warn('No audio track in VAPI stream');
+                return;
+            }
+
+            audioBridgeCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+            const trackStream = new MediaStream([audioTrack]);
+            audioBridgeSource = audioBridgeCtx.createMediaStreamSource(trackStream);
+            const bufferSize = 4096;
+            audioBridgeProcessor = audioBridgeCtx.createScriptProcessor(bufferSize, 1, 1);
+
+            let sampleBuffer = new Float32Array(0);
+
+            audioBridgeProcessor.onaudioprocess = (e) => {
+                if (!avatarWs || avatarWs.readyState !== WebSocket.OPEN) return;
+
+                const inputData = e.inputBuffer.getChannelData(0);
+                const newBuffer = new Float32Array(sampleBuffer.length + inputData.length);
+                newBuffer.set(sampleBuffer);
+                newBuffer.set(inputData, sampleBuffer.length);
+                sampleBuffer = newBuffer;
+
+                const chunkSize = 960;
+                while (sampleBuffer.length >= chunkSize) {
+                    const chunk = sampleBuffer.slice(0, chunkSize);
+                    sampleBuffer = sampleBuffer.slice(chunkSize);
+
+                    const pcm16 = new Int16Array(chunk.length);
+                    for (let i = 0; i < chunk.length; i++) {
+                        const s = Math.max(-1, Math.min(1, chunk[i]));
+                        pcm16[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+                    }
+
+                    const bytes = new Uint8Array(pcm16.buffer);
+                    let binaryStr = '';
+                    for (let i = 0; i < bytes.length; i++) {
+                        binaryStr += String.fromCharCode(bytes[i]);
+                    }
+
+                    try {
+                        avatarWs.send(JSON.stringify({
+                            type: 'agent.speak',
+                            event_id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
+                            audio: binaryStr
+                        }));
+                    } catch(err) {
+                        console.warn('Audio bridge send error:', err);
+                    }
+                }
+            };
+
+            audioBridgeSource.connect(audioBridgeProcessor);
+            const gainNode = audioBridgeCtx.createGain();
+            gainNode.gain.value = 0;
+            audioBridgeProcessor.disconnect();
+            audioBridgeSource.connect(audioBridgeProcessor);
+            audioBridgeProcessor.connect(gainNode);
+            gainNode.connect(audioBridgeCtx.destination);
+
+            console.log('✅ Avatar audio bridge active');
+        } catch(err) {
+            console.error('Audio bridge setup error:', err);
+        }
+    }, 500);
+}
+
+function stopAudioBridge() {
+    if (audioBridgeProcessor) { try { audioBridgeProcessor.disconnect(); } catch(e) {} audioBridgeProcessor = null; }
+    if (audioBridgeSource) { try { audioBridgeSource.disconnect(); } catch(e) {} audioBridgeSource = null; }
+    if (audioBridgeCtx) { try { audioBridgeCtx.close(); } catch(e) {} audioBridgeCtx = null; }
+}
+
+// ══════════════════════════════════════════════════════════════════
+// FULL AVATAR MODE
+// ══════════════════════════════════════════════════════════════════
+async function fullAvatarSpeak(text) {
+    if (!avatarWs || avatarWs.readyState !== WebSocket.OPEN) {
+        speakText(text);
+        return;
+    }
+    isSpeaking = true;
+    updateStatus('🔊 Lisa is speaking...', 'active');
+    try {
+        const speed = parseFloat(document.getElementById('speechSpeed').value) || 1.0;
+        const ttsResp = await fetch(WEBHOOK_BASE + '/api/tts/pcm', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text.replace(/[*_~`#]/g, '').trim(), voice: 'en-US-JennyNeural', speed: speed })
+        });
+        const ttsData = await ttsResp.json();
+        if (!ttsData.audio) throw new Error('No audio from TTS');
+        const fullAudio = ttsData.audio;
+        const CHUNK_CHARS = 64000;
+        for (let i = 0; i < fullAudio.length; i += CHUNK_CHARS) {
+            avatarWs.send(JSON.stringify({ type: 'agent.speak', audio: fullAudio.slice(i, i + CHUNK_CHARS) }));
+        }
+        avatarWs.send(JSON.stringify({ type: 'agent.speak_end', event_id: 'speak-' + Date.now() }));
+
+        var speakTime = Math.max(2000, ((text.length / 5) * (60000 / 150)) / speed);
+        setTimeout(function() {
+            if (isSpeaking) {
+                isSpeaking = false;
+                isProcessing = false;
+                var autoContinue = document.getElementById('autoContinueChk');
+                if (autoContinue && autoContinue.checked && isSessionActive && !isRecording) {
+                    updateStatus('🎤 Your turn...', 'warning');
+                    startListening();
+                } else {
+                    updateStatus('✅ Session active — Lisa is ready', 'active');
+                }
+            }
+        }, speakTime);
+    } catch(e) {
+        isSpeaking = false;
+        console.error('Full avatar speak error:', e);
+        speakText(text);
+    }
+}
+
+async function fullAvatarChat(userText) {
+    if (isProcessing) return;
+    isProcessing = true;
+    if (recognition && isRecording) {
+        try { recognition.stop(); } catch(e) {}
+        isRecording = false;
+        updateMicUI(false);
+    }
+
+    addMessage('user', userText);
+    updateStatus('🤔 Lisa is thinking...', 'warning');
+    try {
+        const responseStyle = document.getElementById('responseStyle') ? document.getElementById('responseStyle').value : 'normal';
+        const resp = await fetch(WEBHOOK_BASE + '/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: userText, response_style: responseStyle })
+        });
+        const data = await resp.json();
+        const reply = data.response || data.text || 'I apologize, could you repeat that?';
+        addMessage('assistant', reply);
+        await fullAvatarSpeak(reply);
+
+        try {
+            await fetch(WEBHOOK_BASE + '/api/index', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ texts: [
+                    'Full-Avatar call transcript — User: ' + userText + ' | Lisa: ' + reply
+                ]})
+            });
+        } catch(e) { console.warn('Index error:', e); }
+
+    } catch(e) {
+        console.error('Full avatar chat error:', e);
+        addMessage('assistant', '⚠️ Error: ' + e.message);
+        isProcessing = false;
+        updateStatus('❌ Chat error', 'error');
+    }
+}
+
+async function stopLiveAvatar() {
+    stopAudioBridge();
+    if (avatarWs) { try { avatarWs.close(); } catch(e) {} avatarWs = null; }
+    if (liveKitRoom) { try { await liveKitRoom.disconnect(); } catch(e) {} liveKitRoom = null; }
+    if (laSessionToken) {
+        try {
+            await fetch('https://api.liveavatar.com/v1/sessions/stop', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + laSessionToken, 'Content-Type': 'application/json' },
+                body: JSON.stringify({})
+            });
+        } catch(e) {}
+        laSessionToken = null;
+    }
+    document.getElementById('videoElement').style.display = 'none';
+    document.getElementById('avatarPlaceholder').style.display = 'flex';
+}
+
+// ══════════════════════════════════════════════════════════════════
+// SESSION MANAGEMENT
+// ══════════════════════════════════════════════════════════════════
+async function startSession() {
+    if (isSessionActive) return;
+    document.getElementById('startBtn').disabled = true;
+    updateStatus('🔄 Starting session...', 'warning');
+
+    unlockTTS();
+
+    try {
+        voiceModeStream = await navigator.mediaDevices.getUserMedia({
+            audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
+        });
+        console.log('Audio processing enabled (echo cancellation ON)');
+    } catch (e) {
+        console.log('Could not get audio stream:', e);
+    }
+
+    try {
+        if (mode === 'full-avatar') {
+            await startLiveAvatar();
+            await fetch(WEBHOOK_BASE + '/api/clear', { method: 'POST' });
+            const greetResp = await fetch(WEBHOOK_BASE + '/api/greeting');
+            const greetData = await greetResp.json();
+            const greeting = greetData.response || greetData.greeting || greetData.text || 'Hello, I am Lisa from Fraunhofer CMA.';
+
+            isSessionActive = true;
+            document.getElementById('startBtn').className = 'cbtn c-off';
+            document.getElementById('stopBtn').className = 'cbtn c-stop';
+            document.getElementById('stopBtn').disabled = false;
+            enableInputs();
+
+            addMessage('assistant', greeting);
+            await fullAvatarSpeak(greeting);
+
+            if (!isSpeaking) updateStatus('🧑‍💼 Full Avatar active — type or speak', 'active');
+
+            var autoContinue = document.getElementById('autoContinueChk');
+            if (autoContinue && autoContinue.checked && !isSpeaking) {
+                startListening();
+            }
+            return;
+        }
+
+        const vapi = await initVapi();
+
+        if (mode === 'video') {
+            await startLiveAvatar();
+        }
+
+        updateStatus('📞 Connecting to Lisa...', 'warning');
+        await vapi.start(VAPI_ASSISTANT_ID);
+
+        isSessionActive = true;
+        document.getElementById('startBtn').className = 'cbtn c-off';
+        document.getElementById('stopBtn').className = 'cbtn c-stop';
+        document.getElementById('stopBtn').disabled = false;
+        enableInputs();
+
+        initRecognition();
+
+    } catch(e) {
+        console.error('Session start error:', e);
+        updateStatus('❌ Failed to start: ' + e.message, 'error');
+        document.getElementById('startBtn').disabled = false;
+        document.getElementById('startBtn').className = 'cbtn c-go';
+    }
+}
+
+async function stopSession() {
+    if (!isSessionActive) return;
+
+    if (recognition && isRecording) {
+        try { recognition.stop(); } catch(e) {}
+        isRecording = false;
+        updateMicUI(false);
+    }
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+
+    if (mode === 'full-avatar') {
+        try {
+            const msgs = document.querySelectorAll('.msg');
+            let transcript = '';
+            msgs.forEach(m => {
+                const label = m.querySelector('.msg-lbl')?.textContent || '';
+                const text = m.querySelector('.msg-bub')?.textContent || '';
+                if (label.includes('You')) transcript += 'User: ' + text + '\n';
+                else transcript += 'AI: ' + text + '\n';
+            });
+            if (transcript.length > 20) {
+                await fetch(WEBHOOK_BASE + '/vapi/webhook', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: {
+                            type: 'end-of-call-report',
+                            call: { id: 'full-avatar-' + Date.now(), type: 'fullAvatar' },
+                            transcript: transcript,
+                            durationSeconds: 0,
+                            cost: 0
+                        }
+                    })
+                });
+            }
+        } catch(e) { console.warn('Failed to post full-avatar call:', e); }
+    }
+
+    if (vapiInstance) {
+        try { vapiInstance.stop(); } catch(e) {}
+        vapiCallActive = false;
+    }
+
+    await stopLiveAvatar();
+    stopCamera();
+
+    if (voiceModeStream) {
+        voiceModeStream.getTracks().forEach(function(t) { t.stop(); });
+        voiceModeStream = null;
+    }
+
+    isSessionActive = false;
+    isProcessing = false;
+    isSpeaking = false;
+    document.getElementById('vapiIndicator').classList.remove('active');
+    document.getElementById('startBtn').className = 'cbtn c-go';
+    document.getElementById('startBtn').disabled = false;
+    document.getElementById('stopBtn').className = 'cbtn c-stop c-off';
+    document.getElementById('stopBtn').disabled = true;
+    disableInputs();
+    updateStatus('Session ended', '');
+}
+
+async function hardReset() {
+    const btn = document.getElementById('resetBtn');
+    btn.textContent = '⏳ Resetting...';
+    btn.disabled = true;
+
+    if (vapiInstance) {
+        try { vapiInstance.stop(); } catch(e) {}
+        vapiCallActive = false;
+    }
+
+    if (recognition) { try { recognition.stop(); } catch(e) {} recognition = null; }
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    isRecording = false;
+    updateMicUI(false);
+
+    await stopLiveAvatar();
+    stopCamera();
+
+    if (voiceModeStream) {
+        voiceModeStream.getTracks().forEach(function(t) { t.stop(); });
+        voiceModeStream = null;
+    }
+
+    isSessionActive = false;
+    isProcessing = false;
+    isSpeaking = false;
+    vapiInstance = null;
+
+    document.getElementById('vapiIndicator').classList.remove('active');
+    document.getElementById('startBtn').className = 'cbtn c-go';
+    document.getElementById('startBtn').disabled = false;
+    document.getElementById('stopBtn').className = 'cbtn c-stop c-off';
+    document.getElementById('stopBtn').disabled = true;
+    document.getElementById('audioTab').classList.add('on');
+    document.getElementById('videoTab').classList.remove('on');
+    document.getElementById('fullAvatarTab').classList.remove('on');
+    mode = 'audio';
+    disableInputs();
+    updateStatus('✅ Reset complete — ready to start', 'active');
+
+    document.getElementById('chatMessages').innerHTML =
+        '<div class="empty" id="emptyState"><div>' +
+        '<div style="font-size:2rem;margin-bottom:0.5rem">🏛️</div>' +
+        '<p>Session reset. Press Start to begin.</p></div></div>';
+
+    btn.textContent = '🗑️ Reset';
+    btn.disabled = false;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// TEXT INPUT
+// ══════════════════════════════════════════════════════════════════
+function sendTextMessage() {
+    const input = document.getElementById('messageInput');
+    const text = input.value.trim();
+    if (!text || !isSessionActive || isProcessing) return;
+    input.value = '';
+
+    if (recognition && isRecording) {
+        try { recognition.stop(); } catch(e) {}
+        isRecording = false;
+        updateMicUI(false);
+    }
+
+    if (mode === 'full-avatar') {
+        fullAvatarChat(text);
+        return;
+    }
+
+    isProcessing = true;
+    addMessage('user', text);
+    updateStatus('🤔 Lisa is thinking...', 'warning');
+
+    const responseStyle = document.getElementById('responseStyle') ? document.getElementById('responseStyle').value : 'normal';
+
+    fetch(WEBHOOK_BASE + '/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, response_style: responseStyle })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.response) {
+            addMessage('assistant', data.response);
+            if (mode === 'video' && avatarWs && avatarWs.readyState === WebSocket.OPEN) {
+                sendTextToAvatar(data.response);
+            } else if (!vapiCallActive) {
+                speakText(data.response);
+            } else {
+                isProcessing = false;
+                updateStatus('✅ Session active — Lisa is ready', 'active');
+            }
+        } else {
+            isProcessing = false;
+        }
+    })
+    .catch(err => {
+        isProcessing = false;
+        addMessage('assistant', '⚠️ Text endpoint unavailable. Use voice through the VAPI call instead.');
+        updateStatus('✅ Session active — Lisa is ready', 'active');
+    });
+}
+
+function clearChat() {
+    document.getElementById('chatMessages').innerHTML =
+        '<div class="empty" id="emptyState"><div>' +
+        '<div style="font-size:2rem;margin-bottom:0.5rem">🏛️</div>' +
+        '<p>Chat cleared. Voice conversation continues.</p></div></div>';
+}
+
+// ══════════════════════════════════════════════════════════════════
+// CAMERA
+// ══════════════════════════════════════════════════════════════════
+function toggleCamera() {
+    if (cameraEnabled) stopCamera();
+    else startCamera();
+}
+
+function startCamera() {
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false })
+    .then(stream => {
+        cameraStream = stream;
+        const v = document.getElementById('patientVideo');
+        v.srcObject = stream;
+        v.style.display = 'block';
+        document.getElementById('patientPlaceholder').style.display = 'none';
+        document.querySelector('.cam-tog').textContent = '📷 Disable';
+        cameraEnabled = true;
+    })
+    .catch(() => {
+        document.querySelector('.cam-tog').textContent = '🚫 No Camera';
+    });
+}
+
+function stopCamera() {
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(t => t.stop());
+        cameraStream = null;
+    }
+    const v = document.getElementById('patientVideo');
+    if (v) { v.srcObject = null; v.style.display = 'none'; }
+    const ph = document.getElementById('patientPlaceholder');
+    if (ph) ph.style.display = 'flex';
+    document.querySelector('.cam-tog').textContent = '📷 Enable';
+    cameraEnabled = false;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// RESIZE HANDLE
+// ══════════════════════════════════════════════════════════════════
+(function() {
+    const handle = document.getElementById('resizeHandle');
+    const side = document.querySelector('.side');
+    if (!handle || !side) return;
+    let startX, startW, dragging = false;
+
+    handle.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        dragging = true;
+        startX = e.clientX;
+        startW = side.offsetWidth;
+        handle.classList.add('dragging');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!dragging) return;
+        const newW = startW + (e.clientX - startX);
+        const minW = 200, maxW = window.innerWidth * 0.5;
+        if (newW >= minW && newW <= maxW) side.style.width = newW + 'px';
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (!dragging) return;
+        dragging = false;
+        handle.classList.remove('dragging');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+    });
+})();
+</script>
+
+</body>
+</html>

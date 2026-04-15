@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lisa — Fraunhofer CMA Projects Voice AI</title>
+    <style>
+        :root { --pri: #003366; --pri2: #179C7D; --card: rgba(255,255,255,0.06); --tx: #fff; --tx2: rgba(255,255,255,0.7); --bd: rgba(23,156,125,0.3); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #001a33, #003366); color: var(--tx); min-height: 100vh; }
+        .header { text-align: center; padding: 40px 20px 20px; }
+        .header h1 { font-size: 2rem; color: var(--pri2); margin-bottom: 8px; }
+        .header p { color: var(--tx2); font-size: 1rem; max-width: 600px; margin: 0 auto; }
+        .logo-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px; }
+        .logo-row span { font-size: 2.5rem; }
+        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        .card { background: var(--card); border: 1px solid var(--bd); border-radius: 12px; padding: 24px; transition: 0.2s; text-decoration: none; color: var(--tx); }
+        .card:hover { border-color: var(--pri2); transform: translateY(-2px); }
+        .card h2 { font-size: 1.1rem; color: var(--pri2); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .card p { font-size: 0.88rem; color: var(--tx2); line-height: 1.5; }
+        .stats { display: flex; justify-content: center; gap: 40px; margin: 30px 0; flex-wrap: wrap; }
+        .stat { text-align: center; }
+        .stat .num { font-size: 2rem; font-weight: 700; color: var(--pri2); }
+        .stat .lbl { font-size: 0.78rem; color: var(--tx2); }
+        .footer { text-align: center; padding: 30px; font-size: 0.72rem; color: var(--tx2); }
+        .footer a { color: var(--pri2); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-row">
+            <span>🏛️</span>
+            <div>
+                <h1>Lisa — Fraunhofer CMA</h1>
+                <p style="font-size:0.85rem;color:var(--pri2)">Voice AI for the Technology Portfolio</p>
+            </div>
+        </div>
+        <p>Meet Lisa, your AI guide to the Fraunhofer Center for Manufacturing Advancement's 55+ projects spanning AI, manufacturing, healthcare, cybersecurity, aerospace, and more.</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat"><div class="num">55+</div><div class="lbl">Projects</div></div>
+        <div class="stat"><div class="num">10+</div><div class="lbl">Domains</div></div>
+        <div class="stat"><div class="num">AI</div><div class="lbl">Powered by soul.py</div></div>
+    </div>
+
+    <div class="cards">
+        <a class="card" href="lisa-live.html">
+            <h2>🎙️ Talk to Lisa</h2>
+            <p>Start a voice or text consultation with Lisa. Ask about any Fraunhofer CMA project, technology domain, or capability. Lisa searches the full knowledge base in real time.</p>
+        </a>
+        <a class="card" href="dashboard.html">
+            <h2>📊 Call Dashboard</h2>
+            <p>View call analytics, conversation history, and query the soul agent directly. Track engagement and insights across all Lisa interactions.</p>
+        </a>
+        <a class="card" href="https://menonpg.github.io/fraunhofer-cma-projects/" target="_blank">
+            <h2>📂 Project Browser</h2>
+            <p>Browse all 55+ Fraunhofer CMA projects with filtering, search, and detailed project cards. The full portfolio at your fingertips.</p>
+        </a>
+    </div>
+
+    <div class="footer">
+        Lisa — Fraunhofer CMA Voice AI · Powered by <a href="https://github.com/menonpg/fraunhofer-lisa">VAPI + soul.py</a> · For informational use
+    </div>
+</body>
+</html>
