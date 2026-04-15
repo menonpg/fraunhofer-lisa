@@ -1,0 +1,37 @@
+{
+  "call_id": "019d92a9-a5b2-700d-afcc-29b9baa5bd93",
+  "type": "webCall",
+  "started_at": "2026-04-15T19:41:25.207Z",
+  "ended_at": "2026-04-15T19:42:53.909Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 88.702,
+  "recording_url": "https://storage.vapi.ai/019d92a9-a5b2-700d-afcc-29b9baa5bd93-1776282176483-4ee26414-cc90-4c8a-92d9-9b3ee93ceb8a-mono.wav",
+  "cost": 0.1485,
+  "transcript": "AI: Hello, I am Lisa. Your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, healthcare, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: Can you tell me about the Healthy Meat project?\nAI: Let me look that up.\nAI: I didn't find a project by that name in our port portfolio. Could you provide\nUser: What about any project relating to health care?\nAI: Let me look that up.\nAI: I'm not finding health care projects in the knowledge base at the moment. Could you try\nUser: What about any project at all? Retrieve anything. Show me that you have some knowledge.\nAI: I apologize. The knowledge base isn't returning results right now. This appears to be a technical issue with the system rather than an empty port portfolio. We do have 55 plus active projects, across AIML. Manufacturing, aerospace, cybersecurity, energy, robotics, and other domains. But I'm unable to access the specific details at this moment. Is there a particular technology area you're interested in learning more about?\n",
+  "timestamp": "2026-04-15T19:42:59.575694+00:00",
+  "analysis": {
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "User requested information on specific projects, starting with 'Healthy Meat' and then healthcare-related projects.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller asked Lisa about the 'Healthy Meat' project and healthcare-related projects, but due to a technical issue, Lisa could not retrieve specific project details.",
+    "key_insights": "System knowledge base was inaccessible during the call, preventing project detail retrieval.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "AI",
+      "manufacturing",
+      "healthcare",
+      "cybersecurity",
+      "aerospace",
+      "energy",
+      "robotics"
+    ],
+    "projects_discussed": [
+      "Healthy Meat"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should note that the caller was interested in healthcare-related projects and specific project names, and that the knowledge base was unavailable during the call."
+  }
+}
