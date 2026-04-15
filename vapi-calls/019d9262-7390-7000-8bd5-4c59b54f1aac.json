@@ -1,0 +1,29 @@
+{
+  "call_id": "019d9262-7390-7000-8bd5-4c59b54f1aac",
+  "type": "webCall",
+  "started_at": "2026-04-15T18:23:39.226Z",
+  "ended_at": "2026-04-15T18:24:43.831Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 64.605,
+  "recording_url": "https://storage.vapi.ai/019d9262-7390-7000-8bd5-4c59b54f1aac-1776277486443-ff9f34ec-7e66-48b9-a372-2efcdd1740c5-mono.wav",
+  "cost": 0.1097,
+  "transcript": "AI: Hello, I am Lisa. Your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, healthcare, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: Tell me about all your health care projects.\nAI: Let me look that up.\nAI: I apologize.\nAI: I'm not finding results under health care projects in our database. Let me try a broader search. I'm having trouble accessing those specific results right now. Could you tell me a bit more or about what you're looking for? For example, are you interested in diagnostics? Drug development, medical devices, patient monitoring, or something else, That would help me search more effectively.\n",
+  "timestamp": "2026-04-15T18:24:48.962901+00:00",
+  "analysis": {
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "User requested information on all healthcare projects in Fraunhofer CMA's portfolio",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a user who asked for details on all healthcare projects, but she was unable to retrieve the specific results and requested more detail to refine the search.",
+    "key_insights": "Database access issues prevented retrieval of healthcare project information; user interest is in healthcare domain broadly.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "healthcare"
+    ],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "learning": "Lisa should ensure healthcare project data is accessible and be prepared to guide users toward specific subdomains like diagnostics, drug development, medical devices, or patient monitoring."
+  }
+}
