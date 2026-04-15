@@ -1,5 +1,31 @@
 [
   {
+    "call_id": "019d92a3-0177-722b-b1da-fa6f5c2e45c7",
+    "type": "webCall",
+    "started_at": "2026-04-15T19:34:09.891Z",
+    "ended_at": "2026-04-15T19:35:36.356Z",
+    "duration": 86.465,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d92a3-0177-722b-b1da-fa6f5c2e45c7-1776281739027-526ca152-605a-475c-99f0-04788a2e2ffd-mono.wav",
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "User asked about a specific product ('text century') and its application in data spaces, then requested information on any available projects.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller inquired about a product called 'text century' and its use in data spaces, but Lisa could not find matching project information due to a technical issue and suggested asking about a specific domain.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "AI",
+      "manufacturing",
+      "healthcare",
+      "cybersecurity",
+      "aerospace",
+      "data spaces"
+    ],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "key_insights": "Caller may have misnamed the project; technical issue prevented Lisa from retrieving project details."
+  },
+  {
     "call_id": "019d9284-7bf4-744a-b3ff-06bdaf8e9e09",
     "type": "webCall",
     "started_at": "2026-04-15T19:00:49.776Z",
