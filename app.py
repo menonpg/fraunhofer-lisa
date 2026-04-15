@@ -564,17 +564,17 @@ def vapi_webhook():
         if function_name == "soul_query":
             query = params.get("query", "")
             if query:
-                print(f"   🔍 soul_query: {query[:100]}")
-                result = soul_query(query, mode="RAG")
-                answer = result.get("answer", "No results found.")
+                print(f"   🔍 soul_query_fast: {query[:100]}")
+                # Use fast direct Qdrant retrieval (~1-2s) — VAPI times out after ~3s
+                answer = soul_query_fast(query)
                 # VAPI requires single-line strings — strip newlines and markdown
-                answer = re.sub(r'[#*_~`|]', '', answer)  # remove markdown
-                answer = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', answer)  # links
-                answer = answer.replace('\n', ' ').replace('\r', ' ')  # single line
-                answer = re.sub(r' {2,}', ' ', answer).strip()  # collapse spaces
+                answer = re.sub(r'[#*_~`|]', '', answer)
+                answer = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', answer)
+                answer = answer.replace('\n', ' ').replace('\r', ' ')
+                answer = re.sub(r' {2,}', ' ', answer).strip()
                 if len(answer) > 2000:
                     answer = answer[:2000]
-                print(f"   ✅ Result: {len(answer)} chars in {result.get('total_ms',0)}ms")
+                print(f"   ✅ Result: {len(answer)} chars")
                 return jsonify({"results": [{"toolCallId": func_call.get("id", ""), "result": answer}]})
             return jsonify({"results": [{"toolCallId": func_call.get("id", ""), "result": "Please provide a question."}]})
 
