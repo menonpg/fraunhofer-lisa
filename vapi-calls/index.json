@@ -1,5 +1,30 @@
 [
   {
+    "call_id": "019d925c-e089-7000-b287-3843d8a8ef22",
+    "type": "inboundPhoneCall",
+    "started_at": "2026-04-15T18:17:33.773Z",
+    "ended_at": "2026-04-15T18:18:22.550Z",
+    "duration": 48.777,
+    "ended_reason": "silence-timed-out",
+    "recording_url": "https://storage.vapi.ai/019d925c-e089-7000-b287-3843d8a8ef22-1776277105170-b6337c34-39c3-4961-aa44-4aee5e27b911-mono.wav",
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "Caller was prompted to indicate interest in specific technology domains within Fraunhofer CMA's portfolio.",
+    "sentiment": "neutral",
+    "resolution": "abandoned",
+    "summary": "Lisa introduced herself and described Fraunhofer CMA's technology portfolio, asking the caller which area of innovation they were interested in, but no response was recorded.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "AI",
+      "manufacturing",
+      "healthcare",
+      "cybersecurity",
+      "aerospace"
+    ],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "key_insights": null
+  },
+  {
     "call_id": "019d9229-f35c-7000-87ad-2bda2449c152",
     "type": "webCall",
     "started_at": "2026-04-15T17:21:56.500Z",
