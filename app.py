@@ -346,30 +346,37 @@ def soul_query_fast(question):
     This is for VAPI tool calls where speed matters — let VAPI's own LLM synthesize."""
     agent = get_soul_agent()
     if not agent:
-        print("⚠️ soul_query_fast: no agent")
         return "No knowledge base available."
     try:
-        # Debug: log what we have
-        has_rag = hasattr(agent, '_rag') and agent._rag
-        has_qdrant = has_rag and hasattr(agent._rag, '_qdrant') and agent._rag._qdrant
-        rag_mode = agent._rag.mode if has_rag else "none"
-        print(f"🔍 soul_query_fast: has_rag={has_rag}, has_qdrant={has_qdrant}, rag_mode={rag_mode}")
-
-        if has_rag:
-            # Use retrieve() — works for both qdrant and bm25 modes
-            result_text = agent._rag.retrieve(question, k=5)
-            print(f"🔍 retrieve() returned {len(result_text)} chars: {result_text[:100]}...")
+        if hasattr(agent, '_rag') and agent._rag:
+            result_text = agent._rag.retrieve(question, k=8)
             if result_text and "No relevant memories" not in result_text:
-                # Strip markdown headers for cleaner VAPI consumption
+                # Strip header
                 result_text = re.sub(r'^## Relevant memories\s*\n', '', result_text)
-                return result_text
-            else:
-                return "No matching projects found in the knowledge base."
-        else:
-            return "Knowledge base not initialized."
+                # Split into chunks and filter out call transcripts
+                chunks = result_text.split("\n\n---\n")
+                project_chunks = []
+                for chunk in chunks:
+                    chunk = chunk.strip()
+                    if not chunk:
+                        continue
+                    # Skip indexed call transcripts and memory entries
+                    if any(skip in chunk[:80] for skip in ['Transcript (', 'Call (', '## 20']):
+                        continue
+                    project_chunks.append(chunk)
+                if project_chunks:
+                    # Strip markdown formatting for voice
+                    clean = "\n\n".join(project_chunks[:5])
+                    clean = re.sub(r'[#*|]', '', clean)
+                    clean = re.sub(r'\n{3,}', '\n\n', clean)
+                    # Cap length — VAPI doesn't need novels
+                    if len(clean) > 2000:
+                        clean = clean[:2000] + "..."
+                    return clean
+            return "No matching projects found in the knowledge base."
+        return "Knowledge base not initialized."
     except Exception as e:
         print(f"⚠️ soul_query_fast error: {e}")
-        traceback.print_exc()
         return f"Search error: {e}"
 
 
