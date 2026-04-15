@@ -691,6 +691,21 @@ def api_index():
     return jsonify({"indexed": indexed, "total": len(texts)})
 
 
+@app.route("/api/index-calls", methods=["POST"])
+def api_index_calls():
+    """Index text into the calls history collection (separate from projects)."""
+    data = request.json or {}
+    texts = data.get("texts", [])
+    if isinstance(texts, str):
+        texts = [texts]
+    indexed = 0
+    for text in texts:
+        if text and len(text.strip()) > 5:
+            _index_to_calls_collection(text)
+            indexed += 1
+    return jsonify({"indexed": indexed, "total": len(texts)})
+
+
 @app.route("/api/calls", methods=["GET"])
 def api_calls():
     with _calls_lock:
