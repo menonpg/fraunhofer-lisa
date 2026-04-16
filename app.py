@@ -1258,3 +1258,76 @@ if __name__ == "__main__":
     print(f"🔬 Lisa — Fraunhofer CMA Webhook Server starting on port {port}")
     print(f"   Collection: {QDRANT_COLLECTION}")
     app.run(host="0.0.0.0", port=port)
+
+# ============================================================================
+# LiveKit Room + Dispatch (called by browser instead of CF worker)
+# ============================================================================
+
+@app.route("/livekit/start-session", methods=["GET", "POST"])
+def livekit_start_session():
+    """
+    Browser calls this to get a LiveKit token + trigger agent dispatch.
+    Returns: { token, url, room, identity }
+    """
+    import hmac as _hmac
+    import hashlib as _hashlib
+    import base64 as _b64
+
+    LIVEKIT_API_KEY = os.environ.get("LIVEKIT_API_KEY", "APIdhcScxEydPYB")
+    LIVEKIT_API_SECRET = os.environ.get("LIVEKIT_API_SECRET", "LRJQSmai8IIC3l8DSRLXh8voWgtoAUnQkRPZkbcJy1K")
+    LIVEKIT_URL = os.environ.get("LIVEKIT_URL", "wss://monica-shg8b37e.livekit.cloud")
+    LIVEKIT_HOST = LIVEKIT_URL.replace("wss://", "https://")
+
+    import uuid
+    room_name = f"lisa-{int(time.time())}"
+    identity = f"visitor-{uuid.uuid4().hex[:8]}"
+    now = int(time.time())
+
+    def b64url(data):
+        if isinstance(data, str): data = data.encode()
+        return _b64.urlsafe_b64encode(data).rstrip(b'=').decode()
+
+    def make_jwt(payload, secret):
+        h = b64url(json.dumps({"alg":"HS256","typ":"JWT"}, separators=(',',':')))
+        p = b64url(json.dumps(payload, separators=(',',':')))
+        msg = f"{h}.{p}"
+        sig = _hmac.new(secret.encode(), msg.encode(), _hashlib.sha256).digest()
+        return f"{msg}.{b64url(sig)}"
+
+    admin_token = make_jwt({
+        "iss": LIVEKIT_API_KEY, "nbf": now, "exp": now + 300,
+        "video": {"room": room_name, "roomAdmin": True, "roomCreate": True},
+    }, LIVEKIT_API_SECRET)
+
+    # Create room
+    try:
+        req.post(f"{LIVEKIT_HOST}/twirp/livekit.RoomService/CreateRoom",
+            json={"name": room_name, "empty_timeout": 600},
+            headers={"Authorization": f"Bearer {admin_token}"}, timeout=8)
+    except Exception as e:
+        print(f"Room create error: {e}")
+
+    # Dispatch agent
+    dispatch_ok = False
+    try:
+        dr = req.post(f"{LIVEKIT_HOST}/twirp/livekit.AgentDispatchService/CreateDispatch",
+            json={"room": room_name, "agent_name": "fraunhofer-lisa"},
+            headers={"Authorization": f"Bearer {admin_token}"}, timeout=8)
+        dispatch_ok = dr.ok
+        print(f"Dispatch: {dr.status_code} {dr.text[:100]}")
+    except Exception as e:
+        print(f"Dispatch error: {e}")
+
+    # Visitor token
+    visitor_token = make_jwt({
+        "iss": LIVEKIT_API_KEY, "sub": identity, "nbf": now, "exp": now + 600,
+        "video": {"roomJoin": True, "room": room_name, "canPublish": True, "canSubscribe": True},
+    }, LIVEKIT_API_SECRET)
+
+    return jsonify({
+        "token": visitor_token,
+        "url": LIVEKIT_URL,
+        "room": room_name,
+        "identity": identity,
+        "dispatch_ok": dispatch_ok,
+    })
