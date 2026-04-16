@@ -373,19 +373,19 @@
 
     <!-- SOUL AGENT PANEL -->
     <div class="panel" id="panel-soul">
-        <h2 style="font-size:1rem;color:var(--pri);margin-bottom:12px">🧠 Query the Soul Agent</h2>
-        <p style="font-size:0.8rem;color:var(--tx2);margin-bottom:16px">
-            Ask Lisa's soul agent anything about Fraunhofer CMA projects, technology domains, or capabilities.
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <h2 style="font-size:1rem;color:var(--pri);margin:0">💬 Chat with Lisa's Soul Agent</h2>
+            <button onclick="clearSoulChat()" style="padding:4px 12px;background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0;border-radius:6px;cursor:pointer;font-size:0.78em;">Clear Chat</button>
+        </div>
+        <p style="font-size:0.8rem;color:var(--tx2);margin-bottom:10px">
+            Multi-turn conversation with Lisa's knowledge base — ask about projects, past callers, technology domains, or capabilities. History is maintained across turns.
         </p>
+        <div id="soulChatMessages" style="max-height:450px;overflow-y:auto;margin-bottom:12px;padding:8px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;min-height:200px;">
+            <div style="color:#94a3b8;font-size:0.82em;text-align:center;padding:16px;">Start a conversation — ask about Fraunhofer CMA projects, past calls, technology domains, or capabilities.</div>
+        </div>
         <div class="query-box">
             <input type="text" id="queryInput" placeholder="e.g. What AI projects does Fraunhofer CMA have?" onkeypress="if(event.key==='Enter') submitQuery()">
-            <button id="queryBtn" onclick="submitQuery()">Ask</button>
-        </div>
-        <div class="response-area" id="responseArea">
-            <div class="response-placeholder">
-                <div style="font-size:2rem;margin-bottom:8px">🏛️</div>
-                <p>Ask a question above to query Lisa's knowledge base</p>
-            </div>
+            <button id="queryBtn" onclick="submitQuery()">Send</button>
         </div>
         <div class="query-history" id="queryHistory" style="display:none">
             <h3>Recent Queries</h3>
@@ -545,45 +545,88 @@ async function loadCalls() {
 async function submitQuery() {
     const input = document.getElementById('queryInput');
     const btn = document.getElementById('queryBtn');
-    const area = document.getElementById('responseArea');
+    const container = document.getElementById('soulChatMessages');
     const question = input.value.trim();
 
     if (!question) return;
 
+    // Clear placeholder if first message
+    if (container.querySelector('[style*="text-align:center"]')) {
+        container.innerHTML = '';
+    }
+
+    // Add user message bubble
+    container.innerHTML += `
+        <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+            <div style="background:var(--pri);color:white;padding:8px 14px;border-radius:12px 12px 2px 12px;max-width:75%;font-size:0.88em;">${escapeHtml(question)}</div>
+        </div>`;
+    container.scrollTop = container.scrollHeight;
+
     btn.disabled = true;
-    btn.textContent = '⏳ Thinking...';
-    area.innerHTML = '<div style="text-align:center;padding:40px"><span class="spinner"></span> Lisa is thinking...</div>';
+    btn.textContent = '⏳';
+    input.value = '';
+
+    // Add thinking indicator
+    const thinkingId = 'thinking-' + Date.now();
+    container.innerHTML += `
+        <div id="${thinkingId}" style="display:flex;margin-bottom:8px;">
+            <div style="background:#f0f9ff;border:1px solid #e0f2fe;padding:8px 14px;border-radius:12px 12px 12px 2px;max-width:75%;font-size:0.88em;color:#64748b;">
+                <em>Thinking...</em>
+            </div>
+        </div>`;
+    container.scrollTop = container.scrollHeight;
 
     try {
-        const resp = await fetch(WEBHOOK_BASE + '/api/query', {
+        const resp = await fetch(WEBHOOK_BASE + '/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question: question })
+            body: JSON.stringify({ message: question, response_style: 'normal' })
         });
         const data = await resp.json();
 
         const answer = data.response || data.answer || data.text || JSON.stringify(data, null, 2);
 
-        // Render markdown
-        if (typeof marked !== 'undefined' && typeof marked.parse === 'function') {
-            area.innerHTML = marked.parse(answer);
-        } else {
-            area.innerHTML = '<p>' + escapeHtml(answer).replace(/\n/g, '<br>') + '</p>';
+        // Format answer with basic markdown
+        let formatted = escapeHtml(answer)
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')
+            .replace(/\n- /g, '\n• ')
+            .replace(/\n\n/g, '<br><br>')
+            .replace(/\n/g, '<br>');
+
+        // Replace thinking indicator with response
+        const thinkEl = document.getElementById(thinkingId);
+        if (thinkEl) {
+            thinkEl.innerHTML = `
+                <div style="background:#f0f9ff;border:1px solid #e0f2fe;padding:10px 14px;border-radius:12px 12px 12px 2px;max-width:85%;font-size:0.88em;">
+                    <div>${formatted}</div>
+                </div>`;
         }
 
-        // Add to history
+        // Add to history sidebar
         queryHistoryList.unshift(question);
         if (queryHistoryList.length > 10) queryHistoryList.pop();
         renderHistory();
 
     } catch(e) {
-        area.innerHTML = '<div class="no-data">⚠️ Error: ' + escapeHtml(e.message) + '</div>';
+        const thinkEl = document.getElementById(thinkingId);
+        if (thinkEl) {
+            thinkEl.innerHTML = `
+                <div style="background:#fee2e2;border:1px solid #fecaca;padding:8px 14px;border-radius:12px 12px 12px 2px;max-width:75%;font-size:0.88em;color:#dc2626;">
+                    Error: ${escapeHtml(e.message)}
+                </div>`;
+        }
     }
 
     btn.disabled = false;
-    btn.textContent = 'Ask';
-    input.value = '';
+    btn.textContent = 'Send';
     input.focus();
+    container.scrollTop = container.scrollHeight;
+}
+
+function clearSoulChat() {
+    document.getElementById('soulChatMessages').innerHTML = '<div style="color:#94a3b8;font-size:0.82em;text-align:center;padding:16px;">Start a conversation — ask about Fraunhofer CMA projects, past calls, technology domains, or capabilities.</div>';
+    fetch(WEBHOOK_BASE + '/api/chat/reset', { method: 'POST' }).catch(() => {});
 }
 
 function renderHistory() {
