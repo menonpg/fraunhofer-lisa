@@ -313,6 +313,15 @@ def soul_query(question, mode="auto"):
     if mode != "auto":
         agent.mode = mode
     try:
+        # Also search calls collection and prepend as context
+        calls_ctx = _search_calls_collection(question, k=3)
+        if calls_ctx:
+            augmented = (
+                f"{question}\n\n"
+                f"[CALL HISTORY CONTEXT - use this to answer questions about previous callers/conversations]\n"
+                f"{calls_ctx}"
+            )
+            return agent.ask(augmented, remember=False)
         return agent.ask(question, remember=False)
     finally:
         agent.mode = original_mode
