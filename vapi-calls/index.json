@@ -1,5 +1,32 @@
 [
   {
+    "call_id": "full-avatar-1776344926302",
+    "type": "fullAvatar",
+    "started_at": "",
+    "ended_at": "",
+    "duration": 0,
+    "ended_reason": "",
+    "recording_url": "",
+    "call_reason": "technology_assessment",
+    "call_reason_detail": "Inquiry into AI and generative AI projects, specifically Text Sentry and its role in permission-based data sharing within Data Spaces",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller asked Lisa about AI and generative AI projects, focusing on Text Sentry and its integration with Data Spaces for permission-based data sharing.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "AI",
+      "generative AI",
+      "data spaces",
+      "cybersecurity"
+    ],
+    "projects_discussed": [
+      "Text Sentry",
+      "PACT 24.2 initiative"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller is interested in secure AI document analysis and policy-aware data sharing mechanisms, particularly within distributed Data Spaces environments."
+  },
+  {
     "call_id": "full-avatar-1776344922669",
     "type": "fullAvatar",
     "started_at": "",
