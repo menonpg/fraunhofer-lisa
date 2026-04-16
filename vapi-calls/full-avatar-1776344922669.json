@@ -1,0 +1,35 @@
+{
+  "call_id": "full-avatar-1776344922669",
+  "type": "fullAvatar",
+  "started_at": "",
+  "ended_at": "",
+  "ended_reason": "",
+  "duration": 0,
+  "recording_url": "",
+  "cost": 0,
+  "transcript": "AI: Hello! I'm Lisa, your guide to the Fraunhofer Center Mid-Atlantic's technology portfolio. We have over 55 projects spanning AI, manufacturing, healthcare, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\n\nUser: can you tell me a little bit about the projects relating to Ai and Generator Ai and specifically the one about text Sentry\nAI: Sure! In AI and generative AI, one standout is Text Sentry — it’s designed for secure, intelligent analysis of sensitive documents. It uses OCR to digitize, NLP to structure, and a custom Retrieval Augmented Generation pipeline to pull insights while keeping everything local and protected. Would you like me to walk you through how it’s used in practice for the Intelligence Community?\n\nUser: I'm particularly interested in the relationship with the data spaces and where that comes in from the standpoint of permission data sharing\nAI: Exactly — Text Sentry is part of our PACT 24.2 initiative, which focuses on policy-aware RAG in a Data Spaces context. That means it doesn’t just answer questions from distributed document collections — it enforces access rules at every step, so only permitted information is retrieved and shared. In Data Spaces, this ensures data sovereignty: each participant controls what can be accessed, even during automated AI queries. Want me to explain the three-layer policy enforcement it uses?\n\n",
+  "timestamp": "2026-04-16T13:08:43.025054+00:00",
+  "analysis": {
+    "call_reason": "technology_assessment",
+    "call_reason_detail": "Inquiry into AI and generative AI projects, specifically Text Sentry and its role in permission-based data sharing within Data Spaces",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller asked Lisa about AI and generative AI projects, focusing on Text Sentry and its integration with Data Spaces for permission-based data sharing.",
+    "key_insights": "Caller is interested in secure AI document analysis and policy-aware data sharing mechanisms, particularly within distributed Data Spaces environments.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "AI",
+      "generative AI",
+      "data spaces",
+      "cybersecurity"
+    ],
+    "projects_discussed": [
+      "Text Sentry",
+      "PACT 24.2 initiative"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should remember that the caller is interested in the intersection of generative AI, secure document analysis, and policy-aware data sharing in Data Spaces, and may want a deeper explanation of Text Sentry's three-layer policy enforcement."
+  }
+}
