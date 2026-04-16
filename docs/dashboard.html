@@ -459,7 +459,9 @@ async function loadCalls() {
             const timestamp = call.timestamp || call.started_at || '';
             const duration = call.duration || call.durationSeconds || call.duration_seconds || 0;
             const analysis = call.analysis || {};
-            const summary = analysis.summary || call.summary || 'No summary available';
+            const isLivekit = call.source === 'livekit';
+            const inProgress = isLivekit && (!call.transcript || call.transcript === '') && (!call.ended_at || call.ended_at === null);
+            const summary = inProgress ? '🎙️ LiveKit voice session (transcript not yet captured)' : (analysis.summary || call.summary || 'No summary available');
             const sentiment = (analysis.sentiment || call.sentiment || 'neutral').toLowerCase();
             const transcript = call.transcript || '';
 
@@ -763,3 +765,4 @@ loadCalls();
 
 </body>
 </html>
+
