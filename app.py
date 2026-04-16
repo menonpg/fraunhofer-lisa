@@ -1013,6 +1013,206 @@ def api_query_fast():
     return jsonify({"answer": answer, "elapsed_ms": int(elapsed * 1000)})
 
 
+# ============================================================================
+# LiveKit Webhook — mirrors VAPI webhook, feeds same dashboard + Qdrant
+# ============================================================================
+
+def _verify_livekit_signature(body: bytes, auth_header: str, api_secret: str) -> bool:
+    """Verify LiveKit webhook signature (JWT signed with API secret)."""
+    try:
+        import hmac as _hmac, hashlib as _hashlib, base64 as _b64
+        parts = auth_header.split(".")
+        if len(parts) != 3:
+            return False
+        data = f"{parts[0]}.{parts[1]}"
+        sig = _b64.urlsafe_b64decode(parts[2] + "==")
+        expected = _hmac.new(api_secret.encode(), data.encode(), _hashlib.sha256).digest()
+        return _hmac.compare_digest(sig, expected)
+    except Exception:
+        return False
+
+
+@app.route("/livekit/webhook", methods=["POST"])
+def livekit_webhook():
+    """
+    LiveKit sends webhook events when rooms/participants change.
+    We listen for:
+      - room_finished  → treat as end-of-call, save + analyze + index
+      - track_published → participant started publishing (call started)
+    """
+    LIVEKIT_API_SECRET = os.environ.get("LIVEKIT_API_SECRET", "LRJQSmai8IIC3l8DSRLXh8voWgtoAUnQkRPZkbcJy1K")
+
+    raw_body = request.get_data()
+    auth_header = request.headers.get("Authorization", "")
+
+    # Log all incoming events
+    try:
+        data = request.get_json(force=True) or {}
+    except Exception:
+        data = {}
+
+    event = data.get("event", "unknown")
+    room = data.get("room", {})
+    room_name = room.get("name", "unknown")
+    room_sid = room.get("sid", "")
+
+    print(f"📡 LiveKit webhook: event={event}, room={room_name}")
+
+    if event == "room_finished":
+        # Room ended — collect transcript from egress or participants
+        # LiveKit doesn't send a transcript directly; we build one from participant data
+        num_participants = room.get("numParticipants", 0)
+        duration_secs = room.get("duration", 0)
+        created_at = room.get("creationTime", "")
+        egress_list = data.get("egressInfo", [])
+
+        # Build a call record in the same format as VAPI calls
+        call_id = room_sid or f"lk-{room_name}-{int(time.time())}"
+        started_at = datetime.fromtimestamp(int(created_at), tz=timezone.utc).isoformat() if created_at else datetime.now(timezone.utc).isoformat()
+
+        # Transcript: LiveKit doesn't include it in room_finished by default.
+        # We store what we have and note the source.
+        transcript = data.get("transcript", "")  # future: if STT transcript is forwarded
+
+        metadata = {
+            "call_id": call_id,
+            "source": "livekit",
+            "type": "web",
+            "room_name": room_name,
+            "started_at": started_at,
+            "ended_at": datetime.now(timezone.utc).isoformat(),
+            "duration": duration_secs,
+            "num_participants": num_participants,
+            "ended_reason": "room_finished",
+            "transcript": transcript,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+
+        # Analyze if we have a transcript
+        if transcript and len(transcript.strip()) > 10:
+            try:
+                analysis = analyze_call(transcript, metadata)
+                metadata["analysis"] = analysis
+            except Exception as e:
+                metadata["analysis_error"] = str(e)
+        else:
+            # No transcript yet — store minimal record so dashboard shows the call
+            metadata["analysis"] = {
+                "summary": f"LiveKit voice session in room {room_name} ({duration_secs}s)",
+                "sentiment": "neutral",
+                "call_reason": "voice_demo",
+                "domains_discussed": [],
+            }
+
+        # Save locally
+        call_file = CALLS_DIR / f"{call_id}.json"
+        call_file.write_text(json.dumps(metadata, indent=2, ensure_ascii=False))
+
+        # Add to in-memory cache → shows up in /api/calls → shows on dashboard
+        with _calls_lock:
+            existing_ids = {c.get("call_id") for c in _calls_cache}
+            if call_id not in existing_ids:
+                _calls_cache.insert(0, metadata)
+
+        print(f"✅ LiveKit call saved: {call_id}, duration={duration_secs}s")
+
+        # Background: index + push to GitHub
+        def _lk_background():
+            try:
+                a = metadata.get("analysis", {})
+                summary = a.get("summary", f"LiveKit session {room_name}")
+                memory_entry = (
+                    f"LiveKit Call (web, {metadata['started_at'][:10]}): {summary} "
+                    f"[Room: {room_name}, Duration: {duration_secs}s]"
+                )
+                _index_to_calls_collection(memory_entry)
+                if transcript and len(transcript.strip()) > 50:
+                    _index_to_calls_collection(f"Transcript ({call_id[:12]}): {transcript[:2000]}")
+                print(f"🧠 Indexed LiveKit call {call_id[:12]}")
+            except Exception as e:
+                print(f"❌ LiveKit index failed: {e}")
+            try:
+                push_call_to_github(metadata)
+            except Exception as e:
+                print(f"❌ LiveKit GitHub push failed: {e}")
+
+        threading.Thread(target=_lk_background, daemon=True).start()
+
+    elif event in ("participant_joined", "participant_left", "track_published"):
+        participant = data.get("participant", {})
+        identity = participant.get("identity", "")
+        print(f"   participant {identity} — {event}")
+        # Not stored as a call, just logged
+
+    return jsonify({"status": "ok"})
+
+
+@app.route("/livekit/transcript", methods=["POST"])
+def livekit_transcript():
+    """
+    Called by the Lisa agent at end of session to POST the full transcript.
+    Agent sends: { call_id, room_name, transcript, duration, started_at }
+    This updates the existing call record with real transcript + re-analyzes.
+    """
+    data = request.json or {}
+    call_id = data.get("call_id", "")
+    room_name = data.get("room_name", "")
+    transcript = data.get("transcript", "")
+    duration = data.get("duration", 0)
+    started_at = data.get("started_at", datetime.now(timezone.utc).isoformat())
+
+    if not call_id:
+        call_id = f"lk-{room_name}-{int(time.time())}"
+
+    print(f"📝 LiveKit transcript received: {call_id}, {len(transcript)} chars")
+
+    metadata = {
+        "call_id": call_id,
+        "source": "livekit",
+        "type": "web",
+        "room_name": room_name,
+        "started_at": started_at,
+        "ended_at": datetime.now(timezone.utc).isoformat(),
+        "duration": duration,
+        "transcript": transcript,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+
+    if transcript and len(transcript.strip()) > 10:
+        try:
+            metadata["analysis"] = analyze_call(transcript, metadata)
+        except Exception as e:
+            metadata["analysis_error"] = str(e)
+            metadata["analysis"] = {"summary": "Analysis failed", "sentiment": "neutral"}
+    else:
+        metadata["analysis"] = {"summary": f"LiveKit session ({duration}s, no transcript)", "sentiment": "neutral"}
+
+    # Save / update
+    call_file = CALLS_DIR / f"{call_id}.json"
+    call_file.write_text(json.dumps(metadata, indent=2, ensure_ascii=False))
+
+    with _calls_lock:
+        # Replace or insert
+        existing = [c for c in _calls_cache if c.get("call_id") != call_id]
+        existing.insert(0, metadata)
+        _calls_cache[:] = existing
+
+    def _bg():
+        try:
+            a = metadata.get("analysis", {})
+            _index_to_calls_collection(
+                f"LiveKit Call (web, {started_at[:10]}): {a.get('summary','?')} [Room: {room_name}]"
+            )
+            if transcript and len(transcript) > 50:
+                _index_to_calls_collection(f"Transcript ({call_id[:12]}): {transcript[:2000]}")
+            push_call_to_github(metadata)
+        except Exception as e:
+            print(f"❌ Background task failed: {e}")
+
+    threading.Thread(target=_bg, daemon=True).start()
+    return jsonify({"status": "ok", "call_id": call_id})
+
+
 @app.route("/vapi/function", methods=["POST"])
 def vapi_function():
     """Dedicated endpoint for VAPI function/tool calls — handles all possible formats."""
