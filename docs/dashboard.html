@@ -714,8 +714,24 @@ async function loadHealth() {
             '</div>';
         }
 
+        // Calls collection card
+        if (data.calls_collection !== undefined) {
+            const ccStatus = data.calls_collection_status || 'unknown';
+            const ccOk = ccStatus === 'ready';
+            cards += '<div class="health-card">' +
+                '<div class="icon">🗄️</div>' +
+                '<div class="label">calls_collection</div>' +
+                '<div class="value ok">' + escapeHtml(String(data.calls_collection)) + '</div>' +
+            '</div>';
+            cards += '<div class="health-card">' +
+                '<div class="icon">🔢</div>' +
+                '<div class="label">calls_indexed</div>' +
+                '<div class="value ' + (ccOk ? 'ok' : 'warn') + '">' + escapeHtml(String(data.calls_indexed ?? '—')) + '</div>' +
+            '</div>';
+        }
+
         // Any other keys as generic cards
-        const knownKeys = ['status', 'version', 'uptime', 'uptime_seconds', 'soul_agent', 'soul', 'vapi'];
+        const knownKeys = ['status', 'version', 'uptime', 'uptime_seconds', 'soul_agent', 'soul', 'vapi', 'calls_collection', 'calls_indexed', 'calls_collection_status'];
         Object.keys(data).forEach(key => {
             if (knownKeys.includes(key)) return;
             cards += '<div class="health-card">' +
@@ -765,4 +781,5 @@ loadCalls();
 
 </body>
 </html>
+
 
