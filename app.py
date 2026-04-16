@@ -831,38 +831,27 @@ def api_chat():
     if not user_message:
         return jsonify({"error": "Provide a 'message' field"}), 400
 
-    # Inject RAG context — use fast Qdrant retrieval (same as voice/VAPI path)
-    rag_context = ""
-    calls_context = ""
+    # Use soul_query — routes automatically between RAG and RLM, also searches calls
+    soul_result = {}
+    route = "LLM only"
     try:
-        rag_context = soul_query_fast(user_message)
-        if "No relevant" in rag_context or len(rag_context.strip()) < 20:
-            rag_context = ""
-        print(f"💡 Chat RAG: {len(rag_context)} chars")
+        soul_result = soul_query(user_message, mode="auto")
+        route = soul_result.get("route", "FOCUSED")
+        print(f"💡 soul_query route={route}, ms={soul_result.get('total_ms',0):.0f}")
     except Exception as e:
-        print(f"⚠️ Chat RAG retrieval error: {e}")
-    try:
-        calls_context = _search_calls_collection(user_message, k=3)
-    except Exception as e:
-        print(f"⚠️ Chat calls retrieval error: {e}")
+        print(f"⚠️ soul_query error: {e}")
 
     with _chat_lock:
         _chat_history.append({"role": "user", "content": user_message})
         history_snapshot = list(_chat_history)
 
     system_prompt = _build_chat_system_prompt(response_style)
-    if rag_context:
+    soul_answer = soul_result.get("answer", "") or ""
+    if soul_answer and len(soul_answer.strip()) > 20 and "not available" not in soul_answer.lower():
         system_prompt += (
-            "\n\n## PROJECT KNOWLEDGE BASE\n"
-            "Use the following project information from the Fraunhofer CMA knowledge base to answer. "
-            "Only reference projects that appear in this context. Do NOT invent projects.\n\n"
-            + rag_context
-        )
-    if calls_context:
-        system_prompt += (
-            "\n\n## CALL HISTORY\n"
-            "The following is from past caller conversations. Use this to answer questions about previous calls.\n\n"
-            + calls_context
+            "\n\n## RETRIEVED KNOWLEDGE\n"
+            "Use the following to answer. Only reference what appears here. Do NOT invent.\n\n"
+            + soul_answer
         )
 
     messages = [{"role": "system", "content": system_prompt}] + history_snapshot
@@ -892,22 +881,29 @@ def api_chat():
     with _chat_lock:
         _chat_history.append({"role": "assistant", "content": assistant_message})
 
-    # Determine retrieval source label for the UI
-    if rag_context and calls_context:
-        retrieval = "RAG + Call History"
-    elif rag_context:
+    # Map soul route → user-visible label
+    if route == "EXHAUSTIVE":
+        retrieval = "RLM"
+    elif route in ("FOCUSED", "RAG"):
         retrieval = "RAG"
-    elif calls_context:
+    elif route == "CALLS":
         retrieval = "Call History"
+    elif soul_answer and len(soul_answer.strip()) > 20:
+        retrieval = "RAG"
     else:
         retrieval = "LLM only"
 
+    rlm_meta = soul_result.get("rlm_meta") or {}
     return jsonify({
         "response": assistant_message,
         "spoken": _strip_markdown(assistant_message),
         "retrieval": retrieval,
-        "rag_used": bool(rag_context),
-        "calls_used": bool(calls_context),
+        "route": route,
+        "rag_used": route not in ("EXHAUSTIVE", None) and bool(soul_answer),
+        "rlm_used": route == "EXHAUSTIVE",
+        "calls_used": bool(soul_result.get("calls_context")),
+        "rlm_chunks": rlm_meta.get("chunks_processed"),
+        "elapsed_ms": soul_result.get("total_ms"),
     })
 
 
