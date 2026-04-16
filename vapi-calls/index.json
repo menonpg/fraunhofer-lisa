@@ -1,5 +1,32 @@
 [
   {
+    "call_id": "019d96f5-fd7f-7000-8d50-309b75a81462",
+    "type": "inboundPhoneCall",
+    "started_at": "2026-04-16T15:43:17.026Z",
+    "ended_at": "2026-04-16T15:45:54.146Z",
+    "duration": 157.12,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d96f5-fd7f-7000-8d50-309b75a81462-1776354356741-02582f31-dcdd-40f4-bb7a-b6fd277e82a8-mono.wav",
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "Inquiry about a neuroscience project in the life sciences portfolio and request for introduction to project lead",
+    "sentiment": "curious",
+    "resolution": "referred_to_lead",
+    "summary": "The caller expressed interest in life sciences, specifically a neuroscience project, and requested an introduction to the project lead Madeline. Lisa agreed to facilitate the connection.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "life sciences",
+      "health care",
+      "biotech",
+      "neuroscience",
+      "AI/ML"
+    ],
+    "projects_discussed": [
+      "project number 42 - neuroscience"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller is interested in neuroscience within life sciences and is open to further engagement via project lead."
+  },
+  {
     "call_id": "full-avatar-1776344926302",
     "type": "fullAvatar",
     "started_at": "",
