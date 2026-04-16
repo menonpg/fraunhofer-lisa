@@ -172,7 +172,7 @@ def push_call_to_github(call_data):
     call_id = call_data.get("call_id", "unknown")
 
     try:
-        file_path = f"vapi-calls/{call_id}.json"
+        file_path = f"vapi-calls/{call_id}.json" if call_data.get("source") != "livekit" else f"livekit-calls/{call_id}.json"
         content = json.dumps(call_data, indent=2, ensure_ascii=False)
         summary_text = call_data.get("analysis", {}).get("summary", "new call")[:60]
         ok = github_put_file(file_path, content,
