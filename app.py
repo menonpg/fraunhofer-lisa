@@ -892,9 +892,22 @@ def api_chat():
     with _chat_lock:
         _chat_history.append({"role": "assistant", "content": assistant_message})
 
+    # Determine retrieval source label for the UI
+    if rag_context and calls_context:
+        retrieval = "RAG + Call History"
+    elif rag_context:
+        retrieval = "RAG"
+    elif calls_context:
+        retrieval = "Call History"
+    else:
+        retrieval = "LLM only"
+
     return jsonify({
         "response": assistant_message,
         "spoken": _strip_markdown(assistant_message),
+        "retrieval": retrieval,
+        "rag_used": bool(rag_context),
+        "calls_used": bool(calls_context),
     })
 
 
