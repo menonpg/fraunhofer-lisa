@@ -657,6 +657,18 @@ def health():
     agent = get_soul_agent()
     with _calls_lock:
         calls_count = len(_calls_cache)
+    # Get calls collection point count from Qdrant
+    calls_collection_count = 0
+    calls_collection_status = "unknown"
+    try:
+        from qdrant_client import QdrantClient
+        qc = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY, timeout=5)
+        info = qc.get_collection("fraunhofer_cma_calls")
+        calls_collection_count = info.points_count or 0
+        calls_collection_status = "ready"
+    except Exception as e:
+        calls_collection_status = f"error: {str(e)[:40]}"
+
     return jsonify({
         "status": "healthy",
         "agent": "Lisa",
@@ -664,6 +676,9 @@ def health():
         "soul_collection": QDRANT_COLLECTION,
         "soul_rag_mode": agent.mode if agent else "unknown",
         "calls_cached": calls_count,
+        "calls_collection": "fraunhofer_cma_calls",
+        "calls_indexed": calls_collection_count,
+        "calls_collection_status": calls_collection_status,
         "github_repo": GITHUB_REPO,
     })
 
