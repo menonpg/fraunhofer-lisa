@@ -1,0 +1,15 @@
+{
+  "call_id": "lk-lisa-1776372776",
+  "source": "livekit",
+  "type": "web",
+  "room_name": "lisa-1776372776",
+  "started_at": "2026-04-16T20:52:57.372384+00:00",
+  "ended_at": null,
+  "duration": 0,
+  "transcript": "",
+  "timestamp": "2026-04-16T20:52:57.372421+00:00",
+  "analysis": {
+    "summary": "LiveKit voice session in progress…",
+    "sentiment": "neutral"
+  }
+}
