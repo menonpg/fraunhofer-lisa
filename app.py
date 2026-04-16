@@ -816,15 +816,14 @@ def api_chat():
     if not user_message:
         return jsonify({"error": "Provide a 'message' field"}), 400
 
-    # Inject RAG context before sending to LLM — search BOTH collections
+    # Inject RAG context — use fast Qdrant retrieval (same as voice/VAPI path)
     rag_context = ""
     calls_context = ""
     try:
-        agent = get_soul_agent()
-        if agent and hasattr(agent, '_rag') and agent._rag:
-            rag_result = agent._rag.retrieve(user_message, k=5)
-            if rag_result and "No relevant memories" not in rag_result:
-                rag_context = rag_result
+        rag_context = soul_query_fast(user_message)
+        if "No relevant" in rag_context or len(rag_context.strip()) < 20:
+            rag_context = ""
+        print(f"💡 Chat RAG: {len(rag_context)} chars")
     except Exception as e:
         print(f"⚠️ Chat RAG retrieval error: {e}")
     try:
