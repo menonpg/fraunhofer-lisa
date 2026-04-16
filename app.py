@@ -1324,6 +1324,31 @@ def livekit_start_session():
         "video": {"roomJoin": True, "room": room_name, "canPublish": True, "canSubscribe": True},
     }, LIVEKIT_API_SECRET)
 
+    # Log session start immediately → shows on dashboard right away
+    try:
+        start_record = {
+            "call_id": f"lk-{room_name}",
+            "source": "livekit",
+            "type": "web",
+            "room_name": room_name,
+            "started_at": datetime.now(timezone.utc).isoformat(),
+            "ended_at": None,
+            "duration": 0,
+            "transcript": "",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "analysis": {"summary": "LiveKit voice session in progress…", "sentiment": "neutral"},
+        }
+        call_file = CALLS_DIR / f"lk-{room_name}.json"
+        call_file.write_text(json.dumps(start_record, indent=2))
+        with _calls_lock:
+            existing_ids = {c.get("call_id") for c in _calls_cache}
+            if f"lk-{room_name}" not in existing_ids:
+                _calls_cache.insert(0, start_record)
+        # Push to GitHub in background
+        threading.Thread(target=push_call_to_github, args=(start_record,), daemon=True).start()
+    except Exception as e:
+        print(f"Could not log session start: {e}")
+
     return jsonify({
         "token": visitor_token,
         "url": LIVEKIT_URL,
