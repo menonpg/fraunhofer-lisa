@@ -1,5 +1,24 @@
 [
   {
+    "call_id": "test-lk-123",
+    "type": "web",
+    "started_at": "2026-04-16T19:00:00Z",
+    "ended_at": "2026-04-16T19:03:14.462635+00:00",
+    "duration": 30,
+    "ended_reason": null,
+    "recording_url": null,
+    "call_reason": "other",
+    "call_reason_detail": "brief greeting with no substantive discussion",
+    "sentiment": "neutral",
+    "resolution": "abandoned",
+    "summary": "The caller greeted Lisa, and Lisa responded, but no further conversation occurred.",
+    "caller_type": "unknown",
+    "domains_discussed": [],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "key_insights": null
+  },
+  {
     "call_id": "019d96f5-fd7f-7000-8d50-309b75a81462",
     "type": "inboundPhoneCall",
     "started_at": "2026-04-16T15:43:17.026Z",
