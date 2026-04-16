@@ -375,13 +375,13 @@
     <div class="panel" id="panel-soul">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
             <h2 style="font-size:1rem;color:var(--pri);margin:0">💬 Chat with Lisa's Soul Agent</h2>
-            <button onclick="clearSoulChat()" style="padding:4px 12px;background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0;border-radius:6px;cursor:pointer;font-size:0.78em;">Clear Chat</button>
+            <button onclick="clearSoulChat()" style="padding:4px 12px;background:rgba(255,255,255,0.08);color:var(--tx2);border:1px solid var(--bd);border-radius:6px;cursor:pointer;font-size:0.78em;">Clear Chat</button>
         </div>
         <p style="font-size:0.8rem;color:var(--tx2);margin-bottom:10px">
             Multi-turn conversation with Lisa's knowledge base — ask about projects, past callers, technology domains, or capabilities. History is maintained across turns.
         </p>
-        <div id="soulChatMessages" style="max-height:450px;overflow-y:auto;margin-bottom:12px;padding:8px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;min-height:200px;">
-            <div style="color:#94a3b8;font-size:0.82em;text-align:center;padding:16px;">Start a conversation — ask about Fraunhofer CMA projects, past calls, technology domains, or capabilities.</div>
+        <div id="soulChatMessages" style="max-height:450px;overflow-y:auto;margin-bottom:12px;padding:8px;background:rgba(0,0,0,0.2);border-radius:8px;border:1px solid var(--bd);min-height:200px;">
+            <div style="color:var(--tx2);font-size:0.82em;text-align:center;padding:16px;">Start a conversation — ask about Fraunhofer CMA projects, past calls, technology domains, or capabilities.</div>
         </div>
         <div class="query-box">
             <input type="text" id="queryInput" placeholder="e.g. What AI projects does Fraunhofer CMA have?" onkeypress="if(event.key==='Enter') submitQuery()">
@@ -570,7 +570,7 @@ async function submitQuery() {
     const thinkingId = 'thinking-' + Date.now();
     container.innerHTML += `
         <div id="${thinkingId}" style="display:flex;margin-bottom:8px;">
-            <div style="background:#f0f9ff;border:1px solid #e0f2fe;padding:8px 14px;border-radius:12px 12px 12px 2px;max-width:75%;font-size:0.88em;color:#64748b;">
+            <div style="background:rgba(23,156,125,0.1);border:1px solid var(--bd);padding:8px 14px;border-radius:12px 12px 12px 2px;max-width:75%;font-size:0.88em;color:var(--tx2);">
                 <em>Thinking...</em>
             </div>
         </div>`;
@@ -598,7 +598,7 @@ async function submitQuery() {
         const thinkEl = document.getElementById(thinkingId);
         if (thinkEl) {
             thinkEl.innerHTML = `
-                <div style="background:#f0f9ff;border:1px solid #e0f2fe;padding:10px 14px;border-radius:12px 12px 12px 2px;max-width:85%;font-size:0.88em;">
+                <div style="background:rgba(0,0,0,0.3);border:1px solid var(--bd);padding:10px 14px;border-radius:12px 12px 12px 2px;max-width:85%;font-size:0.88em;color:var(--tx);">
                     <div>${formatted}</div>
                 </div>`;
         }
@@ -612,7 +612,7 @@ async function submitQuery() {
         const thinkEl = document.getElementById(thinkingId);
         if (thinkEl) {
             thinkEl.innerHTML = `
-                <div style="background:#fee2e2;border:1px solid #fecaca;padding:8px 14px;border-radius:12px 12px 12px 2px;max-width:75%;font-size:0.88em;color:#dc2626;">
+                <div style="background:rgba(252,129,129,0.15);border:1px solid rgba(252,129,129,0.3);padding:8px 14px;border-radius:12px 12px 12px 2px;max-width:75%;font-size:0.88em;color:var(--err);">
                     Error: ${escapeHtml(e.message)}
                 </div>`;
         }
@@ -625,7 +625,7 @@ async function submitQuery() {
 }
 
 function clearSoulChat() {
-    document.getElementById('soulChatMessages').innerHTML = '<div style="color:#94a3b8;font-size:0.82em;text-align:center;padding:16px;">Start a conversation — ask about Fraunhofer CMA projects, past calls, technology domains, or capabilities.</div>';
+    document.getElementById('soulChatMessages').innerHTML = '<div style="color:var(--tx2);font-size:0.82em;text-align:center;padding:16px;">Start a conversation — ask about Fraunhofer CMA projects, past calls, technology domains, or capabilities.</div>';
     fetch(WEBHOOK_BASE + '/api/chat/reset', { method: 'POST' }).catch(() => {});
 }
 
