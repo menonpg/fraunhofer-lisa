@@ -1,0 +1,26 @@
+{
+  "call_id": "test-lk-123",
+  "source": "livekit",
+  "type": "web",
+  "room_name": "test-room",
+  "started_at": "2026-04-16T19:00:00Z",
+  "ended_at": "2026-04-16T19:03:14.462635+00:00",
+  "duration": 30,
+  "transcript": "User: Hello Lisa\nLisa: Hello! I am Lisa.",
+  "timestamp": "2026-04-16T19:03:14.462638+00:00",
+  "analysis": {
+    "call_reason": "other",
+    "call_reason_detail": "brief greeting with no substantive discussion",
+    "sentiment": "neutral",
+    "resolution": "abandoned",
+    "summary": "The caller greeted Lisa, and Lisa responded, but no further conversation occurred.",
+    "key_insights": null,
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "learning": "No information was exchanged; call ended after greetings."
+  }
+}
