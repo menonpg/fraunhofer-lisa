@@ -75,7 +75,42 @@ if resp.status_code in (200, 201):
 else:
     print(f"   ❌ {resp.status_code}: {resp.text[:200]}")
 
-# 3. Update tracking file
+# 3. Append to soul/MEMORY.md for startup context
+print("\n3️⃣  Updating soul/MEMORY.md...")
+memory_path = Path(__file__).parent.parent / "soul" / "MEMORY.md"
+try:
+    import re as _re
+    # Extract key fields for a compact memory entry
+    title_match = _re.search(r"^#\s+(.+)", text, _re.MULTILINE)
+    proj_title = title_match.group(1).strip() if title_match else fp.stem
+
+    id_match = _re.search(r"Project ID.*?\|\s*(\d+)", text)
+    trl_match = _re.search(r"TRL Level.*?\|\s*([^|\n]+)", text)
+    domain_match = _re.search(r"Domain.*?\|\s*([^|\n]+)", text)
+    purpose_match = _re.search(r"## Purpose\s+(.+?)(?=\n##|$)", text, _re.DOTALL)
+    approach_match = _re.search(r"## Approach[^\n]*\s+(.+?)(?=\n##|$)", text, _re.DOTALL)
+
+    proj_id = id_match.group(1).strip() if id_match else "?"
+    trl = trl_match.group(1).strip() if trl_match else "?"
+    domain = domain_match.group(1).strip() if domain_match else "?"
+    purpose = purpose_match.group(1).strip()[:300] if purpose_match else ""
+    approach = approach_match.group(1).strip()[:300] if approach_match else ""
+
+    entry = f"""
+## Project #{proj_id} — {proj_title}
+TRL: {trl}. Domain: {domain}.
+
+{purpose}
+
+Approach: {approach}
+"""
+    with open(memory_path, "a") as f:
+        f.write(entry)
+    print(f"   ✅ Appended to {memory_path}")
+except Exception as e:
+    print(f"   ❌ MEMORY.md update failed: {e}")
+
+# 4. Update tracking file
 tracking = Path(__file__).parent / "vapi_files.json"
 tracked = json.loads(tracking.read_text()) if tracking.exists() else []
 tracked.append({
