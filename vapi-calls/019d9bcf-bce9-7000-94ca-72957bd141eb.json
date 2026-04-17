@@ -1,0 +1,38 @@
+{
+  "call_id": "019d9bcf-bce9-7000-94ca-72957bd141eb",
+  "type": "inboundPhoneCall",
+  "started_at": "2026-04-17T14:19:36.221Z",
+  "ended_at": "2026-04-17T14:22:34.048Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 177.827,
+  "recording_url": "https://storage.vapi.ai/019d9bcf-bce9-7000-94ca-72957bd141eb-1776435756630-79a96976-4be6-4b6d-87b2-2f72a5f75cf2-mono.wav",
+  "cost": 0.3051,
+  "transcript": "AI: Hello, I am Lisa, your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI. Manufacturing, health care, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: I'm interested in Pranafa's effort in manufacturing relating to AI. What have we done in that space?\nAI: Let me look that up.\nAI: Great question. We have robust work in AI driven manufacturing. Our efforts span AI safety testing for image recognition systems, process optimization, 3 d printing, battery foaming, laser processing, defect prediction, fiber placement, spot welding, vial filling, and predictive maintenance and supply chain forecasting. Key examples include work with BMW, on predictive maintenance and spot welding quality. Advanced deep learning for diamond crystal synthesis, with 99.9 percent accuracy and computer vision systems for visual inspection. Part recognition.\nUser: Can you tell us about the visual recognition from PART?\nAI: Would you\nUser: The computer vision for PART recognition, that project? What 1 was that?\nAI: Let me look that up. Based on the search results I just showed you, that was project number 26 with ROI metal finishing. R m f. We built an AI model that determines the location and orientation of components randomly dropped onto a conveyor belt for automated loading and unloading in a coating operation. This computer vision system helped reduce dependence on manual labor and soft tissue injuries.\nUser: Thank you. Can you tell me a little bit about projects led by Prada Menin relating to Text Century?\nAI: Let me look that up.\nAI: That's project 8. Text century. Led by Pralad. It's an ODNI AI seedling, focused on helping the intelligence community access vast and complex information from their directives more efficiently. The approach uses secure OCR to digitize documents. NLP for structuring data, and a customized secure RAG pipeline with LLMs for real time insight generation. Significantly improving data security, and operational efficiency,\nUser: Alright. Thank you so much, Lisa. Bye.\nAI: You're very welcome.\n",
+  "timestamp": "2026-04-17T14:22:40.237251+00:00",
+  "analysis": {
+    "call_reason": "technology_assessment",
+    "call_reason_detail": "Inquiry into specific AI-driven manufacturing and intelligence community projects within Fraunhofer CMA's portfolio",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "The caller asked Lisa about AI-related manufacturing projects, specifically Pranafa's efforts, and later about a project led by Pralad Menin called Text Century. Lisa provided detailed descriptions of both projects, including their objectives and outcomes.",
+    "key_insights": "Caller showed interest in both industrial AI applications (manufacturing automation) and secure AI for intelligence community document processing, indicating cross-domain curiosity.",
+    "caller_type": "industry",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "AI-driven manufacturing",
+      "computer vision",
+      "predictive maintenance",
+      "secure OCR",
+      "NLP",
+      "LLM-based RAG pipelines"
+    ],
+    "projects_discussed": [
+      "Pranafa AI manufacturing efforts",
+      "Project 26 ROI Metal Finishing",
+      "Project 8 Text Century"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should remember that the caller is interested in both manufacturing automation projects and secure AI document processing for intelligence applications, and may value examples with clear operational benefits."
+  }
+}
