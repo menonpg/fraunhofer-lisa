@@ -47,13 +47,13 @@ print("=" * 60)
 # 1. Index into Qdrant via Railway /api/index
 print("\n1️⃣  Indexing into Qdrant (Railway)...")
 resp = requests.post(
-    f"{WEBHOOK_URL}/api/index",
-    json={"texts": [text]},
-    timeout=30,
+    f"{WEBHOOK_URL}/api/index-project",
+    json={"filename": fp.name},
+    timeout=60,
 )
 if resp.ok:
     d = resp.json()
-    print(f"   ✅ indexed={d.get('indexed')} total={d.get('total')}")
+    print(f"   ✅ project={d.get('project')} chunks={d.get('chunks_indexed')}")
 else:
     print(f"   ❌ {resp.status_code}: {resp.text[:200]}")
 
