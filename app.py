@@ -1055,6 +1055,85 @@ def _verify_livekit_signature(body: bytes, auth_header: str, api_secret: str) ->
         return False
 
 
+
+@app.route("/api/index-project", methods=["POST"])
+def api_index_project():
+    """Re-index a specific project file from GitHub into Qdrant with proper embeddings."""
+    data = request.json or {}
+    filename = data.get("filename", "")
+    if not filename:
+        return jsonify({"error": "Provide 'filename' (e.g. '56-aim_hairpin_busbar_laser_welding.md')"}), 400
+
+    try:
+        import hashlib
+        from soul_engine.rag_memory import _embed_azure
+
+        # Fetch from GitHub
+        url = f"https://raw.githubusercontent.com/menonpg/fraunhofer-cma-projects/main/docs/projects/{filename}"
+        headers = {"Authorization": f"Bearer {GITHUB_TOKEN}"} if GITHUB_TOKEN else {}
+        resp = _requests_get(url, headers=headers)
+        if not resp:
+            return jsonify({"error": f"Could not fetch {filename} from GitHub"}), 404
+        text = resp
+
+        # Parse into chunks
+        import re as _re
+        title_match = _re.search(r'^#\s+(.+)', text, _re.MULTILINE)
+        title = title_match.group(1).strip() if title_match else filename.replace(".md","")
+
+        chunks = []
+        # Full doc chunk
+        chunks.append(f"Project: {title}\n\n{text[:3000]}")
+        # Section chunks
+        for section in _re.split(r'\n##\s+', text)[1:]:
+            lines = section.split("\n", 1)
+            sec_title = lines[0].strip()
+            sec_body = lines[1].strip() if len(lines) > 1 else ""
+            if len(sec_body) > 20:
+                chunks.append(f"Project: {title}\nSection: {sec_title}\n\n{sec_body}"[:2000])
+
+        # Embed and upsert
+        agent = get_soul_agent()
+        if not agent or not hasattr(agent, '_rag') or not agent._rag:
+            return jsonify({"error": "RAG not initialized"}), 500
+
+        rag = agent._rag
+        indexed = 0
+        for chunk in chunks:
+            try:
+                if rag.mode == "qdrant" and rag._embed_provider:
+                    vec = rag._embed([chunk])[0]
+                    chunk_id = abs(int(hashlib.md5(chunk.encode()).hexdigest()[:16], 16)) % (2**63)
+                    rag._qdrant.upsert(rag.collection, [{
+                        "id": chunk_id,
+                        "vector": vec,
+                        "payload": {"text": chunk, "project": title, "filename": filename}
+                    }])
+                    indexed += 1
+                else:
+                    rag.append(chunk)
+                    indexed += 1
+            except Exception as e:
+                print(f"  chunk error: {e}")
+
+        print(f"✅ Indexed {filename}: {indexed}/{len(chunks)} chunks")
+        return jsonify({"status": "ok", "filename": filename, "project": title, "chunks_indexed": indexed})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+def _requests_get(url, headers=None):
+    """Simple GET via urllib."""
+    import urllib.request
+    try:
+        req = urllib.request.Request(url, headers=headers or {})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            return r.read().decode()
+    except Exception as e:
+        print(f"GET {url} failed: {e}")
+        return None
+
 @app.route("/livekit/webhook", methods=["POST"])
 def livekit_webhook():
     """
