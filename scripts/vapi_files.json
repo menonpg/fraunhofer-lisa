@@ -1,0 +1,287 @@
+[
+  {
+    "file": "56-aim_hairpin_busbar_laser_welding.md",
+    "vapi_id": "89613c58-2765-4390-897f-a9c047bb9835",
+    "status": "failed"
+  },
+  {
+    "file": "55-pact_242_text_sentry_policy_aware_rag",
+    "vapi_id": "a09b6033-bf25-4f0f-9793-c10c6c7aafbe",
+    "status": "failed"
+  },
+  {
+    "file": "54-pact_243_peptide.md",
+    "vapi_id": "eb99b126-2a4d-4270-a81b-3ee3c5d85f39",
+    "status": "failed"
+  },
+  {
+    "file": "53-nasa_sbir_with_alarispro.md",
+    "vapi_id": "0501d57a-050e-4980-91b6-605ea25cb824",
+    "status": "failed"
+  },
+  {
+    "file": "52-rolls_royce_test_cell_optimization.md",
+    "vapi_id": "724862aa-cbeb-423a-ba1f-85a8d11f9397",
+    "status": "failed"
+  },
+  {
+    "file": "51-phenogy__airport_energy_cost_optimiza",
+    "vapi_id": "445049d7-1820-472b-a1c1-e2fccb4ae121",
+    "status": "failed"
+  },
+  {
+    "file": "50-bmw_foaming__battery_foaming_defect_r",
+    "vapi_id": "7c47a7ad-042c-48d7-a3ea-40a5cd8b458a",
+    "status": "failed"
+  },
+  {
+    "file": "49-bmw_spot_weld__ai_quality_inspection.",
+    "vapi_id": "7af47274-d74b-4d14-9846-5b08c61b82c1",
+    "status": "failed"
+  },
+  {
+    "file": "48-find_my_oyster__smart_aquaculture_man",
+    "vapi_id": "d2634ef0-bfdc-44a7-802d-1e1ce153ee62",
+    "status": "failed"
+  },
+  {
+    "file": "47-e4usa__engineering_for_all_platform.m",
+    "vapi_id": "be59d27a-4ab6-4ab7-8c67-2a2eb73966bf",
+    "status": "failed"
+  },
+  {
+    "file": "46-pact_212_smart_home_devices__blockcha",
+    "vapi_id": "ac90656f-1602-4505-b604-e797d9241290",
+    "status": "failed"
+  },
+  {
+    "file": "45-nephron__stabilizing_automated_vial_f",
+    "vapi_id": "dc772297-7b21-4677-8cde-717f2ab5dd91",
+    "status": "failed"
+  },
+  {
+    "file": "44-improved_biomanufacturing_of_enzymes.",
+    "vapi_id": "12021140-7081-419c-95db-415edb4b29dd",
+    "status": "failed"
+  },
+  {
+    "file": "43-pact_211_single_vaccine_dose__algorit",
+    "vapi_id": "90cf85d6-13ba-4c4d-a32d-2da31674f4a5",
+    "status": "failed"
+  },
+  {
+    "file": "42-brain_neurowrap__brain_imaging_analys",
+    "vapi_id": "31f2ac60-3fad-4953-8d66-1230ec643fac",
+    "status": "failed"
+  },
+  {
+    "file": "41-pact_228_high_throughput_screening_in",
+    "vapi_id": "c2506e84-0210-4920-86fb-8e9b09ff684b",
+    "status": "failed"
+  },
+  {
+    "file": "40-metacompass__metagenomic_assembly_sof",
+    "vapi_id": "46435328-0abb-4867-a8cb-1bb3c8276f7c",
+    "status": "failed"
+  },
+  {
+    "file": "39-pact_23_with_iks__ai_safety_assurance",
+    "vapi_id": "61926f83-05fd-4d3b-9f58-d89c951c9083",
+    "status": "failed"
+  },
+  {
+    "file": "38-pact_23_with_hhi__ar_ai_for_medical_m",
+    "vapi_id": "5b23881f-758a-4558-b618-61e657cd8bf2",
+    "status": "failed"
+  },
+  {
+    "file": "37-functional_genomic_and_computational_",
+    "vapi_id": "362d5c75-8600-43ea-aea1-73bbe815ea62",
+    "status": "failed"
+  },
+  {
+    "file": "36-spider_20__biomanufacturing_automatio",
+    "vapi_id": "2657c441-1022-465b-8573-db04aa235c13",
+    "status": "failed"
+  },
+  {
+    "file": "35-prison_telehealth_data_analytics.md",
+    "vapi_id": "cac3f691-2aa3-410b-8205-0111313f714c",
+    "status": "failed"
+  },
+  {
+    "file": "34-healthyme__health_literacy_app.md",
+    "vapi_id": "0bb522a1-4d71-4b8a-92e8-02948e825711",
+    "status": "failed"
+  },
+  {
+    "file": "33-human_ai_teaming_hatit.md",
+    "vapi_id": "4930c0dc-8fde-4593-8787-8ec65b524fa8",
+    "status": "failed"
+  },
+  {
+    "file": "32-medigo__organ_transport_tracking.md",
+    "vapi_id": "265cb8ec-c756-44e6-beeb-fd40a951423c",
+    "status": "failed"
+  },
+  {
+    "file": "31-bmw_material_planner.md",
+    "vapi_id": "0556d747-ef9e-40fb-8a3e-cd69dfc7bdea",
+    "status": "failed"
+  },
+  {
+    "file": "30-predictive_analytics_for_supply_chain",
+    "vapi_id": "7c530aeb-6785-4afa-878e-317bc490c324",
+    "status": "failed"
+  },
+  {
+    "file": "29-bmw_predictive_maintenance.md",
+    "vapi_id": "0f3e68d9-c4c4-4c63-8f7a-b584d097f96e",
+    "status": "failed"
+  },
+  {
+    "file": "28-pact_234_3d_digital_twins_for_collisi",
+    "vapi_id": "f75f7433-4a8f-4104-a2cc-d6d76826bf9a",
+    "status": "failed"
+  },
+  {
+    "file": "27-pact_233_sustainability_maturity_asse",
+    "vapi_id": "b1af73db-4be7-4c37-b6ab-69f2c744f306",
+    "status": "failed"
+  },
+  {
+    "file": "26-robotic_guided_fixture_loading.md",
+    "vapi_id": "378132ac-1eca-46fd-aee9-be935eef08a0",
+    "status": "failed"
+  },
+  {
+    "file": "25-visual_inspection_for_samsung_washing",
+    "vapi_id": "64bfe375-676e-4da1-ab51-23c87c3d7cb4",
+    "status": "failed"
+  },
+  {
+    "file": "24-industry_40_training_course_for_bosch",
+    "vapi_id": "a124057e-3a4c-4a40-bf3a-4e43f7617c94",
+    "status": "failed"
+  },
+  {
+    "file": "23-digital_toolkits_for_the_warehouse_of",
+    "vapi_id": "63c8553c-1f6f-4c3e-ac37-871e098bf3f3",
+    "status": "failed"
+  },
+  {
+    "file": "22-pact_226_multichannel_high_speed_pote",
+    "vapi_id": "aac052d5-fb07-47f1-8d93-ee2382dfaac7",
+    "status": "failed"
+  },
+  {
+    "file": "21-prepare___ai_beam__laser_processing_o",
+    "vapi_id": "c46a22c4-3b90-4d44-bd4a-22af9c133ccf",
+    "status": "failed"
+  },
+  {
+    "file": "20-material_flow_and_logistics_for_light",
+    "vapi_id": "d89055a7-f75d-45fd-8162-391f33f5f577",
+    "status": "failed"
+  },
+  {
+    "file": "19-advancing_automated_fiber_placement_t",
+    "vapi_id": "ae149c27-44de-463d-af0f-5f2a2df93ec4",
+    "status": "failed"
+  },
+  {
+    "file": "18-manufacturing_system_health_monitorin",
+    "vapi_id": "faa77d89-7806-4143-9a16-af96088207d0",
+    "status": "failed"
+  },
+  {
+    "file": "17-robotic_automation_concepts_for_zf_tr",
+    "vapi_id": "1d46538e-9e9e-4541-b011-e3334830e74f",
+    "status": "failed"
+  },
+  {
+    "file": "16-forming_of_metallic_bipolar_plates_fr",
+    "vapi_id": "b63b19d1-a8e0-4030-8b6d-1fb00a84905e",
+    "status": "failed"
+  },
+  {
+    "file": "15-experimentation_and_analysis_of_a_5g_",
+    "vapi_id": "1005a8f1-ccb2-476d-9995-c4d2f3a62133",
+    "status": "failed"
+  },
+  {
+    "file": "14-loop_energy__electrolyzer_validation.",
+    "vapi_id": "29122768-0792-4e60-b7a2-43b410e50e00",
+    "status": "failed"
+  },
+  {
+    "file": "13-pact_201_additive_manufacturing_platf",
+    "vapi_id": "a5866f0f-620b-4e8e-9700-015f982b3eb7",
+    "status": "failed"
+  },
+  {
+    "file": "12-star__ai_system_testing_tool.md",
+    "vapi_id": "e4b9fd95-12e1-479d-aee1-980a8d5897a4",
+    "status": "failed"
+  },
+  {
+    "file": "11-aiss__automated_implementation_of_sec",
+    "vapi_id": "cce3a724-5e6a-4ce4-980e-85eb4bdcaf79",
+    "status": "failed"
+  },
+  {
+    "file": "10-diamond_growth_prediction.md",
+    "vapi_id": "81b2c7c5-6c27-4c22-8ad7-0d60d621b3e2",
+    "status": "failed"
+  },
+  {
+    "file": "09-swiftid_rfid_inventory_app.md",
+    "vapi_id": "2c2b03c2-e020-43eb-b8e6-16a6d36fe445",
+    "status": "failed"
+  },
+  {
+    "file": "08-odni_ai_seedling__text_sentry.md",
+    "vapi_id": "8764142c-dbfc-40ad-bd77-8e17ceee3d83",
+    "status": "failed"
+  },
+  {
+    "file": "07-nlp_based_requirements_review.md",
+    "vapi_id": "cecc4035-b0c6-4ebb-8755-14af2f259eaf",
+    "status": "failed"
+  },
+  {
+    "file": "06-odni_ai_instrumentation.md",
+    "vapi_id": "cf82ace2-a7ed-4e29-b1eb-000195177deb",
+    "status": "failed"
+  },
+  {
+    "file": "05-doe_cybersecurity_for_smes.md",
+    "vapi_id": "a91fcd7c-057f-4b05-8fb6-3485fa08ac7f",
+    "status": "failed"
+  },
+  {
+    "file": "04-business_open_knowledge_network_bokn.",
+    "vapi_id": "2cacb4f4-efbd-4134-8819-b14b766b1666",
+    "status": "failed"
+  },
+  {
+    "file": "03-blockchain_solution_for_inter_satelli",
+    "vapi_id": "5209f529-feaf-41f1-b8f0-160622f59d25",
+    "status": "failed"
+  },
+  {
+    "file": "02-enhancing_audio_through_knowledge_dis",
+    "vapi_id": "8124a0de-5004-4896-860c-5e665f54f83a",
+    "status": "failed"
+  },
+  {
+    "file": "01-satellite_anomaly_prediction.md",
+    "vapi_id": "e94f2627-fa14-4c4a-af32-a5f20ebb889e",
+    "status": "failed"
+  },
+  {
+    "file": "55-pact_242_text_sentry_policy_aware_rag",
+    "vapi_id": "9ad1cd13-d226-4cd7-b07a-94b227bf24c9",
+    "status": "failed"
+  }
+]
