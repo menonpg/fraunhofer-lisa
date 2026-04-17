@@ -1,5 +1,35 @@
 [
   {
+    "call_id": "019d9bcf-bce9-7000-94ca-72957bd141eb",
+    "type": "inboundPhoneCall",
+    "started_at": "2026-04-17T14:19:36.221Z",
+    "ended_at": "2026-04-17T14:22:34.048Z",
+    "duration": 177.827,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019d9bcf-bce9-7000-94ca-72957bd141eb-1776435756630-79a96976-4be6-4b6d-87b2-2f72a5f75cf2-mono.wav",
+    "call_reason": "technology_assessment",
+    "call_reason_detail": "Inquiry into specific AI-driven manufacturing and intelligence community projects within Fraunhofer CMA's portfolio",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "The caller asked Lisa about AI-related manufacturing projects, specifically Pranafa's efforts, and later about a project led by Pralad Menin called Text Century. Lisa provided detailed descriptions of both projects, including their objectives and outcomes.",
+    "caller_type": "industry",
+    "domains_discussed": [
+      "AI-driven manufacturing",
+      "computer vision",
+      "predictive maintenance",
+      "secure OCR",
+      "NLP",
+      "LLM-based RAG pipelines"
+    ],
+    "projects_discussed": [
+      "Pranafa AI manufacturing efforts",
+      "Project 26 ROI Metal Finishing",
+      "Project 8 Text Century"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller showed interest in both industrial AI applications (manufacturing automation) and secure AI for intelligence community document processing, indicating cross-domain curiosity."
+  },
+  {
     "call_id": "lk-lisa-1776435512",
     "type": "web",
     "started_at": "2026-04-17T14:18:33.296462+00:00",
