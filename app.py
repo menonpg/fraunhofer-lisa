@@ -827,15 +827,19 @@ def api_chat():
     data = request.json or {}
     user_message = data.get("message", "").strip()
     response_style = data.get("response_style", "normal")
+    project_context = data.get("project_context", "") or ""
+    project_id = data.get("project_id")
 
     if not user_message:
         return jsonify({"error": "Provide a 'message' field"}), 400
 
     # Use soul_query — routes automatically between RAG and RLM, also searches calls
+    # If a specific project is focused, search for that project explicitly
     soul_result = {}
     route = "LLM only"
     try:
-        soul_result = soul_query(user_message, mode="auto")
+        search_query = (project_context + " " + user_message).strip() if project_context else user_message
+        soul_result = soul_query(search_query, mode="auto")
         route = soul_result.get("route", "FOCUSED")
         print(f"💡 soul_query route={route}, ms={soul_result.get('total_ms',0):.0f}")
     except Exception as e:
@@ -846,6 +850,12 @@ def api_chat():
         history_snapshot = list(_chat_history)
 
     system_prompt = _build_chat_system_prompt(response_style)
+    if project_context:
+        system_prompt += (
+            f"\n\n## CURRENT PROJECT FOCUS\n"
+            f"The user is asking about this specific project:\n{project_context}\n"
+            f"Focus your answers on this project."
+        )
     soul_answer = soul_result.get("answer", "") or ""
     if soul_answer and len(soul_answer.strip()) > 20 and "not available" not in soul_answer.lower():
         system_prompt += (
