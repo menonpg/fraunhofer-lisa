@@ -1,5 +1,38 @@
 [
   {
+    "call_id": "019da7b2-479d-788e-adc7-177894499af7",
+    "type": "inboundPhoneCall",
+    "started_at": "2026-04-19T21:42:52.260Z",
+    "ended_at": "2026-04-19T21:49:28.365Z",
+    "duration": 396.105,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019da7b2-479d-788e-adc7-177894499af7-1776635370969-b6a41d59-7f95-4f05-a1cd-8e04730c2838-mono.wav",
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "Caller explored AI projects, then shifted focus to healthcare and biotech, specifically compounding.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a caller who initially inquired about AI projects, specifically 'Text Century' for the intelligence community, then explored other AI domains before focusing on healthcare biotech and compounding.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "AI",
+      "healthcare",
+      "biotech",
+      "manufacturing",
+      "cybersecurity",
+      "aerospace",
+      "autonomous robotics",
+      "digital twins",
+      "supply chain intelligence",
+      "AI ethics",
+      "responsible AI governance"
+    ],
+    "projects_discussed": [
+      "Text Century"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller showed interest in both AI for intelligence applications and healthcare biotech, with a specific mention of compounding, which is not currently in the portfolio."
+  },
+  {
     "call_id": "019da659-d7c6-7001-9b07-0cd5d1da1070",
     "type": "inboundPhoneCall",
     "started_at": "2026-04-19T15:26:39.272Z",
