@@ -1,0 +1,41 @@
+{
+  "call_id": "019da7b2-479d-788e-adc7-177894499af7",
+  "type": "inboundPhoneCall",
+  "started_at": "2026-04-19T21:42:52.260Z",
+  "ended_at": "2026-04-19T21:49:28.365Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 396.105,
+  "recording_url": "https://storage.vapi.ai/019da7b2-479d-788e-adc7-177894499af7-1776635370969-b6a41d59-7f95-4f05-a1cd-8e04730c2838-mono.wav",
+  "cost": 0.791,
+  "transcript": "AI: Hello. I am Lisa, your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, health care, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nAI: I'm not sure what you're looking for with 8. Could you tell me more?\nUser: a I.\nUser: It's a I\nAI: Let me\nAI: Let me look that up.\nAI: Project number 8 is text century. An AI initiative for the intelligence community. It uses OCR, NLP, and secure RAG technology to digitize and intelligently search class classified directives. Improving data access, while protecting security. The project is led by Pralad, and funded by ODNI.\nUser: Tell me more about it.\nAI: Let me look that up. Text Century solves a critical intelligence community problem. Their directives are buried in paper documents, creating inefficiency and security risks. The solution combines secure OCR to digitize these documents. NLP to structure the data intelligently, and a local secured RAG retrieval augmented generation system so analysts can instantly find actionable insights, without exposing sensitive information to external systems. It's at the applied research stage, funded by ODNI with partner Arlis.\nUser: What are other areas to explore in the field?\nAI: Let me look that up. We have exciting AI and ML projects across several areas. Beyond intelligence applications, we're working on AI driven manufacturing optimization. Healthcare diagnostics, cybersecurity threat detection, and autonomous robotics. We also explore emerging areas like digital twins, for real time system modeling. Supply chain intelligence, and AI ethics. And responsible AI governance. What specific challenge or industry are you most interested in?\nUser: Can you repeat 1 more time, Lisa?\nAI: Of course. We have exciting AI and ML projects across several areas. Beyond intelligence applications, we're working on AI driven manufacturing optimization. Health care diagnostics, cybersecurity threat detection, and autonomous robotics. We also explore emerging areas like digital twins for real time system modeling. Supply chain intelligence, and AI ethics and responsible AI governance. What specific challenge or industry are you most interested in?\nUser: Health care.\nAI: Let me look that up. We have several health care projects in our portfolio spanning AI diagnostics. Biotech innovation, and clinical decision support. Could you narrow it down? Are you interested in\nUser: Biotech\nAI: Let me look that up.\nAI: Let me search more specifically for our biotech projects. We have biotech projects in our portfolio focused on biological innovation and health care advancement. Could you tell me more about what interests you? Are you looking at drug discovery? Genetic research, medical devices, or something else. That'll help me point\nUser: Compounding.\nAI: Let me look that up.\nAI: I don't have a specific compounding pharmacy project in our current portfolio. But we do work across biotech, health care, and manufacturing innovation. Would you like to explore\nUser: Manufacturing.\nAI: Would Let me look that up.\nAI: We have 20 manufacturing projects. They span AI driven optimization. Additive manufacturing, robotics, quality assurance, predictive maintenance, and digital twins. We also combine manufacturing with energy, sustainability, biotech, and health care. Which area excites you most? Optimization,\nUser: API\nAI: quality\nAI: Let me look that up. Let me look that up. We have quality assured assurance and inspection projects using AI and computer vision for manufacturing. We also work in biotech and pharmaceutical manufacturing. Are you looking for projects focused on active pharmaceutical ingredient manufacturing? Or quality control systems\nUser: Yes.\nAI: Let me look that up. We have biotech and pharmaceutical manufacturing projects in our portfolio, that combine quality assurance with AI. However, I don't have detailed information on a specific API manufacturing project right now. Would you like me to connect you with our team to explore this opportunity further? Or would you like to hear about our quality assurance and biotech projects?\nUser: I wanna hear about the quality assurance\nAI: Let me look that up.\nAI: Let me search more specifically for quality assurance projects.\nUser: Thank you.\nAI: Project You're welcome. If you'd like to explore our quality assurance, biotech, or any other manufacturing projects further, feel free to reach out. I'm here to help. Have a great day.\nUser: Thank you so much.\nAI: You're very welcome. It was great chatting with you about our\nUser: Bye bye, Lisa.\nAI: Bye. Take care, and feel free to reach out anytime.\nUser: Take care.\nAI: You too.\nUser: Yes, ma'am.\nAI: Have a wonderful day.\nUser: Bye.\nAI: Bye.\nUser: You as well.\n",
+  "timestamp": "2026-04-19T21:49:33.440186+00:00",
+  "analysis": {
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "Caller explored AI projects, then shifted focus to healthcare and biotech, specifically compounding.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a caller who initially inquired about AI projects, specifically 'Text Century' for the intelligence community, then explored other AI domains before focusing on healthcare biotech and compounding.",
+    "key_insights": "Caller showed interest in both AI for intelligence applications and healthcare biotech, with a specific mention of compounding, which is not currently in the portfolio.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "AI",
+      "healthcare",
+      "biotech",
+      "manufacturing",
+      "cybersecurity",
+      "aerospace",
+      "autonomous robotics",
+      "digital twins",
+      "supply chain intelligence",
+      "AI ethics",
+      "responsible AI governance"
+    ],
+    "projects_discussed": [
+      "Text Century"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should note the caller's dual interest in AI for intelligence community applications and healthcare biotech, particularly compounding, which may require identifying relevant projects or partners."
+  }
+}
