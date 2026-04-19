@@ -1,0 +1,35 @@
+{
+  "call_id": "019da659-d7c6-7001-9b07-0cd5d1da1070",
+  "type": "inboundPhoneCall",
+  "started_at": "2026-04-19T15:26:39.272Z",
+  "ended_at": "2026-04-19T15:28:34.622Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 115.35,
+  "recording_url": "https://storage.vapi.ai/019da659-d7c6-7001-9b07-0cd5d1da1070-1776612517222-c3da18f8-e0e1-4d3d-84bd-4a2d06af288d-mono.wav",
+  "cost": 0.2128,
+  "transcript": "AI: Hello. I am Lisa. Your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, health care, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: Hi, Lisa. I'd like to know a little bit about your projects relating to BMW.\nUser: Can you tell me about projects you've done for them?\nAI: Let me give you a summary of our BMW work. We have 4 active projects with BMW. Predictive maintenance, We built an AI system that prevents production stops at their Spartanburg plant by predicting equipment failures in paint shop motors before they happen. Saving thousands per minute in downtime. Supply chain risk. We created an AI tool that forecasts supply delays and recommends actions to reduce expensive expedited freight shipments. Targeting a 10 percent reduction in expedites. Battery foil defects. We're optimizing their\nUser: Tell me a little bit about that supply chain project, Lisa. Is this stop you there and tell me about that supply chain project. What was the impact of that project?\nAI: Let me tell you about the supply chain project. We built a real time monitoring system integrated into BMW's SA cloud. That uses AI to predict supply delays before they impact the assembly line. When delays are identified, system recommends optimal actions through a dashboard for material planners. The target impact is to reduce expensive expedited freight shipments by\nUser: Alright. Thank you. Thank you, Lisa. That's all I wanted to know. Thank you. Have a good day.\nAI: You're welcome. Thanks for your\n",
+  "timestamp": "2026-04-19T15:28:39.901191+00:00",
+  "analysis": {
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "Caller wanted details on Fraunhofer CMA projects done for BMW, specifically the supply chain project.",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "The caller asked Lisa about Fraunhofer CMA's projects with BMW, focusing on the supply chain risk project. Lisa provided details on the AI-based real-time monitoring system and its intended impact.",
+    "key_insights": "Caller was specifically interested in BMW-related projects, particularly the supply chain AI tool integrated into BMW's SA cloud.",
+    "caller_type": "industry",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "AI",
+      "manufacturing",
+      "supply chain optimization"
+    ],
+    "projects_discussed": [
+      "Predictive maintenance for paint shop motors",
+      "Supply chain risk forecasting",
+      "Battery foil defect optimization"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should note that some callers may focus on specific corporate clients like BMW and want deeper details on individual projects, especially impact metrics."
+  }
+}
