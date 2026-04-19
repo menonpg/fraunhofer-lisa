@@ -1,5 +1,32 @@
 [
   {
+    "call_id": "019da659-d7c6-7001-9b07-0cd5d1da1070",
+    "type": "inboundPhoneCall",
+    "started_at": "2026-04-19T15:26:39.272Z",
+    "ended_at": "2026-04-19T15:28:34.622Z",
+    "duration": 115.35,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019da659-d7c6-7001-9b07-0cd5d1da1070-1776612517222-c3da18f8-e0e1-4d3d-84bd-4a2d06af288d-mono.wav",
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "Caller wanted details on Fraunhofer CMA projects done for BMW, specifically the supply chain project.",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "The caller asked Lisa about Fraunhofer CMA's projects with BMW, focusing on the supply chain risk project. Lisa provided details on the AI-based real-time monitoring system and its intended impact.",
+    "caller_type": "industry",
+    "domains_discussed": [
+      "AI",
+      "manufacturing",
+      "supply chain optimization"
+    ],
+    "projects_discussed": [
+      "Predictive maintenance for paint shop motors",
+      "Supply chain risk forecasting",
+      "Battery foil defect optimization"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller was specifically interested in BMW-related projects, particularly the supply chain AI tool integrated into BMW's SA cloud."
+  },
+  {
     "call_id": "lk-lisa-1776451274",
     "type": "web",
     "started_at": "2026-04-17T18:41:15.864512+00:00",
