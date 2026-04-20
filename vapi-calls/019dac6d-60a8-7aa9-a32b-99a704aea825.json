@@ -1,0 +1,32 @@
+{
+  "call_id": "019dac6d-60a8-7aa9-a32b-99a704aea825",
+  "type": "webCall",
+  "started_at": "2026-04-20T19:45:43.098Z",
+  "ended_at": "2026-04-20T19:49:38.493Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 235.395,
+  "recording_url": "https://storage.vapi.ai/019dac6d-60a8-7aa9-a32b-99a704aea825-1776714581050-88d90838-03fd-46c0-b9a1-9c499a8d4f6c-mono.wav",
+  "cost": 0.4096,
+  "transcript": "AI: Hello, I am Lisa. Your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, healthcare, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: Do you hear that? Or do you hear\nAI: I hear you just\nUser: What\nAI: I hear you fine. I'm ready to help. What would you like to know about our Fraunhofer CMA projects and technologies?\nUser: tell me about the AIM project.\nAI: Let me look that up.\nAI: I found a project called TextSentry. That might be what you meant by AEM. Voice transcription can mix those up. It's an AINLP project. For the office of the director of national intelligence.\nUser: So Tell me about the AIM, a I m Product.\nAI: Let me look that up.\nAI: I'm not finding a project specific\nAI: called AM. Could you spell it out or give me a few more details? That way I can search more accurately for what you're looking for.\nUser: AirPeon\nAI: Let me look that up.\nAI: I'm not finding a project called AirPeon in our portfolio. Could you try spelling it differently? Or let me know what area it's in? Like aerospace, robotics, or AI. That'll help me narrow it down\nUser: integration of manufacturing aim\nAI: Let me look that up.\nAI: I found 17 manufacturers plus AI projects. But no specific AIIM. Project. Can you give me more context? Like the customer, technology focus, or lead person's name. That'll help\nUser: You know, it's funny because it it when I say it aim, it's it it writes out AIM. But then when it says, I can't find AIIM, so it gets he gets it right first.\nAI: You're absolutely right.\nAI: That's a good catch.\nAI: The system does pick up AM when you say it. But then I'm searching wrong. Let me try again with just aim. Still no luck. Can you give me another hint? Is it an acronym or a full project name? Or maybe the lead person's name, That'll help me track it down.\nUser: Say it again?\nAI: Sure. I'm asking. Can you give me another hint about the AM project? Like, is it\nUser: integration of manufacturing.\nAI: is Let me look that up.\nAI: I'm not finding a project with that exact name. Can you tell me a bit more? Like, what the\nUser: But But\n",
+  "timestamp": "2026-04-20T19:49:44.408776+00:00",
+  "analysis": {
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "Caller attempted to get information about a specific project referred to as AIM or AIIM related to integration of manufacturing.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller sought details about a project they referred to as AIM or AIIM, possibly related to integration of manufacturing, but Lisa could not locate it in the portfolio and requested more details.",
+    "key_insights": "The caller may have been referring to a project with a similar acronym but unclear spelling; voice transcription errors caused confusion between AIM and AIIM.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "AI",
+      "manufacturing"
+    ],
+    "projects_discussed": [
+      "TextSentry"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should note that voice transcription errors can cause confusion with acronyms; when a caller insists on a specific acronym, confirm spelling early and cross-check related domains."
+  }
+}
