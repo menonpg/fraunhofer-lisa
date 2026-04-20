@@ -1,5 +1,29 @@
 [
   {
+    "call_id": "019dac6d-60a8-7aa9-a32b-99a704aea825",
+    "type": "webCall",
+    "started_at": "2026-04-20T19:45:43.098Z",
+    "ended_at": "2026-04-20T19:49:38.493Z",
+    "duration": 235.395,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019dac6d-60a8-7aa9-a32b-99a704aea825-1776714581050-88d90838-03fd-46c0-b9a1-9c499a8d4f6c-mono.wav",
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "Caller attempted to get information about a specific project referred to as AIM or AIIM related to integration of manufacturing.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller sought details about a project they referred to as AIM or AIIM, possibly related to integration of manufacturing, but Lisa could not locate it in the portfolio and requested more details.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "AI",
+      "manufacturing"
+    ],
+    "projects_discussed": [
+      "TextSentry"
+    ],
+    "language_primary": "en",
+    "key_insights": "The caller may have been referring to a project with a similar acronym but unclear spelling; voice transcription errors caused confusion between AIM and AIIM."
+  },
+  {
     "call_id": "019da7b2-479d-788e-adc7-177894499af7",
     "type": "inboundPhoneCall",
     "started_at": "2026-04-19T21:42:52.260Z",
