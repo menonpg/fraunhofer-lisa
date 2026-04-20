@@ -1,5 +1,32 @@
 [
   {
+    "call_id": "full-avatar-1776714857415",
+    "type": "fullAvatar",
+    "started_at": "",
+    "ended_at": "",
+    "duration": 0,
+    "ended_reason": "",
+    "recording_url": "",
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "Caller asked about the AIM project and sought details on its technology focus.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller repeatedly asked Lisa about the AIM project, which Lisa described as Advanced Integration of Manufacturing focused on laser welding for copper components in EV motors and battery systems, but confusion over project naming led to incomplete resolution.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "manufacturing",
+      "electric vehicles",
+      "battery systems",
+      "laser welding"
+    ],
+    "projects_discussed": [
+      "AIM",
+      "TextSentry"
+    ],
+    "language_primary": "en",
+    "key_insights": "There was repeated confusion between AIM and AIIM due to voice transcription errors; AIM is in proof-of-concept stage using blue/green lasers for copper welding."
+  },
+  {
     "call_id": "019dac6d-60a8-7aa9-a32b-99a704aea825",
     "type": "webCall",
     "started_at": "2026-04-20T19:45:43.098Z",
