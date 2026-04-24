@@ -1,5 +1,34 @@
 [
   {
+    "call_id": "full-avatar-1777018513727",
+    "type": "fullAvatar",
+    "started_at": "",
+    "ended_at": "",
+    "duration": 0,
+    "ended_reason": "",
+    "recording_url": "",
+    "call_reason": "partnership",
+    "call_reason_detail": "Exploring potential collaboration between BMW's Factory Automation Research group and Fraunhofer CMA projects related to automation and Industry 4.0.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "Lisa spoke with a caller potentially from BMW's Factory Automation Research group, discussing alignment between BMW's automation initiatives and Fraunhofer CMA's projects in predictive maintenance, defect detection, and process optimization.",
+    "caller_type": "industry",
+    "domains_discussed": [
+      "automation",
+      "AI",
+      "predictive maintenance",
+      "process optimization",
+      "Industry 4.0"
+    ],
+    "projects_discussed": [
+      "automated defect detection",
+      "predictive maintenance",
+      "supply chain risk tools"
+    ],
+    "language_primary": "de",
+    "key_insights": "Caller appears to be interested in integrating BMW demonstrators into a collaborative project or platform, possibly involving a small website to showcase them."
+  },
+  {
     "call_id": "019dbe8d-87c5-7000-8a65-965a304831da",
     "type": "webCall",
     "started_at": "2026-04-24T08:14:00.156Z",
