@@ -1,5 +1,27 @@
 [
   {
+    "call_id": "019dbe8d-d370-711d-9a77-66f771f12e1e",
+    "type": "webCall",
+    "started_at": "2026-04-24T08:14:19.362Z",
+    "ended_at": "2026-04-24T08:15:17.913Z",
+    "duration": 58.551,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019dbe8d-d370-711d-9a77-66f771f12e1e-1777018520551-e2e263fc-04f6-4150-a528-8b00a65dd243-mono.wav",
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "Caller explored the idea of creating a small website to showcase their demonstrators.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller discussed with Lisa the concept of making a small website to present their demonstrators, indicating interest in technology presentation.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "web development",
+      "technology demonstration"
+    ],
+    "projects_discussed": [],
+    "language_primary": "de",
+    "key_insights": "Caller is considering a web-based platform for showcasing demonstrators, possibly seeking inspiration or collaboration."
+  },
+  {
     "call_id": "full-avatar-1777018513727",
     "type": "fullAvatar",
     "started_at": "",
