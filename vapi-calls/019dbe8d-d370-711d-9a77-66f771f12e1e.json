@@ -1,0 +1,30 @@
+{
+  "call_id": "019dbe8d-d370-711d-9a77-66f771f12e1e",
+  "type": "webCall",
+  "started_at": "2026-04-24T08:14:19.362Z",
+  "ended_at": "2026-04-24T08:15:17.913Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 58.551,
+  "recording_url": "https://storage.vapi.ai/019dbe8d-d370-711d-9a77-66f771f12e1e-1777018520551-e2e263fc-04f6-4150-a528-8b00a65dd243-mono.wav",
+  "cost": 0.1111,
+  "transcript": "User: 3 piece\nAI: Hello, I am Lisa. Your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI. Manufacturing, healthcare, cybersecurity, aerospace, and more.\nAI: More What area of technology or innovation interests you?\nUser: hab mir gedacht, das wär auch was für uns. Das wir sone kleine Webseite machen. Wo wir unsere ganzen Demonstratoren reinkommen Quatsch, dass Sie auch hört denn? Die die Quartstau, deswegen\nAI: I\n",
+  "timestamp": "2026-04-24T08:15:23.102026+00:00",
+  "analysis": {
+    "call_reason": "domain_exploration",
+    "call_reason_detail": "Caller explored the idea of creating a small website to showcase their demonstrators.",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The caller discussed with Lisa the concept of making a small website to present their demonstrators, indicating interest in technology presentation.",
+    "key_insights": "Caller is considering a web-based platform for showcasing demonstrators, possibly seeking inspiration or collaboration.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "web development",
+      "technology demonstration"
+    ],
+    "projects_discussed": [],
+    "language_primary": "de",
+    "learning": "Lisa should note the caller's interest in creating a website for demonstrators and be prepared to suggest relevant Fraunhofer projects or tools that could support this."
+  }
+}
