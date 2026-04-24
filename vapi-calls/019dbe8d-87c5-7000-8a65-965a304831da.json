@@ -1,0 +1,27 @@
+{
+  "call_id": "019dbe8d-87c5-7000-8a65-965a304831da",
+  "type": "webCall",
+  "started_at": "2026-04-24T08:14:00.156Z",
+  "ended_at": "2026-04-24T08:14:08.207Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 8.051,
+  "recording_url": "https://storage.vapi.ai/019dbe8d-87c5-7000-8a65-965a304831da-1777018450815-4d6968b5-6b36-4bf0-a868-31a9858acb48-mono.wav",
+  "cost": 0.0087,
+  "transcript": "AI: Hello, I am Lisa. Your guide to the Fraunhofer Center\n",
+  "timestamp": "2026-04-24T08:14:13.471160+00:00",
+  "analysis": {
+    "call_reason": "other",
+    "call_reason_detail": "Call ended before reason was established",
+    "sentiment": "neutral",
+    "resolution": "abandoned",
+    "summary": "Lisa initiated the call as a guide to the Fraunhofer Center, but the conversation ended almost immediately without further details.",
+    "key_insights": null,
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [],
+    "projects_discussed": [],
+    "language_primary": "en",
+    "learning": "No information was gathered; call ended before any discussion."
+  }
+}
