@@ -1,5 +1,36 @@
 [
   {
+    "call_id": "019dd12d-bf83-7001-8ba7-036baa7ef291",
+    "type": "inboundPhoneCall",
+    "started_at": "2026-04-27T23:02:09.728Z",
+    "ended_at": "2026-04-27T23:03:59.454Z",
+    "duration": 109.726,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019dd12d-bf83-7001-8ba7-036baa7ef291-1777331042055-a02ab699-ccb8-4be9-88df-81b4d4c35688-mono.wav",
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "Asked about NASA projects and a retrieval augmented generation project called TextSentry",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "Lisa spoke with a caller who inquired about Fraunhofer CMA's NASA projects and a retrieval augmented generation project named TextSentry. Lisa clarified the NASA projects and explained that TextSentry is for ODNI, not TechCentury.",
+    "caller_type": "unknown",
+    "domains_discussed": [
+      "blockchain",
+      "natural language processing",
+      "retrieval augmented generation",
+      "optical character recognition",
+      "space systems",
+      "software assurance"
+    ],
+    "projects_discussed": [
+      "Project 3",
+      "Project 7",
+      "Project 53",
+      "Project 8"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller was interested in specific projects for NASA and mistakenly associated TextSentry with TechCentury; Lisa corrected the association to ODNI."
+  },
+  {
     "call_id": "019dbe8d-d370-711d-9a77-66f771f12e1e",
     "type": "webCall",
     "started_at": "2026-04-24T08:14:19.362Z",
