@@ -1,0 +1,39 @@
+{
+  "call_id": "019dd12d-bf83-7001-8ba7-036baa7ef291",
+  "type": "inboundPhoneCall",
+  "started_at": "2026-04-27T23:02:09.728Z",
+  "ended_at": "2026-04-27T23:03:59.454Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 109.726,
+  "recording_url": "https://storage.vapi.ai/019dd12d-bf83-7001-8ba7-036baa7ef291-1777331042055-a02ab699-ccb8-4be9-88df-81b4d4c35688-mono.wav",
+  "cost": 0.1771,
+  "transcript": "AI: Hello, I am Lisa. Your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, health care, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: Lisa, please can you tell me about the projects that we've done for NASA?\nAI: Let me look that up.\nAI: We've worked on 3 NASA projects. Project number 3 develops blockchain based intersatellite messaging for NASA and satellite operators. Project number 7 uses natural language processing to help NASA NASA's software assurance engineers review software requirements more efficiently and catch defects earlier. We also have a NASA SBIR project in progress. Project number 53. All are focused on improving critical space and software systems.\nUser: Okay. So tell us about the projects that you've done for tech Century. I understand that you have a technology for retrieval augmented generation, and it's called TextSentry.\nAI: Let me look that up.\nAI: I found our rag and text Century project, though it's actually for the office of the director of National Intelligence. ODNI. Not TechCentury. Project number 8 uses retrieval augmented generate with OCR and NLP to help the intelligence community securely access insights from complex directives. It includes a custom\nUser: Okay. Thank you, Lisa. I that's all I wanted to know. Thank you.\nAI: You're welcome. Feel free to reach out anytime you'd like\n",
+  "timestamp": "2026-04-27T23:04:05.498387+00:00",
+  "analysis": {
+    "call_reason": "project_inquiry",
+    "call_reason_detail": "Asked about NASA projects and a retrieval augmented generation project called TextSentry",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "Lisa spoke with a caller who inquired about Fraunhofer CMA's NASA projects and a retrieval augmented generation project named TextSentry. Lisa clarified the NASA projects and explained that TextSentry is for ODNI, not TechCentury.",
+    "key_insights": "Caller was interested in specific projects for NASA and mistakenly associated TextSentry with TechCentury; Lisa corrected the association to ODNI.",
+    "caller_type": "unknown",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "blockchain",
+      "natural language processing",
+      "retrieval augmented generation",
+      "optical character recognition",
+      "space systems",
+      "software assurance"
+    ],
+    "projects_discussed": [
+      "Project 3",
+      "Project 7",
+      "Project 53",
+      "Project 8"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should remember that some callers may confuse project names or clients, so clarifying project ownership and scope is important."
+  }
+}
