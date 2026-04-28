@@ -1713,6 +1713,11 @@ def deo_proposal():
     tone_inst = tone_map.get(tone, tone_map["hybrid"])
 
     tick = '```'
+    # Extract project names from CMA context for explicit grounding
+    import re as _re
+    proj_names = _re.findall(r'(?:TextSentry|PACT|DAVE|[A-Z]{2,}[0-9]*(?:\s+[0-9.]+)?|Project\s+[A-Z0-9]+)', cma_ctx) if cma_ctx else []
+    proj_names_str = ", ".join(set(proj_names[:8])) if proj_names else "CMA project portfolio"
+
     prompt = f"""You are a senior Fraunhofer CMA proposal writer. Generate a complete, professional project proposal.
 
 CUSTOMER: {customer}
@@ -1721,10 +1726,13 @@ DOMAIN: {industry_str if industry_str else 'auto-detect'}
 TIMELINE: {timeline}
 TONE: {tone_inst}
 
-FRAUNHOFER CMA RELEVANT PROJECTS (ground the approach in these):
+SPECIFIC CMA PROJECTS TO REFERENCE (cite these by name in the proposal):
+{proj_names_str}
+
+FULL CMA KNOWLEDGE BASE CONTEXT:
 {cma_ctx if cma_ctx else 'Draw on CMA expertise in AI, manufacturing, healthcare, cybersecurity, energy, autonomous systems.'}
 
-WEB RESEARCH:
+WEB RESEARCH (use for current state-of-the-art context):
 {web_ctx if web_ctx else 'N/A'}
 
 Write a complete proposal in Markdown with these sections:
