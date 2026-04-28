@@ -47,6 +47,7 @@ GITHUB_BRANCH = os.environ.get("GITHUB_BRANCH", "main")
 
 # --- Avatar mode config ---
 AZURE_SPEECH_KEY = os.environ.get("AZURE_SPEECH_KEY", AZURE_OPENAI_KEY)
+BRAVE_API_KEY = os.environ.get("BRAVE_API_KEY", "")
 AZURE_SPEECH_REGION = os.environ.get("AZURE_SPEECH_REGION", "swedencentral")
 LIVEAVATAR_API_KEY = os.environ.get("LIVEAVATAR_API_KEY", "810d1e58-289a-11f1-8d28-066a7fa2e369")
 
@@ -1479,16 +1480,51 @@ def _deo_claude(prompt, max_tokens=1200):
     return _chat_with_azure([{"role": "user", "content": prompt}])
 
 
+def _deo_web_search(query, count=5):
+    """Brave Search for DE-Ω context enrichment. Returns top snippets as a string."""
+    if not BRAVE_API_KEY:
+        return ""
+    try:
+        resp = req.get(
+            "https://api.search.brave.com/res/v1/web/search",
+            headers={"Accept": "application/json", "X-Subscription-Token": BRAVE_API_KEY},
+            params={"q": query, "count": count, "search_lang": "en"},
+            timeout=8
+        )
+        if resp.status_code != 200:
+            return ""
+        results = resp.json().get("web", {}).get("results", [])
+        snippets = []
+        for r in results[:count]:
+            title = r.get("title", "")
+            desc = r.get("description", "")
+            url = r.get("url", "")
+            if desc:
+                snippets.append(f"[{title}] {desc} ({url})")
+        return "\n".join(snippets)
+    except Exception as e:
+        print(f"⚠️ Brave search error: {e}")
+        return ""
+
+
 @app.route("/deo/context", methods=["POST","OPTIONS"])
 def deo_context():
     if request.method=="OPTIONS":
         r=jsonify({});r.headers["Access-Control-Allow-Origin"]="*";r.headers["Access-Control-Allow-Headers"]="Content-Type";return r
     data=request.get_json(silent=True) or {}
     query=data.get("query","")
-    context=soul_query_fast(query) if query else ""
-    # Count rough hits
-    hits=len([c for c in context.split("\n\n") if len(c)>50]) if context else 0
-    r=jsonify({"context":context,"hits":hits})
+    # 1. CMA knowledge base (Qdrant)
+    qdrant_context = soul_query_fast(query) if query else ""
+    hits = len([c for c in qdrant_context.split("\n\n") if len(c)>50]) if qdrant_context else 0
+    # 2. Web search (Brave) for up-to-date domain knowledge
+    web_context = _deo_web_search(query) if query else ""
+    # Combine — clearly labelled so Module 1 knows what's CMA vs web
+    combined = ""
+    if qdrant_context:
+        combined += "=== Fraunhofer CMA Projects (Qdrant) ===\n" + qdrant_context[:800]
+    if web_context:
+        combined += "\n\n=== Web Search Results ===\n" + web_context[:800]
+    r=jsonify({"context": combined, "hits": hits, "web_hits": len(web_context.split("\n")) if web_context else 0})
     r.headers["Access-Control-Allow-Origin"]="*"
     return r
 
@@ -1503,16 +1539,24 @@ def deo_module1():
     ctx_section=f"\n\nRelevant CMA project context:\n{context[:800]}" if context else ""
     prompt=f"""You are DE-Ω Module 1: Structured Hypothesis Generation.
 
-Problem: {problem}{ctx_section}
+The CENTRAL QUESTION you must answer is: {problem}
 
-Generate 3-4 candidate hypotheses. Each must satisfy:
+Use the context below ONLY to ground your hypotheses in specific facts, terminology, and real examples. The hypotheses must directly address the central question — do not drift into generic statements.
+
+Context (CMA projects + web search):
+{context[:1200] if context else 'none'}
+
+Generate 3-4 candidate hypotheses that DIRECTLY answer: {problem}
+
+Each must satisfy:
 1. Non-redundancy (not a restatement of known facts)
 2. Cross-domain coupling (involves ≥2 domains)
 3. Mathematical convertibility (can be formalized)
 4. Falsifiability (testable prediction)
+5. Direct relevance to the central question above
 
 Respond ONLY with valid JSON, no markdown, no code fences:
-{{"hypotheses":[{{"name":"short name","description":"1-2 sentence hypothesis","math_form":"brief mathematical expression or relationship","domains":["domain1","domain2"]}}]}}"""
+{{"hypotheses":[{{"name":"short name","description":"1-2 sentence hypothesis that directly addresses the question","math_form":"brief mathematical expression","domains":["domain1","domain2"]}}]}}"""
     import json as _json
     try:
         raw=_deo_claude(prompt,1000)
@@ -1607,14 +1651,20 @@ def deo_output():
     prom_text="\n".join([f"- {p.get('name','')}: {p.get('dcvl_notes','')}" for p in promoted]) if promoted else "none"
     prompt=f"""You are DE-Ω Final Output: Rank promoted hypotheses and produce experimental designs.
 
-Problem: {problem}
-Promoted hypotheses: {prom_text}
+CENTRAL QUESTION: {problem}
 
-For each promoted hypothesis, provide a ranked output with experimental validation path.
-Rank by: (1) impact potential, (2) experimental tractability, (3) cross-domain leverage.
+Promoted hypotheses:
+{prom_text}
+
+Each ranked output MUST:
+1. Directly address the central question: {problem}
+2. Be concrete and specific — not generic
+3. Include falsification criterion tied to the original question
+
+Rank by: (1) direct relevance to question, (2) impact potential, (3) experimental tractability.
 
 Respond ONLY with valid JSON, no markdown, no code fences:
-{{"ranked":[{{"name":"name","priority":"high|med|low","summary":"1 sentence summary","experimental_path":"concrete experimental steps and falsification criterion"}}],"audit_summary":"2-3 sentence overall audit summary"}}"""
+{{"ranked":[{{"name":"name","priority":"high|med|low","summary":"1 sentence that directly answers how this addresses the question","experimental_path":"concrete steps + falsification criterion specific to this question"}}],"audit_summary":"2-3 sentences summarizing what DE-Ω found in answer to: {problem}"}}"""
     import json as _json
     try:
         raw=_deo_claude(prompt,1000)
