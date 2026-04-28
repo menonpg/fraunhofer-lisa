@@ -1770,6 +1770,17 @@ Output ONLY Markdown. Start with proposal title as H1."""
     except Exception as e:
         md = f"# Error\n\n{e}"
 
+    # Log to GitHub async
+    try:
+        import threading as _th
+        _th.Thread(target=log_cma_tool, args=("proposal",
+            {"problem": problem, "customer": customer, "industry": industry, "tone": tone, "timeline": timeline},
+            md[:200],
+            md
+        ), daemon=True).start()
+    except Exception as _le:
+        print(f"log err: {_le}")
+
     r = jsonify({"markdown": md})
     r.headers["Access-Control-Allow-Origin"] = "*"
     return r
@@ -1838,6 +1849,87 @@ Respond ONLY with valid JSON, no markdown, no code fences:
     except Exception as e:
         result = {"prospects": [], "domains": [], "matrix": [], "error": str(e)}
 
+    # Log to GitHub async
+    try:
+        import threading as _th
+        _th.Thread(target=log_cma_tool, args=("ideas",
+            {"problem": problem, "industry": industry},
+            f"{len(result.get('prospects',[]))} prospects, {len(result.get('domains',[]))} domains",
+            result
+        ), daemon=True).start()
+    except Exception as _le:
+        print(f"log err: {_le}")
+
     r = jsonify(result)
+    r.headers["Access-Control-Allow-Origin"] = "*"
+    return r
+
+
+# =============================================================================
+# CMA Tool Logging (proposal + ideas) — GitHub-backed
+# =============================================================================
+
+def log_cma_tool(tool, inputs, output_summary, full_output=None):
+    """Save a CMA tool usage log to GitHub under cma-logs/{id}.json and update index."""
+    if not GITHUB_TOKEN:
+        print("⚠️ No GITHUB_TOKEN — skipping CMA log")
+        return
+    import uuid, datetime as _dt
+    log_id = str(uuid.uuid4())
+    ts = _dt.datetime.utcnow().isoformat() + "Z"
+    record = {
+        "id": log_id,
+        "tool": tool,
+        "timestamp": ts,
+        "inputs": inputs,
+        "output_summary": output_summary,
+        "full_output": full_output,
+    }
+    try:
+        content = json.dumps(record, indent=2, ensure_ascii=False)
+        github_put_file(f"cma-logs/{log_id}.json", content,
+                        f"cma-log: {tool} — {ts[:16]}")
+
+        # Update index
+        idx_path = "cma-logs/index.json"
+        existing, sha = github_get_file(idx_path)
+        idx = json.loads(existing) if existing else []
+        idx.insert(0, {
+            "id": log_id,
+            "tool": tool,
+            "timestamp": ts,
+            "summary": output_summary[:120],
+            "problem": (inputs.get("problem","") or "")[:100],
+            "customer": inputs.get("customer",""),
+            "industry": inputs.get("industry",""),
+        })
+        idx = idx[:200]  # keep last 200
+        github_put_file(idx_path, json.dumps(idx, indent=2, ensure_ascii=False),
+                        f"cma-logs index: {len(idx)} entries", sha)
+        print(f"✅ CMA log saved: {log_id} ({tool})")
+    except Exception as e:
+        print(f"❌ CMA log error: {e}")
+
+
+@app.route("/cma-logs", methods=["GET"])
+def cma_logs_index():
+    """Return the CMA logs index JSON."""
+    existing, _ = github_get_file("cma-logs/index.json")
+    if not existing:
+        r = jsonify([])
+    else:
+        r = jsonify(json.loads(existing))
+    r.headers["Access-Control-Allow-Origin"] = "*"
+    return r
+
+
+@app.route("/cma-logs/<log_id>", methods=["GET"])
+def cma_log_detail(log_id):
+    """Return a single CMA log entry."""
+    content, _ = github_get_file(f"cma-logs/{log_id}.json")
+    if not content:
+        r = jsonify({"error": "not found"}), 404
+        return r
+    r = jsonify(json.loads(content))
     r.headers["Access-Control-Allow-Origin"] = "*"
     return r
