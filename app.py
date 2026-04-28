@@ -1773,3 +1773,71 @@ Output ONLY Markdown. Start with proposal title as H1."""
     r = jsonify({"markdown": md})
     r.headers["Access-Control-Allow-Origin"] = "*"
     return r
+
+
+@app.route("/deo/ideas", methods=["POST","OPTIONS"])
+def deo_ideas():
+    if request.method == "OPTIONS":
+        r = jsonify({})
+        r.headers["Access-Control-Allow-Origin"] = "*"
+        r.headers["Access-Control-Allow-Headers"] = "Content-Type"
+        return r
+    data = request.get_json(silent=True) or {}
+    problem  = data.get("problem", "")
+    industry = data.get("industry", "")
+    context  = data.get("context", "")
+
+    cma_ctx = context.split("=== Web Search Results ===")[0].replace("=== Fraunhofer CMA Projects (Qdrant) ===","").strip() if context else ""
+
+    prompt = f"""You are a business development strategist for Fraunhofer CMA, a leading applied research institute.
+
+A CMA team has developed a solution for the following problem:
+PROBLEM / PROPOSAL: {problem}
+INDUSTRY: {industry or 'as described in the problem'}
+
+CMA KNOWLEDGE BASE CONTEXT:
+{cma_ctx if cma_ctx else 'Use general CMA expertise in AI, manufacturing, healthcare, cybersecurity, energy, autonomous systems.'}
+
+Generate:
+
+1. PROSPECTS — 4-5 other companies or organizations who have the same or very similar problem and would benefit from CMA's approach. Be specific (real company types, sectors, sizes).
+
+2. DOMAINS — 4-5 other industry domains where the same core approach/technology could be applied with adaptation.
+
+3. OPPORTUNITY MATRIX — 6-8 rows combining the most compelling prospect + domain combinations, ranked by CMA fit.
+
+Respond ONLY with valid JSON, no markdown, no code fences:
+{{
+  "prospects": [
+    {{"name": "company/org type or real name", "description": "why they have this problem", "type": "Industrial|Healthcare|Government|SME", "size": "Enterprise|Mid-market|SME", "domain": "their industry", "why": "specific reason CMA's solution fits them"}}
+  ],
+  "domains": [
+    {{"domain": "domain name", "application": "how the core approach applies here", "category": "Manufacturing|Healthcare|Defense|Energy|Logistics|etc", "adaptation": "what would need to change from the original approach"}}
+  ],
+  "matrix": [
+    {{"target": "prospect or org type", "domain": "domain", "fit": "High|Medium", "rationale": "one sentence"}}
+  ]
+}}"""
+
+    try:
+        url = (
+            f"{AZURE_OPENAI_ENDPOINT}/openai/deployments/{AZURE_OPENAI_DEPLOYMENT}"
+            f"/chat/completions?api-version=2025-01-01-preview"
+        )
+        resp = req.post(
+            url,
+            headers={"api-key": AZURE_OPENAI_KEY, "Content-Type": "application/json"},
+            json={"messages": [{"role": "user", "content": prompt}], "max_tokens": 2000, "temperature": 0.8},
+            timeout=45,
+        )
+        resp.raise_for_status()
+        raw = resp.json()["choices"][0]["message"]["content"].strip()
+        raw = raw.lstrip("```json").lstrip("```").rstrip("```").strip()
+        import json as _json
+        result = _json.loads(raw)
+    except Exception as e:
+        result = {"prospects": [], "domains": [], "matrix": [], "error": str(e)}
+
+    r = jsonify(result)
+    r.headers["Access-Control-Allow-Origin"] = "*"
+    return r
