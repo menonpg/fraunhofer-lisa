@@ -1468,3 +1468,167 @@ def livekit_start_session():
         "identity": identity,
         "dispatch_ok": dispatch_ok,
     })
+
+
+# =============================================================================
+# DE-Ω Discovery Engine API — Live showcase endpoints
+# =============================================================================
+
+def _deo_claude(prompt, max_tokens=1200):
+    """Call claude-haiku for DE-Ω pipeline steps. Fast and cheap."""
+    import anthropic as _ant
+    client = _ant.Anthropic(api_key=ANTHROPIC_API_KEY)
+    msg = client.messages.create(
+        model="claude-haiku-4-5-20251001",
+        max_tokens=max_tokens,
+        messages=[{"role":"user","content":prompt}]
+    )
+    return msg.content[0].text.strip()
+
+
+@app.route("/deo/context", methods=["POST","OPTIONS"])
+def deo_context():
+    if request.method=="OPTIONS":
+        r=jsonify({});r.headers["Access-Control-Allow-Origin"]="*";r.headers["Access-Control-Allow-Headers"]="Content-Type";return r
+    data=request.get_json(silent=True) or {}
+    query=data.get("query","")
+    context=soul_query_fast(query) if query else ""
+    # Count rough hits
+    hits=len([c for c in context.split("\n\n") if len(c)>50]) if context else 0
+    r=jsonify({"context":context,"hits":hits})
+    r.headers["Access-Control-Allow-Origin"]="*"
+    return r
+
+
+@app.route("/deo/module1", methods=["POST","OPTIONS"])
+def deo_module1():
+    if request.method=="OPTIONS":
+        r=jsonify({});r.headers["Access-Control-Allow-Origin"]="*";r.headers["Access-Control-Allow-Headers"]="Content-Type";return r
+    data=request.get_json(silent=True) or {}
+    problem=data.get("problem","")
+    context=data.get("context","")
+    ctx_section=f"\n\nRelevant CMA project context:\n{context[:800]}" if context else ""
+    prompt=f"""You are DE-Ω Module 1: Structured Hypothesis Generation.
+
+Problem: {problem}{ctx_section}
+
+Generate 3-4 candidate hypotheses. Each must satisfy:
+1. Non-redundancy (not a restatement of known facts)
+2. Cross-domain coupling (involves ≥2 domains)
+3. Mathematical convertibility (can be formalized)
+4. Falsifiability (testable prediction)
+
+Respond ONLY with valid JSON, no markdown, no code fences:
+{{"hypotheses":[{{"name":"short name","description":"1-2 sentence hypothesis","math_form":"brief mathematical expression or relationship","domains":["domain1","domain2"]}}]}}"""
+    import json as _json
+    try:
+        raw=_deo_claude(prompt,1000)
+        # strip any accidental markdown
+        raw=raw.strip().lstrip("```json").lstrip("```").rstrip("```").strip()
+        result=_json.loads(raw)
+    except Exception as e:
+        result={"hypotheses":[{"name":"Parse error","description":str(e),"math_form":"","domains":[]}]}
+    r=jsonify(result)
+    r.headers["Access-Control-Allow-Origin"]="*"
+    return r
+
+
+@app.route("/deo/module2a", methods=["POST","OPTIONS"])
+def deo_module2a():
+    if request.method=="OPTIONS":
+        r=jsonify({});r.headers["Access-Control-Allow-Origin"]="*";r.headers["Access-Control-Allow-Headers"]="Content-Type";return r
+    data=request.get_json(silent=True) or {}
+    problem=data.get("problem","")
+    hypotheses=data.get("hypotheses",[])
+    hyp_text="\n".join([f"- {h.get('name','')}: {h.get('description','')} | Math: {h.get('math_form','')}" for h in hypotheses])
+    prompt=f"""You are DE-Ω Module 2A: Structural Audit.
+
+Problem: {problem}
+
+Hypotheses to audit:
+{hyp_text}
+
+For each hypothesis, assess:
+- Mathematical coherence (is the math form well-defined?)
+- Internal consistency (no self-contradiction)
+- Falsifiability (can it be disproven?)
+- Proof-path traceability (is it traceable to assumptions?)
+
+Respond ONLY with valid JSON, no markdown, no code fences:
+{{"results":[{{"name":"hypothesis name","pass":true,"reason":"brief explanation of pass or rejection reason"}}]}}"""
+    import json as _json
+    try:
+        raw=_deo_claude(prompt,800)
+        raw=raw.strip().lstrip("```json").lstrip("```").rstrip("```").strip()
+        result=_json.loads(raw)
+    except Exception as e:
+        result={"results":[{"name":"error","pass":False,"reason":str(e)}]}
+    r=jsonify(result)
+    r.headers["Access-Control-Allow-Origin"]="*"
+    return r
+
+
+@app.route("/deo/module2b", methods=["POST","OPTIONS"])
+def deo_module2b():
+    if request.method=="OPTIONS":
+        r=jsonify({});r.headers["Access-Control-Allow-Origin"]="*";r.headers["Access-Control-Allow-Headers"]="Content-Type";return r
+    data=request.get_json(silent=True) or {}
+    problem=data.get("problem","")
+    hypotheses=data.get("hypotheses",[])
+    context=data.get("context","")
+    ctx_section=f"\n\nCMA knowledge base context:\n{context[:600]}" if context else ""
+    hyp_text="\n".join([f"- {h}" for h in hypotheses]) if hypotheses else "none"
+    prompt=f"""You are DE-Ω Module 2B: Domain Constraint Validation Layer (DCVL).
+
+Problem: {problem}{ctx_section}
+
+Hypotheses (passed structural audit):
+{hyp_text}
+
+Identify the relevant domain registries for this problem (e.g. biological, chemical, engineering, mathematical, etc.)
+Then for each hypothesis, apply domain-specific hard-gate rules.
+A hypothesis may be structurally valid but domain-incomplete — note if strengthening was needed.
+
+Respond ONLY with valid JSON, no markdown, no code fences:
+{{"domain_registries":["domain1","domain2"],"results":[{{"name":"hypothesis name","promoted":true,"strengthened":false,"dcvl_notes":"brief domain validation result"}}]}}"""
+    import json as _json
+    try:
+        raw=_deo_claude(prompt,900)
+        raw=raw.strip().lstrip("```json").lstrip("```").rstrip("```").strip()
+        result=_json.loads(raw)
+    except Exception as e:
+        result={"domain_registries":[],"results":[{"name":"error","promoted":False,"strengthened":False,"dcvl_notes":str(e)}]}
+    r=jsonify(result)
+    r.headers["Access-Control-Allow-Origin"]="*"
+    return r
+
+
+@app.route("/deo/output", methods=["POST","OPTIONS"])
+def deo_output():
+    if request.method=="OPTIONS":
+        r=jsonify({});r.headers["Access-Control-Allow-Origin"]="*";r.headers["Access-Control-Allow-Headers"]="Content-Type";return r
+    data=request.get_json(silent=True) or {}
+    problem=data.get("problem","")
+    promoted=data.get("promoted",[])
+    context=data.get("context","")
+    prom_text="\n".join([f"- {p.get('name','')}: {p.get('dcvl_notes','')}" for p in promoted]) if promoted else "none"
+    prompt=f"""You are DE-Ω Final Output: Rank promoted hypotheses and produce experimental designs.
+
+Problem: {problem}
+Promoted hypotheses: {prom_text}
+
+For each promoted hypothesis, provide a ranked output with experimental validation path.
+Rank by: (1) impact potential, (2) experimental tractability, (3) cross-domain leverage.
+
+Respond ONLY with valid JSON, no markdown, no code fences:
+{{"ranked":[{{"name":"name","priority":"high|med|low","summary":"1 sentence summary","experimental_path":"concrete experimental steps and falsification criterion"}}],"audit_summary":"2-3 sentence overall audit summary"}}"""
+    import json as _json
+    try:
+        raw=_deo_claude(prompt,1000)
+        raw=raw.strip().lstrip("```json").lstrip("```").rstrip("```").strip()
+        result=_json.loads(raw)
+    except Exception as e:
+        result={"ranked":[],"audit_summary":str(e)}
+    r=jsonify(result)
+    r.headers["Access-Control-Allow-Origin"]="*"
+    return r
