@@ -1475,15 +1475,8 @@ def livekit_start_session():
 # =============================================================================
 
 def _deo_claude(prompt, max_tokens=1200):
-    """Call claude-haiku for DE-Ω pipeline steps. Fast and cheap."""
-    import anthropic as _ant
-    client = _ant.Anthropic(api_key=ANTHROPIC_API_KEY)
-    msg = client.messages.create(
-        model="claude-haiku-4-5-20251001",
-        max_tokens=max_tokens,
-        messages=[{"role":"user","content":prompt}]
-    )
-    return msg.content[0].text.strip()
+    """Call Azure OpenAI GPT-5 for DE-Ω pipeline steps — reuses existing Lisa Azure infra."""
+    return _chat_with_azure([{"role": "user", "content": prompt}])
 
 
 @app.route("/deo/context", methods=["POST","OPTIONS"])
