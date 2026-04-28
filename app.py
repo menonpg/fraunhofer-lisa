@@ -1521,9 +1521,9 @@ def deo_context():
     # Combine — clearly labelled so Module 1 knows what's CMA vs web
     combined = ""
     if qdrant_context:
-        combined += "=== Fraunhofer CMA Projects (Qdrant) ===\n" + qdrant_context[:800]
+        combined += "=== Fraunhofer CMA Projects (Qdrant) ===\n" + qdrant_context
     if web_context:
-        combined += "\n\n=== Web Search Results ===\n" + web_context[:800]
+        combined += "\n\n=== Web Search Results ===\n" + web_context
     r=jsonify({"context": combined, "hits": hits, "web_hits": len(web_context.split("\n")) if web_context else 0})
     r.headers["Access-Control-Allow-Origin"]="*"
     return r
@@ -1536,7 +1536,7 @@ def deo_module1():
     data=request.get_json(silent=True) or {}
     problem=data.get("problem","")
     context=data.get("context","")
-    ctx_section=f"\n\nRelevant CMA project context:\n{context[:800]}" if context else ""
+    ctx_section=f"\n\nRelevant CMA project context:\n{context}" if context else ""
     prompt=f"""You are DE-Ω Module 1: Structured Hypothesis Generation.
 
 The CENTRAL QUESTION you must answer is: {problem}
@@ -1544,7 +1544,7 @@ The CENTRAL QUESTION you must answer is: {problem}
 Use the context below ONLY to ground your hypotheses in specific facts, terminology, and real examples. The hypotheses must directly address the central question — do not drift into generic statements.
 
 Context (CMA projects + web search):
-{context[:1200] if context else 'none'}
+{context if context else 'none'}
 
 Generate 3-4 candidate hypotheses that DIRECTLY answer: {problem}
 
@@ -1595,7 +1595,7 @@ Respond ONLY with valid JSON, no markdown, no code fences:
 {{"results":[{{"name":"hypothesis name","pass":true,"reason":"brief explanation of pass or rejection reason"}}]}}"""
     import json as _json
     try:
-        raw=_deo_claude(prompt,800)
+        raw=_deo_claude(prompt,1500)
         raw=raw.strip().lstrip("```json").lstrip("```").rstrip("```").strip()
         result=_json.loads(raw)
     except Exception as e:
@@ -1613,7 +1613,7 @@ def deo_module2b():
     problem=data.get("problem","")
     hypotheses=data.get("hypotheses",[])
     context=data.get("context","")
-    ctx_section=f"\n\nCMA knowledge base context:\n{context[:600]}" if context else ""
+    ctx_section=f"\n\nCMA knowledge base context:\n{context}" if context else ""
     hyp_text="\n".join([f"- {h}" for h in hypotheses]) if hypotheses else "none"
     prompt=f"""You are DE-Ω Module 2B: Domain Constraint Validation Layer (DCVL).
 
