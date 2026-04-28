@@ -1675,3 +1675,93 @@ Respond ONLY with valid JSON, no markdown, no code fences:
     r=jsonify(result)
     r.headers["Access-Control-Allow-Origin"]="*"
     return r
+
+
+# =============================================================================
+# CMA Proposal Generator
+# =============================================================================
+
+@app.route("/deo/proposal", methods=["POST","OPTIONS"])
+def deo_proposal():
+    if request.method == "OPTIONS":
+        r = jsonify({})
+        r.headers["Access-Control-Allow-Origin"] = "*"
+        r.headers["Access-Control-Allow-Headers"] = "Content-Type"
+        return r
+    data = request.get_json(silent=True) or {}
+    problem   = data.get("problem", "")
+    industry  = data.get("industry", "")
+    tone      = data.get("tone", "hybrid")
+    customer  = data.get("customer", "the customer")
+    timeline  = data.get("timeline", "6 months")
+    context   = data.get("context", "")
+
+    cma_ctx, web_ctx = "", ""
+    if "=== Web Search Results ===" in context:
+        parts = context.split("=== Web Search Results ===")
+        cma_ctx = parts[0].replace("=== Fraunhofer CMA Projects (Qdrant) ===","").strip()
+        web_ctx = parts[1].strip() if len(parts)>1 else ""
+    else:
+        cma_ctx = context
+
+    industry_str = f" in the {industry} domain" if industry else ""
+    tone_map = {
+        "technical": "Include detailed technical methodology, Mermaid architecture diagrams, and specific tooling.",
+        "executive": "Focus on business value and outcomes. Keep technical depth minimal.",
+        "hybrid": "Open with executive summary (business value). Then add technical depth with architecture diagram."
+    }
+    tone_inst = tone_map.get(tone, tone_map["hybrid"])
+
+    tick = '```'
+    prompt = f"""You are a senior Fraunhofer CMA proposal writer. Generate a complete, professional project proposal.
+
+CUSTOMER: {customer}
+PROBLEM: {problem}
+DOMAIN: {industry_str if industry_str else 'auto-detect'}
+TIMELINE: {timeline}
+TONE: {tone_inst}
+
+FRAUNHOFER CMA RELEVANT PROJECTS (ground the approach in these):
+{cma_ctx if cma_ctx else 'Draw on CMA expertise in AI, manufacturing, healthcare, cybersecurity, energy, autonomous systems.'}
+
+WEB RESEARCH:
+{web_ctx if web_ctx else 'N/A'}
+
+Write a complete proposal in Markdown with these sections:
+1. Executive Summary (3-4 sentences: problem, approach, outcome, why CMA)
+2. Problem Statement & Context (detail the challenge, root causes, current gaps)
+3. Proposed Approach (methodology grounded in CMA capabilities; cite real project names from context where relevant)
+4. Technical Architecture (include a Mermaid flowchart or sequence diagram inside {tick}mermaid...{tick} block)
+5. Work Packages & Timeline (Markdown table with phases, deliverables, milestones for {timeline})
+6. Expected Outcomes & KPIs (quantified where possible)
+7. Why Fraunhofer CMA (track record, relevant past work, unique position)
+8. Investment & Next Steps (frame as TBD pending scoping; suggest discovery workshop)
+
+Rules:
+- Be specific and concrete — not marketing fluff
+- Do NOT invent fake project names; use real ones from context or say "CMA project portfolio"
+- Mermaid diagram must be valid (flowchart LR or sequenceDiagram)
+- Use Markdown tables for timeline
+- Length: comprehensive (800-1200 words body)
+
+Output ONLY Markdown. Start with proposal title as H1."""
+
+    try:
+        url = (
+            f"{AZURE_OPENAI_ENDPOINT}/openai/deployments/{AZURE_OPENAI_DEPLOYMENT}"
+            f"/chat/completions?api-version=2025-01-01-preview"
+        )
+        resp = req.post(
+            url,
+            headers={"api-key": AZURE_OPENAI_KEY, "Content-Type": "application/json"},
+            json={"messages": [{"role": "user", "content": prompt}], "max_tokens": 3000, "temperature": 0.7},
+            timeout=60,
+        )
+        resp.raise_for_status()
+        md = resp.json()["choices"][0]["message"]["content"]
+    except Exception as e:
+        md = f"# Error\n\n{e}"
+
+    r = jsonify({"markdown": md})
+    r.headers["Access-Control-Allow-Origin"] = "*"
+    return r
