@@ -1,0 +1,130 @@
+{
+  "id": "43141da2-f735-4ce3-bf4d-cce935d76fb9",
+  "tool": "ideas",
+  "timestamp": "2026-04-28T20:49:08.244398Z",
+  "inputs": {
+    "problem": "A manufacturer was losing product to foaming defects - rework, scrap, and no clear answer on why.\nWe took their shopfloor data and within one week had identified which parameters were driving the defects and what to change.\nImmediate result: 20% defect reduction. No months-long study. No disruption to the line. One week.",
+    "industry": ""
+  },
+  "output_summary": "5 prospects, 5 domains",
+  "full_output": {
+    "prospects": [
+      {
+        "name": "LG Energy Solution",
+        "description": "High-volume battery manufacturing with recurring quality issues in electrode and cell assembly processes.",
+        "type": "Industrial",
+        "size": "Enterprise",
+        "domain": "Battery manufacturing",
+        "why": "CMA’s rapid parameter optimization can reduce defect rates without disrupting continuous production lines."
+      },
+      {
+        "name": "Pfizer Injectable Manufacturing",
+        "description": "Precision vial filling lines with occasional misfill defects leading to costly product loss.",
+        "type": "Healthcare",
+        "size": "Enterprise",
+        "domain": "Pharmaceutical manufacturing",
+        "why": "CMA’s AI-guided correlation analysis can detect and prevent fill errors early in the process."
+      },
+      {
+        "name": "Tesla Gigafactory",
+        "description": "Complex automated assembly processes for EV batteries with yield losses due to process instability.",
+        "type": "Industrial",
+        "size": "Enterprise",
+        "domain": "Automotive battery manufacturing",
+        "why": "CMA’s solution can quickly identify key process parameters impacting yield and improve throughput."
+      },
+      {
+        "name": "Siemens Healthineers Diagnostic Equipment Production",
+        "description": "Precision assembly of diagnostic devices with intermittent defects linked to environmental and machine parameters.",
+        "type": "Healthcare",
+        "size": "Enterprise",
+        "domain": "Medical device manufacturing",
+        "why": "CMA’s correlation modeling can isolate problem parameters in complex assembly processes."
+      },
+      {
+        "name": "Johnson Controls",
+        "description": "Mass production of industrial batteries with scrap losses due to unpredictable foaming and sealing defects.",
+        "type": "Industrial",
+        "size": "Enterprise",
+        "domain": "Industrial battery manufacturing",
+        "why": "CMA’s rapid defect-driver identification can reduce scrap rates and improve profitability."
+      }
+    ],
+    "domains": [
+      {
+        "domain": "Pharmaceutical vial and syringe filling",
+        "application": "Optimize parameters in precise liquid filling processes to reduce under/overfill defects.",
+        "category": "Healthcare",
+        "adaptation": "Integrate with cleanroom regulatory compliance and GMP data handling."
+      },
+      {
+        "domain": "Automotive paint and coating lines",
+        "application": "Identify process variables causing coating defects and optimize without production downtime.",
+        "category": "Manufacturing",
+        "adaptation": "Adapt for high variability due to environmental factors and multi-stage coating."
+      },
+      {
+        "domain": "Semiconductor wafer fabrication",
+        "application": "Correlate production parameters with microscopic yield defects for rapid process tuning.",
+        "category": "Manufacturing",
+        "adaptation": "Integrate with extremely high precision and cleanroom environment constraints."
+      },
+      {
+        "domain": "Food and beverage bottling",
+        "application": "Detect and mitigate fill-level inconsistencies and contamination risks in bottling lines.",
+        "category": "Logistics",
+        "adaptation": "Adjust models for variable viscosity and seasonal ingredient changes."
+      },
+      {
+        "domain": "Aerospace composite manufacturing",
+        "application": "Analyze curing and layup parameters to reduce structural defects in composite parts.",
+        "category": "Defense",
+        "adaptation": "Adapt to low-volume, high-cost production with stringent certification requirements."
+      }
+    ],
+    "matrix": [
+      {
+        "target": "Pfizer Injectable Manufacturing",
+        "domain": "Pharmaceutical vial and syringe filling",
+        "fit": "High",
+        "rationale": "Both involve high-precision filling processes where CMA’s model can rapidly detect defect drivers."
+      },
+      {
+        "target": "Tesla Gigafactory",
+        "domain": "Automotive paint and coating lines",
+        "fit": "Medium",
+        "rationale": "Paint defects impact quality and throughput; CMA can optimize parameters but environmental variability is high."
+      },
+      {
+        "target": "LG Energy Solution",
+        "domain": "Battery manufacturing",
+        "fit": "High",
+        "rationale": "Direct match to CMA’s proven foaming defect solution with clear scalability potential."
+      },
+      {
+        "target": "Siemens Healthineers Diagnostic Equipment Production",
+        "domain": "Semiconductor wafer fabrication",
+        "fit": "Medium",
+        "rationale": "High-precision defect analysis is applicable, but adaptation to semiconductor-specific processes is needed."
+      },
+      {
+        "target": "Johnson Controls",
+        "domain": "Industrial battery manufacturing",
+        "fit": "High",
+        "rationale": "Similar foaming defect problems make CMA’s approach immediately applicable."
+      },
+      {
+        "target": "Pfizer Injectable Manufacturing",
+        "domain": "Food and beverage bottling",
+        "fit": "Medium",
+        "rationale": "Fill-level optimization is relevant, but food and beverage industry has different regulatory and process dynamics."
+      },
+      {
+        "target": "Aerospace composite manufacturing",
+        "domain": "Aerospace composite manufacturing",
+        "fit": "Medium",
+        "rationale": "CMA’s parameter optimization could reduce costly defects, but production is low-volume and highly customized."
+      }
+    ]
+  }
+}
