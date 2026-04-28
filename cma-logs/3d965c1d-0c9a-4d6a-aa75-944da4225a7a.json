@@ -1,0 +1,136 @@
+{
+  "id": "3d965c1d-0c9a-4d6a-aa75-944da4225a7a",
+  "tool": "ideas",
+  "timestamp": "2026-04-28T20:22:34.844367Z",
+  "inputs": {
+    "problem": "A battery manufacturer was losing product to foaming defects - rework, scrap, and no clear answer on why.\nWe took their shopfloor data and within one week had identified which parameters were driving the defects and what to change.\nImmediate result: 20% defect reduction. No months-long study. No disruption to the line. One week.",
+    "industry": ""
+  },
+  "output_summary": "5 prospects, 5 domains",
+  "full_output": {
+    "prospects": [
+      {
+        "name": "CATL (Contemporary Amperex Technology Co. Limited)",
+        "description": "Large-scale battery manufacturer with complex production lines prone to yield losses from process defects.",
+        "type": "Industrial",
+        "size": "Enterprise",
+        "domain": "Battery Manufacturing",
+        "why": "CMA's rapid defect parameter detection could reduce scrap and improve throughput without halting production."
+      },
+      {
+        "name": "Panasonic Energy Division",
+        "description": "Produces lithium-ion batteries for EVs and electronics, with tight quality requirements and high output rates.",
+        "type": "Industrial",
+        "size": "Enterprise",
+        "domain": "Battery Manufacturing",
+        "why": "Can benefit from CMA's quick correlation analysis to solve unknown defect causes without lengthy studies."
+      },
+      {
+        "name": "LG Energy Solution",
+        "description": "Operates multiple battery plants with complex manufacturing processes where identifying defect drivers is challenging.",
+        "type": "Industrial",
+        "size": "Enterprise",
+        "domain": "Battery Manufacturing",
+        "why": "CMA's AI-guided pipeline fits their need for process optimization under high-volume conditions."
+      },
+      {
+        "name": "Northvolt",
+        "description": "European battery manufacturer scaling production rapidly, where process stability and quality are critical to avoid waste.",
+        "type": "Industrial",
+        "size": "Mid-market",
+        "domain": "Battery Manufacturing",
+        "why": "Could deploy CMA's approach to quickly stabilize new production lines and reduce early-stage defects."
+      },
+      {
+        "name": "Tesla Gigafactories",
+        "description": "High-volume battery production with tight tolerances and continuous improvement targets.",
+        "type": "Industrial",
+        "size": "Enterprise",
+        "domain": "Battery Manufacturing",
+        "why": "CMA's system could pinpoint parameter shifts causing defects without interrupting production cycles."
+      }
+    ],
+    "domains": [
+      {
+        "domain": "Automotive Paint and Coating Lines",
+        "application": "Detect and correlate process parameters causing surface defects in paint application.",
+        "category": "Manufacturing",
+        "adaptation": "Integrate vision system defect detection data and environmental controls into the model."
+      },
+      {
+        "domain": "Pharmaceutical Tablet Production",
+        "application": "Identify causes of tablet weight variation or coating imperfections from process data.",
+        "category": "Healthcare",
+        "adaptation": "Adapt for GMP compliance and traceability requirements."
+      },
+      {
+        "domain": "Semiconductor Wafer Fabrication",
+        "application": "Correlate process tool parameters with yield losses due to micro-defects.",
+        "category": "Manufacturing",
+        "adaptation": "Handle ultra-high precision data and integrate with fab MES systems."
+      },
+      {
+        "domain": "Food Processing and Packaging",
+        "application": "Detect parameter correlations to defects like seal failures or product contamination.",
+        "category": "Manufacturing",
+        "adaptation": "Include hygiene and food safety compliance constraints."
+      },
+      {
+        "domain": "Aerospace Composite Manufacturing",
+        "application": "Identify process parameter drivers for voids or delamination defects in composite layups.",
+        "category": "Defense",
+        "adaptation": "Adapt for multi-stage curing processes and material traceability."
+      }
+    ],
+    "matrix": [
+      {
+        "target": "CATL",
+        "domain": "Battery Manufacturing",
+        "fit": "High",
+        "rationale": "Direct match to proven defect reduction use case in high-volume battery production."
+      },
+      {
+        "target": "Panasonic Energy Division",
+        "domain": "Battery Manufacturing",
+        "fit": "High",
+        "rationale": "Similar manufacturing challenges and quality requirements make CMA's solution highly applicable."
+      },
+      {
+        "target": "Northvolt",
+        "domain": "Battery Manufacturing",
+        "fit": "High",
+        "rationale": "Rapid scaling and new line stabilization suit a fast, data-driven defect parameter analysis."
+      },
+      {
+        "target": "Tesla Gigafactories",
+        "domain": "Battery Manufacturing",
+        "fit": "High",
+        "rationale": "High production volumes and tight defect tolerances align with CMA's approach."
+      },
+      {
+        "target": "Automotive OEM Paint Shops",
+        "domain": "Automotive Paint and Coating Lines",
+        "fit": "Medium",
+        "rationale": "Similar need for identifying process parameters causing defects, but requires adaptation for environmental variables."
+      },
+      {
+        "target": "Major Pharmaceutical Manufacturers",
+        "domain": "Pharmaceutical Tablet Production",
+        "fit": "Medium",
+        "rationale": "Defect correlation approach is relevant, but needs regulatory adaptation."
+      },
+      {
+        "target": "Global Semiconductor Fabs",
+        "domain": "Semiconductor Wafer Fabrication",
+        "fit": "Medium",
+        "rationale": "High precision defect causation analysis fits well, but integration complexity is higher."
+      },
+      {
+        "target": "Aerospace Composite Plants",
+        "domain": "Aerospace Composite Manufacturing",
+        "fit": "Medium",
+        "rationale": "Defect reduction through parameter optimization applies, but cycle times are longer and processes differ."
+      }
+    ]
+  }
+}
