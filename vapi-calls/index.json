@@ -1,5 +1,32 @@
 [
   {
+    "call_id": "019dda4c-9d80-7336-8bff-ba7b7a66b5e2",
+    "type": "inboundPhoneCall",
+    "started_at": "2026-04-29T17:32:27.926Z",
+    "ended_at": "2026-04-29T17:33:57.092Z",
+    "duration": 89.166,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019dda4c-9d80-7336-8bff-ba7b7a66b5e2-1777484039811-8dace758-5bbc-40ab-8ac6-ba9f7339ba6e-mono.wav",
+    "call_reason": "technology_assessment",
+    "call_reason_detail": "Inquiry about applying Fraunhofer's data spaces technology to semantic search of historical NASA mission records",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "The caller asked Lisa about how Fraunhofer's data spaces technology could be applied to semantic search and retrieval of historical NASA mission plans. Lisa explained the Data Analysis and Visualization Engine (DAVE) and its relevance to the use case.",
+    "caller_type": "industry",
+    "domains_discussed": [
+      "data spaces",
+      "semantic search",
+      "retrieval augmented generation",
+      "data governance",
+      "aerospace"
+    ],
+    "projects_discussed": [
+      "Data Analysis and Visualization Engine (DAVE)"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller is interested in semantic search and retrieval augmented generation for NASA mission archives, with emphasis on data governance and security."
+  },
+  {
     "call_id": "019dd705-b105-700e-ae87-53d788f7ac43",
     "type": "inboundPhoneCall",
     "started_at": "2026-04-29T02:16:07.874Z",
