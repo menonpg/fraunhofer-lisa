@@ -1,0 +1,34 @@
+{
+  "call_id": "019dd705-b105-700e-ae87-53d788f7ac43",
+  "type": "inboundPhoneCall",
+  "started_at": "2026-04-29T02:16:07.874Z",
+  "ended_at": "2026-04-29T02:18:18.861Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 130.987,
+  "recording_url": "https://storage.vapi.ai/019dd705-b105-700e-ae87-53d788f7ac43-1777429101415-489a89a3-7fc0-4bed-bea9-7a1cf1651104-mono.wav",
+  "cost": 0.2377,
+  "transcript": "AI: Hello, I am Lisa. Your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI. Manufacturing, health care, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: Yeah, Lisa. So I'm primarily interested in the application of AI for document analysis and data spaces, this technology called data spaces. Can you tell me what you all have done in that space?\nAI: Let me look that up.\nAI: Great question. We've developed Dave. Data analysis and visualization engine.\nUser: And bring that.\nAI: A\nAI: Let me look that up. Based on what we have, Dave, data analysis and visualization engine, is our policy aware retrieval augmented generate system designed specifically for data spaces. It lets an LLM analyze and summarize documents while respecting\nUser: Okay. Lisa, can you explain how that could be applied to a project for NASA where we are trying to mine historical records on flight missions.\nAI: Let me look that up.\nAI: Dave would be ideal for mining NASA flight mission records. Our system uses natural language processing and policy aware retrieval to intelligently extract insights from large document collections. We've already worked with NASA Goddard on requirements analysis. Finding defects in 100 page documents in just 1 hour. For your historical mission data, Dave could surface patterns. Anomalies, and key findings while protecting sensitive or cloud information through built in policy constraints.\nUser: Alright. Thank you, Lisa. That's everything.\nAI: You're welcome. Feel free to reach out anytime you'd like to explore, how our technology can support your projects. Good luck with the NASA mission records initiative.\n",
+  "timestamp": "2026-04-29T02:18:24.041765+00:00",
+  "analysis": {
+    "call_reason": "technology_assessment",
+    "call_reason_detail": "Inquiry about AI applications for document analysis and data spaces, specifically for NASA historical mission records.",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "Lisa spoke with a caller interested in AI for document analysis and data spaces, discussing Fraunhofer's 'Dave' system and its potential application to NASA mission records.",
+    "key_insights": "Caller is working on a NASA project involving mining historical flight mission records and is interested in policy-aware AI tools for document analysis.",
+    "caller_type": "government",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "AI",
+      "document analysis",
+      "data spaces",
+      "aerospace"
+    ],
+    "projects_discussed": [
+      "Dave - Data Analysis and Visualization Engine"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should remember that the caller is involved in a NASA project and is specifically interested in using 'Dave' for mining and analyzing historical mission records with policy-aware constraints."
+  }
+}
