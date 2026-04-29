@@ -1,0 +1,35 @@
+{
+  "call_id": "019dda4c-9d80-7336-8bff-ba7b7a66b5e2",
+  "type": "inboundPhoneCall",
+  "started_at": "2026-04-29T17:32:27.926Z",
+  "ended_at": "2026-04-29T17:33:57.092Z",
+  "ended_reason": "customer-ended-call",
+  "duration": 89.166,
+  "recording_url": "https://storage.vapi.ai/019dda4c-9d80-7336-8bff-ba7b7a66b5e2-1777484039811-8dace758-5bbc-40ab-8ac6-ba9f7339ba6e-mono.wav",
+  "cost": 0.1405,
+  "transcript": "AI: Hello. I am Lisa. Your guide to the Fraunhofer Center Mid Atlantic Technology Portfolio. We have over 55 projects spanning AI, manufacturing, health care, cybersecurity, aerospace, and more. What area of technology or innovation interests you?\nUser: Yeah. Hi, Lisa. I have an interest in analyzing historical NASA record for the purpose of semantic search and retrieval on mission plans I understand that you all have done something with data spaces. And so can you tell me how that could be applied here?\nAI: Let me look that up.\nAI: Great question. We've developed Dave. Data analysis and visualization engine. A policy governed retrieval system that could directly apply to your NASA use case. It uses retrieval augmented generation, RAG. With semantic search to extract mission relevant information from document archives while maintaining data governance and security. Critical for handling\nUser: Thank you, Lisa. That's all I needed to know. And you\nAI: You're welcome. Feel free to reach out anytime you want to explore how our projects can support your work. Good luck with your NASA mission analysis.\n",
+  "timestamp": "2026-04-29T17:34:03.873369+00:00",
+  "analysis": {
+    "call_reason": "technology_assessment",
+    "call_reason_detail": "Inquiry about applying Fraunhofer's data spaces technology to semantic search of historical NASA mission records",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "The caller asked Lisa about how Fraunhofer's data spaces technology could be applied to semantic search and retrieval of historical NASA mission plans. Lisa explained the Data Analysis and Visualization Engine (DAVE) and its relevance to the use case.",
+    "key_insights": "Caller is interested in semantic search and retrieval augmented generation for NASA mission archives, with emphasis on data governance and security.",
+    "caller_type": "industry",
+    "caller_name": null,
+    "caller_phone": null,
+    "domains_discussed": [
+      "data spaces",
+      "semantic search",
+      "retrieval augmented generation",
+      "data governance",
+      "aerospace"
+    ],
+    "projects_discussed": [
+      "Data Analysis and Visualization Engine (DAVE)"
+    ],
+    "language_primary": "en",
+    "learning": "Lisa should remember that the caller is exploring semantic search for NASA mission archives and is interested in DAVE's capabilities for secure, policy-governed retrieval."
+  }
+}
