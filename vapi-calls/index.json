@@ -1,5 +1,31 @@
 [
   {
+    "call_id": "019dd705-b105-700e-ae87-53d788f7ac43",
+    "type": "inboundPhoneCall",
+    "started_at": "2026-04-29T02:16:07.874Z",
+    "ended_at": "2026-04-29T02:18:18.861Z",
+    "duration": 130.987,
+    "ended_reason": "customer-ended-call",
+    "recording_url": "https://storage.vapi.ai/019dd705-b105-700e-ae87-53d788f7ac43-1777429101415-489a89a3-7fc0-4bed-bea9-7a1cf1651104-mono.wav",
+    "call_reason": "technology_assessment",
+    "call_reason_detail": "Inquiry about AI applications for document analysis and data spaces, specifically for NASA historical mission records.",
+    "sentiment": "curious",
+    "resolution": "resolved",
+    "summary": "Lisa spoke with a caller interested in AI for document analysis and data spaces, discussing Fraunhofer's 'Dave' system and its potential application to NASA mission records.",
+    "caller_type": "government",
+    "domains_discussed": [
+      "AI",
+      "document analysis",
+      "data spaces",
+      "aerospace"
+    ],
+    "projects_discussed": [
+      "Dave - Data Analysis and Visualization Engine"
+    ],
+    "language_primary": "en",
+    "key_insights": "Caller is working on a NASA project involving mining historical flight mission records and is interested in policy-aware AI tools for document analysis."
+  },
+  {
     "call_id": "019dd12d-bf83-7001-8ba7-036baa7ef291",
     "type": "inboundPhoneCall",
     "started_at": "2026-04-27T23:02:09.728Z",
