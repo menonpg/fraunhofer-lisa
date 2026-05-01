@@ -1,0 +1,136 @@
+{
+  "id": "6ae49ecd-8b0e-449f-856d-15cc09e990b0",
+  "tool": "ideas",
+  "timestamp": "2026-05-01T21:33:18.416049Z",
+  "inputs": {
+    "problem": "A manufacturer was losing product to foaming defects - rework, scrap, and no clear answer on why.\nWe took their shopfloor data and within one week had identified which parameters were driving the defects and what to change.\nImmediate result: 20% defect reduction. No months-long study. No disruption to the line. One week.",
+    "industry": ""
+  },
+  "output_summary": "5 prospects, 5 domains",
+  "full_output": {
+    "prospects": [
+      {
+        "name": "Panasonic Energy Co.",
+        "description": "Major battery manufacturer with high-volume production that suffers from occasional foaming and electrolyte defects impacting yield.",
+        "type": "Industrial",
+        "size": "Enterprise",
+        "domain": "Battery manufacturing",
+        "why": "CMA's rapid parameter optimization could quickly reduce scrap rates without halting production."
+      },
+      {
+        "name": "Thermo Fisher Scientific",
+        "description": "Produces automated vial filling lines for pharmaceuticals and faces rejects due to micro-fill inaccuracies and late defect detection.",
+        "type": "Industrial",
+        "size": "Enterprise",
+        "domain": "Pharmaceutical manufacturing",
+        "why": "CMA's AI-guided defect correlation could optimize fill parameters and detect issues earlier."
+      },
+      {
+        "name": "Tesla Gigafactory",
+        "description": "High throughput EV battery cell assembly where small process deviations cause quality losses and expensive rework.",
+        "type": "Industrial",
+        "size": "Enterprise",
+        "domain": "EV battery production",
+        "why": "CMA's data-driven insights could reduce defect rates with minimal line disruption."
+      },
+      {
+        "name": "BioNTech",
+        "description": "Biotech company using automated bioprocessing lines where contamination or filling defects cause expensive batch losses.",
+        "type": "Healthcare",
+        "size": "Enterprise",
+        "domain": "Biopharmaceutical manufacturing",
+        "why": "CMA's parameter correlation approach could prevent defects before they occur in sensitive processes."
+      },
+      {
+        "name": "Siemens Healthineers",
+        "description": "Produces diagnostic reagent kits and automated dispensing hardware; defects in fill volume impact product consistency.",
+        "type": "Industrial",
+        "size": "Enterprise",
+        "domain": "Medical device and consumable manufacturing",
+        "why": "CMA's methodology could rapidly pinpoint causes of fill defects and optimize dispensing parameters."
+      }
+    ],
+    "domains": [
+      {
+        "domain": "Pharmaceutical vial filling",
+        "application": "Identify process parameters that cause fill volume or contamination defects and optimize them to reduce rejects.",
+        "category": "Healthcare",
+        "adaptation": "Integrate with sterile production monitoring systems and comply with GMP guidelines."
+      },
+      {
+        "domain": "Food and beverage bottling",
+        "application": "Correlate bottling line parameters to foam, fill level, or contamination defects and adjust in real time.",
+        "category": "Manufacturing",
+        "adaptation": "Account for variability in liquid viscosity and carbonation levels during analysis."
+      },
+      {
+        "domain": "Semiconductor wafer fabrication",
+        "application": "Detect correlations between environmental and process parameters and yield-limiting defects in wafers.",
+        "category": "Manufacturing",
+        "adaptation": "Integrate with cleanroom monitoring systems and handle large-scale sensor datasets."
+      },
+      {
+        "domain": "Automotive paint application",
+        "application": "Identify parameters causing surface defects like bubbles, runs, or thickness variations and optimize spraying.",
+        "category": "Manufacturing",
+        "adaptation": "Adapt model to handle multi-layer coating processes and diverse paint formulations."
+      },
+      {
+        "domain": "Lithium-ion battery cell assembly",
+        "application": "Correlate assembly parameters to defects such as foaming, sealing issues, or electrolyte leakage.",
+        "category": "Energy",
+        "adaptation": "Integrate with battery-specific quality control and safety monitoring requirements."
+      }
+    ],
+    "matrix": [
+      {
+        "target": "Panasonic Energy Co.",
+        "domain": "Lithium-ion battery cell assembly",
+        "fit": "High",
+        "rationale": "Same defect type and process as prior CMA success, enabling rapid deployment."
+      },
+      {
+        "target": "Tesla Gigafactory",
+        "domain": "Lithium-ion battery cell assembly",
+        "fit": "High",
+        "rationale": "Large-scale production with similar defect patterns allows CMA to deliver substantial ROI."
+      },
+      {
+        "target": "Thermo Fisher Scientific",
+        "domain": "Pharmaceutical vial filling",
+        "fit": "High",
+        "rationale": "CMA's approach directly addresses late defect detection and fill accuracy issues."
+      },
+      {
+        "target": "BioNTech",
+        "domain": "Pharmaceutical vial filling",
+        "fit": "Medium",
+        "rationale": "Sensitive processes require compliance adaptations but defect correlation is highly valuable."
+      },
+      {
+        "target": "Siemens Healthineers",
+        "domain": "Pharmaceutical vial filling",
+        "fit": "Medium",
+        "rationale": "Applicable to reagent fill optimization though with smaller scale than high-volume pharma lines."
+      },
+      {
+        "target": "Coca-Cola Bottling Plants",
+        "domain": "Food and beverage bottling",
+        "fit": "Medium",
+        "rationale": "Foaming and fill defects are common but adaptation needed for carbonation variability."
+      },
+      {
+        "target": "TSMC",
+        "domain": "Semiconductor wafer fabrication",
+        "fit": "Medium",
+        "rationale": "Defect correlation approach applies, but adaptation required for complex cleanroom environments."
+      },
+      {
+        "target": "BMW Automotive Assembly",
+        "domain": "Automotive paint application",
+        "fit": "Medium",
+        "rationale": "Paint defects impact quality; CMA's parameter optimization could reduce rework significantly."
+      }
+    ]
+  }
+}
