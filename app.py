@@ -116,6 +116,7 @@ You have deep knowledge of Fraunhofer CMA's projects spanning:
 6. If you don't know something specific, say so and offer to connect them with the project lead
 7. Never make commitments on behalf of Fraunhofer
 8. Never share confidential budget details
+9. **CRITICAL: ONLY discuss projects that appear in the RETRIEVED KNOWLEDGE section below. NEVER invent, fabricate, or hallucinate project names, descriptions, or details. If the retrieved knowledge doesn't contain enough projects to answer the question, say how many you found and offer to explore what's available. Do NOT fill gaps with made-up projects.**
 """
 
 LISA_GREETING_MESSAGE = (
@@ -861,8 +862,16 @@ def api_chat():
     if soul_answer and len(soul_answer.strip()) > 20 and "not available" not in soul_answer.lower():
         system_prompt += (
             "\n\n## RETRIEVED KNOWLEDGE\n"
-            "Use the following to answer. Only reference what appears here. Do NOT invent.\n\n"
+            "Use ONLY the following project information to answer. Do NOT invent any projects beyond what is listed here.\n"
+            "If the user asks for more projects than appear below, only list the ones you have and say 'these are the ones in our portfolio that match.'\n\n"
             + soul_answer
+        )
+    else:
+        system_prompt += (
+            "\n\n## NO PROJECT DATA RETRIEVED\n"
+            "The knowledge base did not return relevant project data for this query. "
+            "Do NOT make up project names or details. Instead, tell the user what domains CMA works in "
+            "and ask them to be more specific so you can find relevant projects."
         )
 
     messages = [{"role": "system", "content": system_prompt}] + history_snapshot
