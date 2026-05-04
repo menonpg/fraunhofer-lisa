@@ -1,5 +1,24 @@
 [
   {
+    "call_id": "lk-lisa-1777902558",
+    "type": "web",
+    "started_at": "2026-05-04T13:49:19.023801+00:00",
+    "ended_at": null,
+    "duration": 0,
+    "ended_reason": null,
+    "recording_url": null,
+    "call_reason": null,
+    "call_reason_detail": null,
+    "sentiment": "neutral",
+    "resolution": null,
+    "summary": "LiveKit voice session in progress…",
+    "caller_type": null,
+    "domains_discussed": null,
+    "projects_discussed": null,
+    "language_primary": null,
+    "key_insights": null
+  },
+  {
     "call_id": "019dda4c-9d80-7336-8bff-ba7b7a66b5e2",
     "type": "inboundPhoneCall",
     "started_at": "2026-04-29T17:32:27.926Z",
