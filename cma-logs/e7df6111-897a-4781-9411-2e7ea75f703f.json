@@ -1,0 +1,130 @@
+{
+  "id": "e7df6111-897a-4781-9411-2e7ea75f703f",
+  "tool": "ideas",
+  "timestamp": "2026-05-04T15:56:59.506432Z",
+  "inputs": {
+    "problem": "A manufacturer was losing product to foaming defects - rework, scrap, and no clear answer on why.\nWe took their shopfloor data and within one week had identified which parameters were driving the defects and what to change.\nImmediate result: 20% defect reduction. No months-long study. No disruption to the line. One week.",
+    "industry": ""
+  },
+  "output_summary": "5 prospects, 5 domains",
+  "full_output": {
+    "prospects": [
+      {
+        "name": "Panasonic Energy Co., Ltd.",
+        "description": "Major manufacturer of lithium-ion batteries facing yield losses from foaming and other process defects in electrode manufacturing.",
+        "type": "Industrial",
+        "size": "Enterprise",
+        "domain": "Battery manufacturing",
+        "why": "CMA's rapid parameter correlation analysis could quickly identify defect drivers without disrupting production."
+      },
+      {
+        "name": "Pfizer Inc. (Sterile Injectable Division)",
+        "description": "Pharmaceutical manufacturer experiencing losses from unstable automated vial filling and late defect detection.",
+        "type": "Healthcare",
+        "size": "Enterprise",
+        "domain": "Pharmaceutical manufacturing",
+        "why": "CMA's AI-guided defect correlation pipeline can optimize parameters to prevent filling errors."
+      },
+      {
+        "name": "Tesla Gigafactory",
+        "description": "High-volume EV battery production with tight cycle times and costly scrap from process instability.",
+        "type": "Industrial",
+        "size": "Enterprise",
+        "domain": "Battery manufacturing",
+        "why": "CMA's approach can rapidly pinpoint process issues and reduce scrap without halting production."
+      },
+      {
+        "name": "Siemens Healthineers",
+        "description": "Medical device manufacturer with automated assembly lines prone to micro-defects causing rework.",
+        "type": "Healthcare",
+        "size": "Enterprise",
+        "domain": "Medical device manufacturing",
+        "why": "CMA's rapid defect driver identification can improve yield and reduce downtime."
+      },
+      {
+        "name": "GlaxoSmithKline Consumer Healthcare",
+        "description": "Producer of liquid-filled consumer products with foaming defects during bottling causing scrap and recalls.",
+        "type": "Healthcare",
+        "size": "Enterprise",
+        "domain": "Consumer healthcare manufacturing",
+        "why": "CMA's parameter optimization could eliminate foaming defects without lengthy studies."
+      }
+    ],
+    "domains": [
+      {
+        "domain": "Automotive component manufacturing",
+        "application": "Identify process parameter correlations causing defects in high-speed assembly and machining.",
+        "category": "Manufacturing",
+        "adaptation": "Adjust AI model to handle mechanical assembly sensor data."
+      },
+      {
+        "domain": "Pharmaceutical liquid filling",
+        "application": "Optimize fill accuracy and prevent contamination based on process parameter data.",
+        "category": "Healthcare",
+        "adaptation": "Integrate regulatory compliance checks into analysis pipeline."
+      },
+      {
+        "domain": "Semiconductor fabrication",
+        "application": "Correlate minute process parameter variations with wafer defects to reduce scrap.",
+        "category": "Manufacturing",
+        "adaptation": "Enhance model for ultra-high precision and large parameter datasets."
+      },
+      {
+        "domain": "Food and beverage bottling",
+        "application": "Detect and prevent filling defects, spillage, or foaming in bottling lines.",
+        "category": "Manufacturing",
+        "adaptation": "Include sensory data on viscosity, carbonation, and temperature."
+      },
+      {
+        "domain": "Aerospace component machining",
+        "application": "Identify correlation between machining parameters and defects in critical aerospace parts.",
+        "category": "Manufacturing",
+        "adaptation": "Incorporate tolerance and certification requirements into optimization."
+      }
+    ],
+    "matrix": [
+      {
+        "target": "Panasonic Energy Co., Ltd.",
+        "domain": "Battery manufacturing",
+        "fit": "High",
+        "rationale": "Directly mirrors the initial CMA success case with foaming defects."
+      },
+      {
+        "target": "Pfizer Inc. (Sterile Injectable Division)",
+        "domain": "Pharmaceutical liquid filling",
+        "fit": "High",
+        "rationale": "Matches CMA's vial filling error detection and prevention capability."
+      },
+      {
+        "target": "Tesla Gigafactory",
+        "domain": "Battery manufacturing",
+        "fit": "High",
+        "rationale": "High-speed battery production faces similar defect correlation needs."
+      },
+      {
+        "target": "Siemens Healthineers",
+        "domain": "Medical device manufacturing",
+        "fit": "Medium",
+        "rationale": "Assembly defects can be addressed but require adaptation for micro-component data."
+      },
+      {
+        "target": "GlaxoSmithKline Consumer Healthcare",
+        "domain": "Food and beverage bottling",
+        "fit": "Medium",
+        "rationale": "Foaming and filling defects are relevant but process differs from battery production."
+      },
+      {
+        "target": "Intel Corporation",
+        "domain": "Semiconductor fabrication",
+        "fit": "Medium",
+        "rationale": "CMA's approach could be adapted for wafer defect correlation but requires high-precision adjustments."
+      },
+      {
+        "target": "Boeing Component Manufacturing",
+        "domain": "Aerospace component machining",
+        "fit": "Medium",
+        "rationale": "Defect parameter identification is valuable but aerospace requires stringent compliance integration."
+      }
+    ]
+  }
+}
