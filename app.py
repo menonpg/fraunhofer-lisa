@@ -89,7 +89,7 @@ LISA_SYSTEM_PROMPT = """You are Lisa, the Fraunhofer Center Mid-Atlantic (CMA) t
 - Always be enthusiastic about the technology while remaining factual
 
 ## WHAT YOU KNOW
-You have deep knowledge of Fraunhofer CMA's 55+ projects spanning:
+You have deep knowledge of Fraunhofer CMA's projects spanning:
 - AI/ML and Data Analytics
 - Advanced Manufacturing and Industry 4.0
 - Healthcare and Biomedical Engineering
@@ -120,7 +120,7 @@ You have deep knowledge of Fraunhofer CMA's 55+ projects spanning:
 
 LISA_GREETING_MESSAGE = (
     "Hello! I'm Lisa, your guide to the Fraunhofer Center Mid-Atlantic's "
-    "technology portfolio. We have over 55 projects spanning AI, manufacturing, healthcare, "
+    "technology portfolio. We have projects spanning AI, manufacturing, healthcare, "
     "cybersecurity, aerospace, and more. What area of technology or innovation interests you?"
 )
 
