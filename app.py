@@ -77,6 +77,11 @@ _calls_lock = threading.Lock()
 _chat_history = []
 _chat_lock = threading.Lock()
 
+# --- Chat sessions (keyed by session_id) ---
+_chat_sessions = {}  # {session_id: {"messages": [], "started_at": ..., "last_activity": ..., "saved": False}}
+_sessions_lock = threading.Lock()
+CHAT_SESSION_TIMEOUT = 300  # 5 min inactivity = session ended
+
 # --- Lisa's System Prompt ---
 LISA_SYSTEM_PROMPT = """You are Lisa, the Fraunhofer Center Mid-Atlantic (CMA) technology portfolio specialist. You are talking directly with someone interested in CMA's projects and capabilities.
 
@@ -695,12 +700,272 @@ def api_query():
     return jsonify(soul_query(question, mode=mode))
 
 
+# ============================================================================
+# Chat Session Tracking & Cataloging
+# ============================================================================
+
+CHAT_ANALYSIS_PROMPT = """You are analyzing a text chat conversation from the Fraunhofer CMA portfolio website chatbot.
+
+Provide a JSON analysis:
+{
+  "chat_reason": "project_inquiry|domain_exploration|partnership|technology_assessment|general_question|demo_request|other",
+  "chat_reason_detail": "brief specific reason",
+  "sentiment": "positive|neutral|negative|excited|curious",
+  "resolution": "resolved|followup_needed|referred_to_lead|abandoned",
+  "summary": "1-2 sentence summary of the conversation",
+  "key_insights": "anything notable or null",
+  "visitor_type": "industry|academic|government|investor|student|unknown",
+  "domains_discussed": ["list of technology domains discussed"],
+  "projects_discussed": ["list of specific project names discussed"],
+  "learning": "what should Lisa remember from this chat, or null"
+}
+
+Return ONLY valid JSON."""
+
+
+def _track_chat_message(session_id, role, content, project_context=""):
+    """Add a message to a tracked chat session."""
+    now = datetime.now(timezone.utc).isoformat()
+    with _sessions_lock:
+        if session_id not in _chat_sessions:
+            _chat_sessions[session_id] = {
+                "messages": [],
+                "started_at": now,
+                "last_activity": now,
+                "saved": False,
+                "source": "chatbot",
+                "project_context": project_context or None,
+            }
+        session = _chat_sessions[session_id]
+        session["messages"].append({"role": role, "content": content, "timestamp": now})
+        session["last_activity"] = now
+        if project_context:
+            session["project_context"] = project_context
+
+
+def _build_chat_transcript(session):
+    """Build a readable transcript from chat messages."""
+    lines = []
+    for msg in session.get("messages", []):
+        role = "Visitor" if msg["role"] == "user" else "Lisa"
+        lines.append(f"{role}: {msg['content']}")
+    return "\n".join(lines)
+
+
+def _analyze_chat(transcript, metadata):
+    """Analyze a chat transcript using the same LLM pipeline as calls."""
+    user_msg = f"Chat source: {metadata.get('source', 'website')}\nMessage count: {metadata.get('message_count', 0)}\n\nTranscript:\n{transcript[:3000]}"
+    try:
+        if AZURE_OPENAI_KEY and AZURE_OPENAI_ENDPOINT:
+            url = f"{AZURE_OPENAI_ENDPOINT}/openai/deployments/{AZURE_OPENAI_DEPLOYMENT}/chat/completions?api-version=2025-01-01-preview"
+            resp = req.post(url,
+                headers={"api-key": AZURE_OPENAI_KEY, "Content-Type": "application/json"},
+                json={
+                    "messages": [
+                        {"role": "system", "content": CHAT_ANALYSIS_PROMPT},
+                        {"role": "user", "content": user_msg}
+                    ],
+                    "max_tokens": 500, "temperature": 0.1,
+                    "response_format": {"type": "json_object"}
+                }, timeout=30)
+            resp.raise_for_status()
+            return json.loads(resp.json()["choices"][0]["message"]["content"])
+        elif ANTHROPIC_API_KEY:
+            resp = req.post("https://api.anthropic.com/v1/messages",
+                headers={"x-api-key": ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "content-type": "application/json"},
+                json={"model": "claude-haiku-4-5-20251001", "max_tokens": 500,
+                      "messages": [{"role": "user", "content": f"{CHAT_ANALYSIS_PROMPT}\n\n{user_msg}"}]},
+                timeout=30)
+            resp.raise_for_status()
+            text = resp.json()["content"][0]["text"]
+            m = re.search(r'```(?:json)?\s*([\s\S]*?)\s*```', text)
+            return json.loads(m.group(1) if m else text)
+    except Exception as e:
+        print(f"⚠️ Chat analysis error: {e}")
+    return {"chat_reason": "other", "summary": "Analysis unavailable", "sentiment": "neutral"}
+
+
+def _save_chat_session(session_id, reason="timeout"):
+    """Save a chat session to GitHub + Qdrant (same pipeline as VAPI calls)."""
+    with _sessions_lock:
+        session = _chat_sessions.get(session_id)
+        if not session or session.get("saved") or len(session.get("messages", [])) < 2:
+            return False
+        session["saved"] = True
+        session_copy = json.loads(json.dumps(session))
+
+    transcript = _build_chat_transcript(session_copy)
+    msg_count = len(session_copy["messages"])
+    user_msgs = [m for m in session_copy["messages"] if m["role"] == "user"]
+
+    print(f"💬 Saving chat session {session_id[:12]} ({msg_count} messages, reason={reason})")
+
+    # Analyze
+    metadata = {
+        "call_id": f"chat-{session_id}",
+        "type": "chatbot",
+        "source": "chatbot",
+        "started_at": session_copy.get("started_at", ""),
+        "ended_at": session_copy.get("last_activity", ""),
+        "ended_reason": reason,
+        "duration": msg_count,  # message count as proxy
+        "message_count": msg_count,
+        "user_message_count": len(user_msgs),
+        "transcript": transcript,
+        "messages": session_copy["messages"],
+        "project_context": session_copy.get("project_context"),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+
+    try:
+        analysis = _analyze_chat(transcript, metadata)
+        metadata["analysis"] = analysis
+    except Exception as e:
+        metadata["analysis_error"] = str(e)
+
+    # Background: push to GitHub + index to Qdrant
+    def _background():
+        try:
+            # Push to GitHub (chatbot-chats/ folder)
+            chat_file = f"chatbot-chats/{session_id}.json"
+            content = json.dumps(metadata, indent=2, ensure_ascii=False)
+            summary = metadata.get("analysis", {}).get("summary", "chat session")[:60]
+            ok = github_put_file(chat_file, content, f"chat: {session_id[:12]} — {summary}")
+            if ok:
+                print(f"✅ Pushed {chat_file} to GitHub")
+                # Update chats index
+                _update_chats_index(metadata)
+            else:
+                print(f"❌ Failed to push {chat_file}")
+        except Exception as e:
+            print(f"❌ Chat GitHub push error: {e}")
+
+        try:
+            # Index into calls collection for RAG search
+            a = metadata.get("analysis", {})
+            domains = ", ".join(a.get("domains_discussed", [])) if a.get("domains_discussed") else "general"
+            projects = ", ".join(a.get("projects_discussed", [])) if a.get("projects_discussed") else ""
+            memory_entry = (
+                f"Chat ({metadata['started_at'][:10]}): "
+                f"{a.get('summary', 'No summary')} "
+                f"[Reason: {a.get('chat_reason', '?')}, Sentiment: {a.get('sentiment', '?')}, "
+                f"Domains: {domains}"
+                + (f", Projects: {projects}" if projects else "")
+                + "]"
+            )
+            _index_to_calls_collection(memory_entry)
+            if transcript and len(transcript) > 50:
+                _index_to_calls_collection(f"Chat transcript ({session_id[:12]}): {transcript[:2000]}")
+            print(f"🧠 Indexed chat {session_id[:12]} to calls collection")
+        except Exception as e:
+            print(f"❌ Chat index error: {e}")
+
+    threading.Thread(target=_background, daemon=True).start()
+
+    # Also add to in-memory calls cache so dashboard sees it immediately
+    with _calls_lock:
+        _calls_cache.insert(0, metadata)
+
+    return True
+
+
+def _update_chats_index(chat_data):
+    """Update chatbot-chats/index.json with the new chat summary."""
+    index_path = "chatbot-chats/index.json"
+    try:
+        existing_content, sha = github_get_file(index_path)
+        if existing_content:
+            index = json.loads(existing_content)
+        else:
+            index = []
+    except Exception:
+        index = []
+        sha = None
+
+    analysis = chat_data.get("analysis", {})
+    entry = {
+        "session_id": chat_data.get("call_id", "").replace("chat-", ""),
+        "type": "chatbot",
+        "started_at": chat_data.get("started_at"),
+        "ended_at": chat_data.get("ended_at"),
+        "message_count": chat_data.get("message_count", 0),
+        "ended_reason": chat_data.get("ended_reason"),
+        "summary": analysis.get("summary", ""),
+        "chat_reason": analysis.get("chat_reason", ""),
+        "sentiment": analysis.get("sentiment", ""),
+        "domains": analysis.get("domains_discussed", []),
+        "projects": analysis.get("projects_discussed", []),
+    }
+    index.insert(0, entry)
+
+    github_put_file(index_path, json.dumps(index, indent=2, ensure_ascii=False),
+                    f"index: add {entry['session_id'][:12]} ({analysis.get('chat_reason', 'chat')})",
+                    sha=sha)
+
+
+def _cleanup_stale_sessions():
+    """Check for stale sessions and save them. Called periodically."""
+    now = datetime.now(timezone.utc)
+    stale = []
+    with _sessions_lock:
+        for sid, session in _chat_sessions.items():
+            if session.get("saved"):
+                continue
+            last = datetime.fromisoformat(session["last_activity"])
+            if (now - last).total_seconds() > CHAT_SESSION_TIMEOUT:
+                stale.append(sid)
+
+    for sid in stale:
+        _save_chat_session(sid, reason="inactivity_timeout")
+
+    # Prune old saved sessions from memory (keep last 100)
+    with _sessions_lock:
+        saved_ids = [s for s, d in _chat_sessions.items() if d.get("saved")]
+        for sid in saved_ids[100:]:
+            del _chat_sessions[sid]
+
+
+def _session_cleanup_loop():
+    """Background thread that checks for stale sessions every 60 seconds."""
+    while True:
+        time.sleep(60)
+        try:
+            _cleanup_stale_sessions()
+        except Exception as e:
+            print(f"⚠️ Session cleanup error: {e}")
+
+# Start the cleanup thread
+threading.Thread(target=_session_cleanup_loop, daemon=True).start()
+
+
 @app.route("/api/chat/reset", methods=["POST"])
 def api_chat_reset():
+    data = request.json or {}
+    session_id = data.get("session_id", "")
+
+    # Save the session before resetting if it has content
+    if session_id:
+        _save_chat_session(session_id, reason="user_reset")
+
     agent = get_soul_agent()
     if agent and hasattr(agent, '_history'):
         agent._history.clear()
+
+    with _chat_lock:
+        _chat_history.clear()
+
     return jsonify({"status": "ok"})
+
+
+@app.route("/api/chat/end", methods=["POST"])
+def api_chat_end():
+    """Explicitly end and save a chat session (called on page unload or manual end)."""
+    data = request.json or {}
+    session_id = data.get("session_id", "")
+    if not session_id:
+        return jsonify({"error": "session_id required"}), 400
+    saved = _save_chat_session(session_id, reason="explicit_end")
+    return jsonify({"status": "saved" if saved else "no_session", "session_id": session_id})
 
 
 @app.route("/api/index", methods=["POST"])
@@ -831,9 +1096,14 @@ def api_chat():
     response_style = data.get("response_style", "normal")
     project_context = data.get("project_context", "") or ""
     project_id = data.get("project_id")
+    session_id = data.get("session_id", "")
 
     if not user_message:
         return jsonify({"error": "Provide a 'message' field"}), 400
+
+    # Track session
+    if session_id:
+        _track_chat_message(session_id, "user", user_message, project_context=project_context)
 
     # Use soul_query — routes automatically between RAG and RLM, also searches calls
     # If a specific project is focused, search for that project explicitly
@@ -900,6 +1170,10 @@ def api_chat():
 
     with _chat_lock:
         _chat_history.append({"role": "assistant", "content": assistant_message})
+
+    # Track assistant response in session
+    if session_id:
+        _track_chat_message(session_id, "assistant", assistant_message)
 
     # Map soul route → user-visible label
     if route == "EXHAUSTIVE":
