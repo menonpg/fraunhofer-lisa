@@ -1,0 +1,24 @@
+[
+  {
+    "session_id": "1778073546451-c18r9ymze",
+    "type": "chatbot",
+    "started_at": "2026-05-06T13:19:41.517166+00:00",
+    "ended_at": "2026-05-06T13:30:09.210474+00:00",
+    "message_count": 22,
+    "ended_reason": "inactivity_timeout",
+    "summary": "The visitor inquired about notable DARPA projects Fraunhofer CMA has worked on, and after being told specific lists weren't available, focused on the AISS project. Lisa explained its unique combination of chip-level security and blockchain asset tracking, along with CMA's testing role.",
+    "chat_reason": "project_inquiry",
+    "sentiment": "curious",
+    "domains": [
+      "AI/ML",
+      "autonomous systems",
+      "advanced manufacturing",
+      "cybersecurity",
+      "blockchain",
+      "chip-level security"
+    ],
+    "projects": [
+      "AISS (Automated Implementation of Secure Silicon)"
+    ]
+  }
+]
