@@ -997,6 +997,33 @@ def api_index_calls():
     return jsonify({"indexed": indexed, "total": len(texts)})
 
 
+@app.route("/api/chat-sessions", methods=["GET"])
+def api_chat_sessions():
+    """Return chat session history from GitHub chatbot-chats/index.json."""
+    try:
+        content, _ = github_get_file("chatbot-chats/index.json")
+        if content:
+            sessions = json.loads(content)
+            return jsonify(sessions)
+        return jsonify([])
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/chat-session/<session_id>", methods=["GET"])
+def api_chat_session_detail(session_id):
+    """Return full chat session detail from GitHub."""
+    try:
+        content, _ = github_get_file(f"chatbot-chats/chat-{session_id}.json")
+        if not content:
+            content, _ = github_get_file(f"chatbot-chats/{session_id}.json")
+        if content:
+            return jsonify(json.loads(content))
+        return jsonify({"error": "not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @app.route("/api/calls", methods=["GET"])
 def api_calls():
     with _calls_lock:

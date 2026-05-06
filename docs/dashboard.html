@@ -355,6 +355,7 @@
 
 <div class="tabs">
     <div class="tab on" onclick="switchTab('calls')">📞 Calls</div>
+    <div class="tab" onclick="switchTab('chats')">💬 Chats</div>
     <div class="tab" onclick="switchTab('soul')">🧠 Soul Agent</div>
     <div class="tab" onclick="switchTab('health')">💚 Health</div>
 </div>
@@ -368,6 +369,17 @@
         </div>
         <div id="callsList">
             <div class="no-data"><span class="spinner"></span> Loading calls...</div>
+        </div>
+    </div>
+
+    <!-- CHATS PANEL -->
+    <div class="panel" id="panel-chats">
+        <div class="calls-header">
+            <h2>💬 Chat Sessions</h2>
+            <button class="refresh-btn" onclick="loadChats()">🔄 Refresh</button>
+        </div>
+        <div id="chatsList">
+            <div class="no-data"><span class="spinner"></span> Loading chat sessions...</div>
         </div>
     </div>
 
@@ -422,13 +434,140 @@ let queryHistoryList = [];
 // ══════════════════════════════════════════════════════════════
 function switchTab(name) {
     document.querySelectorAll('.tab').forEach((t, i) => {
-        const names = ['calls', 'soul', 'health'];
+        const names = ['calls', 'chats', 'soul', 'health'];
         t.classList.toggle('on', names[i] === name);
     });
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
     document.getElementById('panel-' + name).classList.add('on');
 
     if (name === 'health') loadHealth();
+    if (name === 'chats') loadChats();
+}
+
+// ══════════════════════════════════════════════════════════════
+// CHATS TAB
+// ══════════════════════════════════════════════════════════════
+async function loadChats() {
+    const container = document.getElementById('chatsList');
+    container.innerHTML = '<div class="no-data"><span class="spinner"></span> Loading chat sessions...</div>';
+
+    try {
+        const resp = await fetch(WEBHOOK_BASE + '/api/chat-sessions');
+        const sessions = await resp.json();
+
+        if (!Array.isArray(sessions) || sessions.length === 0) {
+            container.innerHTML = '<div class="no-data">No chat sessions recorded yet. Start a conversation on the portfolio page to see data here.</div>';
+            return;
+        }
+
+        container.innerHTML = '';
+        sessions.forEach(chat => {
+            const card = document.createElement('div');
+            card.className = 'call-card';
+            card.onclick = () => {
+                card.classList.toggle('expanded');
+                // Lazy-load full transcript on first expand
+                if (card.classList.contains('expanded') && !card.dataset.loaded) {
+                    loadChatDetail(chat.session_id, card);
+                }
+            };
+
+            const sessionId = chat.session_id || 'unknown';
+            const startedAt = chat.started_at || '';
+            const msgCount = chat.message_count || 0;
+            const reason = chat.ended_reason || '';
+            const summary = chat.summary || 'No summary available';
+            const sentiment = (chat.sentiment || 'neutral').toLowerCase();
+            const chatReason = chat.chat_reason || '';
+            const domains = (chat.domains || []).join(', ');
+            const projects = (chat.projects || []).join(', ');
+
+            let timeDisplay = '';
+            if (startedAt) {
+                try {
+                    const d = new Date(startedAt);
+                    timeDisplay = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+                } catch(e) { timeDisplay = startedAt; }
+            }
+
+            let sentimentClass = 'sentiment-neutral';
+            if (sentiment.includes('positive') || sentiment.includes('curious') || sentiment.includes('engaged')) sentimentClass = 'sentiment-positive';
+            else if (sentiment.includes('negative') || sentiment.includes('frustrated')) sentimentClass = 'sentiment-negative';
+
+            let analysisHtml = '';
+            const detailItems = [];
+            if (chatReason) detailItems.push('<div class="analysis-item"><div class="label">Reason</div><div class="value">' + escapeHtml(chatReason) + '</div></div>');
+            if (domains) detailItems.push('<div class="analysis-item"><div class="label">Domains</div><div class="value">' + escapeHtml(domains) + '</div></div>');
+            if (projects) detailItems.push('<div class="analysis-item"><div class="label">Projects</div><div class="value">' + escapeHtml(projects) + '</div></div>');
+            if (reason) detailItems.push('<div class="analysis-item"><div class="label">Ended</div><div class="value">' + escapeHtml(reason.replace(/_/g, ' ')) + '</div></div>');
+            if (detailItems.length) analysisHtml = '<div class="call-analysis">' + detailItems.join('') + '</div>';
+
+            card.innerHTML =
+                '<div class="call-meta">' +
+                    '<span class="call-id">💬 ' + sessionId.substring(0, 16) + '</span>' +
+                    (timeDisplay ? '<span class="call-time">' + timeDisplay + '</span>' : '') +
+                    '<span class="call-duration">💬 ' + msgCount + ' msgs</span>' +
+                    '<span class="call-sentiment ' + sentimentClass + '">' + sentiment + '</span>' +
+                '</div>' +
+                '<div class="call-summary">' + escapeHtml(summary) + '</div>' +
+                '<div class="call-expand-hint">Click to view full transcript</div>' +
+                '<div class="call-transcript">' +
+                    analysisHtml +
+                    '<div id="chat-detail-' + sessionId + '" style="margin-top:10px;">' +
+                        '<div style="color:var(--tx2);font-size:0.82rem"><span class="spinner"></span> Click to load transcript...</div>' +
+                    '</div>' +
+                '</div>';
+
+            container.appendChild(card);
+        });
+    } catch(e) {
+        container.innerHTML = '<div class="no-data">⚠️ Failed to load chat sessions: ' + escapeHtml(e.message) + '</div>';
+    }
+}
+
+async function loadChatDetail(sessionId, card) {
+    const detailEl = document.getElementById('chat-detail-' + sessionId);
+    if (!detailEl) return;
+    detailEl.innerHTML = '<div style="color:var(--tx2);font-size:0.82rem"><span class="spinner"></span> Loading transcript...</div>';
+
+    try {
+        const resp = await fetch(WEBHOOK_BASE + '/api/chat-session/' + sessionId);
+        const data = await resp.json();
+
+        if (data.error) {
+            detailEl.innerHTML = '<div style="color:var(--err);font-size:0.82rem">⚠️ ' + escapeHtml(data.error) + '</div>';
+            return;
+        }
+
+        // Render messages as chat bubbles
+        const messages = data.messages || [];
+        if (messages.length === 0 && data.transcript) {
+            // Fallback to raw transcript
+            let transcriptHtml = escapeHtml(data.transcript)
+                .replace(/(User:|Human:|Visitor:)/g, '<span class="speaker-user">$1</span>')
+                .replace(/(AI:|Assistant:|Lisa:|Bot:)/g, '<span class="speaker-ai">$1</span>');
+            detailEl.innerHTML =
+                '<div style="font-size:0.78rem;color:var(--pri);font-weight:600">📝 Full Transcript</div>' +
+                '<div class="transcript-text">' + transcriptHtml + '</div>';
+        } else {
+            let html = '<div style="font-size:0.78rem;color:var(--pri);font-weight:600;margin-bottom:8px">📝 Full Conversation (' + messages.length + ' messages)</div>';
+            messages.forEach(m => {
+                const isUser = m.role === 'user';
+                const align = isUser ? 'flex-end' : 'flex-start';
+                const bg = isUser ? 'var(--pri)' : 'rgba(0,0,0,0.3)';
+                const borderRadius = isUser ? '12px 12px 2px 12px' : '12px 12px 12px 2px';
+                const border = isUser ? 'none' : '1px solid var(--bd)';
+                html += '<div style="display:flex;justify-content:' + align + ';margin-bottom:6px;">' +
+                    '<div style="background:' + bg + ';border:' + border + ';color:var(--tx);padding:8px 12px;border-radius:' + borderRadius + ';max-width:80%;font-size:0.84em;">' +
+                    escapeHtml(m.content || '') + '</div></div>';
+            });
+            detailEl.innerHTML = html;
+        }
+
+        card.dataset.loaded = 'true';
+    } catch(e) {
+        detailEl.innerHTML = '<div style="color:var(--err);font-size:0.82rem">⚠️ Failed: ' + escapeHtml(e.message) + '</div>';
+    }
 }
 
 // ══════════════════════════════════════════════════════════════
