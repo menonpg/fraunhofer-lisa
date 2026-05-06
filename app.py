@@ -1177,28 +1177,30 @@ def api_chat():
     route = "LLM only"
     try:
         search_query = (project_context + " " + enriched_query).strip() if project_context else enriched_query
-        soul_result = soul_query(search_query, mode="auto")
-        route = soul_result.get("route", "FOCUSED")
+        # Always force RAG mode for the chat — the auto-router often misclassifies portfolio queries as general knowledge
+        soul_result = soul_query(search_query, mode="RAG")
+        route = soul_result.get("route", "RAG")
         print(f"💡 soul_query route={route}, ms={soul_result.get('total_ms',0):.0f}")
 
         # If auto-router skipped RAG (LLM only), force a RAG lookup as fallback
         soul_answer = soul_result.get("answer", "") or ""
         if route in ("LLM only", "error") or "not available" in soul_answer.lower() or len(soul_answer.strip()) < 30:
             print(f"🔄 Auto-route gave '{route}' — forcing RAG fallback")
-            rag_result = soul_query(search_query, mode="RAG")
-            rag_answer = rag_result.get("answer", "") or ""
-            if len(rag_answer.strip()) > len(soul_answer.strip()):
-                soul_result = rag_result
-                route = "RAG (fallback)"
-                print(f"✅ RAG fallback returned {len(rag_answer)} chars")
 
-            # If RAG still fails, try raw Qdrant retrieval
-            if len((soul_result.get("answer", "") or "").strip()) < 30:
-                raw = soul_query_fast(search_query)
-                if raw and len(raw.strip()) > 30 and "No knowledge" not in raw:
-                    soul_result["answer"] = raw
-                    route = "RAG-fast (fallback)"
-                    print(f"✅ RAG-fast fallback returned {len(raw)} chars")
+            # Go straight to raw Qdrant retrieval — it's fast and reliable
+            raw = soul_query_fast(search_query)
+            if raw and len(raw.strip()) > 30 and "No knowledge" not in raw:
+                soul_result["answer"] = raw
+                route = "RAG-fast (fallback)"
+                print(f"✅ RAG-fast fallback returned {len(raw)} chars")
+            else:
+                # Try full RAG with LLM synthesis
+                rag_result = soul_query(search_query, mode="RAG")
+                rag_answer = rag_result.get("answer", "") or ""
+                if len(rag_answer.strip()) > len(soul_answer.strip()):
+                    soul_result = rag_result
+                    route = "RAG (fallback)"
+                    print(f"✅ RAG fallback returned {len(rag_answer)} chars")
     except Exception as e:
         print(f"⚠️ soul_query error: {e}")
 
