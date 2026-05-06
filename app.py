@@ -372,7 +372,7 @@ def soul_query_concise(question, mode="RAG"):
         agent.mode = original_mode
 
 
-def soul_query_fast(question):
+def soul_query_fast(question, k=8):
     """Ultra-fast search: skip LLM synthesis, return raw Qdrant results directly.
     This is for VAPI tool calls where speed matters — let VAPI's own LLM synthesize."""
     agent = get_soul_agent()
@@ -380,7 +380,7 @@ def soul_query_fast(question):
         return "No knowledge base available."
     try:
         if hasattr(agent, '_rag') and agent._rag:
-            result_text = agent._rag.retrieve(question, k=8)
+            result_text = agent._rag.retrieve(question, k=k)
             if result_text and "No relevant memories" not in result_text:
                 # Strip header
                 result_text = re.sub(r'^## Relevant memories\s*\n', '', result_text)
@@ -1117,35 +1117,27 @@ def _chat_with_anthropic(messages):
 
 def _enrich_query(query):
     """Enrich user query for better RAG retrieval.
-    Handles abbreviations, case-insensitive matching, and adds synonyms."""
+    Handles abbreviations, case-insensitive matching, and adds synonyms.
+    Keep expansions minimal to avoid diluting embedding similarity."""
     import re as _re
 
     enriched = query
 
-    # Known acronyms / abbreviations → expand so embeddings match
+    # Known acronyms — expand ONLY the acronym itself, keep it short
     expansions = {
-        r'\bdarpa\b': 'DARPA (Defense Advanced Research Projects Agency) defense military funded',
-        r'\bnasa\b': 'NASA (National Aeronautics and Space Administration) space aerospace',
-        r'\bbmw\b': 'BMW automotive manufacturing',
-        r'\bnlp\b': 'NLP natural language processing text analysis',
-        r'\bml\b': 'ML machine learning artificial intelligence',
-        r'\bai\b': 'AI artificial intelligence machine learning',
-        r'\biot\b': 'IoT Internet of Things sensors connected devices',
-        r'\bcyber\b': 'cybersecurity information security',
-        r'\brobotics?\b': 'robotics automation robotic systems',
-        r'\b3d\s*print': '3D printing additive manufacturing',
-        r'\bdod\b': 'DoD Department of Defense military defense',
-        r'\bnih\b': 'NIH National Institutes of Health biomedical',
-        r'\bnist\b': 'NIST National Institute of Standards and Technology',
+        r'\bdarpa\b': 'DARPA',
+        r'\bnasa\b': 'NASA aerospace',
+        r'\bbmw\b': 'BMW automotive',
+        r'\bnlp\b': 'NLP natural language processing',
+        r'\biot\b': 'IoT Internet of Things',
+        r'\bdod\b': 'DoD Department of Defense',
+        r'\bnih\b': 'NIH biomedical',
+        r'\bnist\b': 'NIST',
     }
 
     for pattern, expansion in expansions.items():
         if _re.search(pattern, query, _re.IGNORECASE):
             enriched += f" {expansion}"
-
-    # If query mentions "projects" generically with a keyword, add "funded" "customer" "partner"
-    if _re.search(r'(?:what|which|any|show|list|tell).*project', query, _re.IGNORECASE):
-        enriched += " projects portfolio funding customer partner tags"
 
     print(f"🔍 Query enrichment: '{query[:80]}' → +{len(enriched)-len(query)} chars")
     return enriched
@@ -1179,7 +1171,7 @@ def api_chat():
         search_query = (project_context + " " + enriched_query).strip() if project_context else enriched_query
 
         # First: always get raw Qdrant results — this is the most reliable path
-        raw_context = soul_query_fast(search_query)
+        raw_context = soul_query_fast(search_query, k=12)
         has_raw = raw_context and len(raw_context.strip()) > 30 and "No knowledge" not in raw_context
 
         if has_raw:
