@@ -1145,15 +1145,38 @@ def api_chat():
     try:
         search_query = (project_context + " " + user_message).strip() if project_context else user_message
 
-        # ALWAYS retrieve from Qdrant — never skip retrieval regardless of query type
-        # This ensures portfolio context is always available for the LLM to use (or ignore)
-        raw_context = soul_query_fast(search_query, k=12)
-        has_raw = raw_context and len(raw_context.strip()) > 30 and "No knowledge" not in raw_context
+        # ALWAYS retrieve from Qdrant — multi-query approach for robustness
+        # Problem: "What DARPA projects..." embeds as mostly "Fraunhofer projects" → misses DARPA chunks
+        # Solution: search with full query AND extracted key terms, merge results
+        raw_chunks = set()
+
+        # Pass 1: full user query
+        raw1 = soul_query_fast(search_query, k=8)
+        if raw1 and len(raw1.strip()) > 20 and "No knowledge" not in raw1 and "No matching" not in raw1:
+            raw_chunks.add(raw1)
+
+        # Pass 2: extract likely key terms (proper nouns, acronyms, technical terms)
+        import re as _re
+        # Find capitalized words, acronyms, and quoted terms as additional search terms
+        key_terms = _re.findall(r'\b[A-Z][A-Z]+\b', user_message)  # Acronyms like DARPA, BMW, NASA
+        key_terms += _re.findall(r'\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b', user_message)  # Proper nouns
+        # Remove common words
+        stop = {'What', 'Which', 'How', 'Does', 'Can', 'Tell', 'Show', 'List', 'Are', 'The', 'CMA', 'Fraunhofer'}
+        key_terms = [t for t in key_terms if t not in stop and len(t) > 1]
+
+        for term in key_terms[:3]:  # Max 3 extra searches
+            raw_t = soul_query_fast(term, k=5)
+            if raw_t and len(raw_t.strip()) > 20 and "No knowledge" not in raw_t and "No matching" not in raw_t:
+                raw_chunks.add(raw_t)
+
+        # Merge all retrieved context
+        raw_context = "\n\n---\n\n".join(raw_chunks) if raw_chunks else ""
+        has_raw = len(raw_context.strip()) > 30
 
         if has_raw:
             soul_result = {"answer": raw_context, "route": "RAG-direct"}
             route = "RAG-direct"
-            print(f"✅ Direct Qdrant retrieval: {len(raw_context)} chars")
+            print(f"✅ Multi-query Qdrant retrieval: {len(raw_context)} chars ({1+len(key_terms)} queries)")
         else:
             # Fallback to full soul_query with RAG mode
             soul_result = soul_query(search_query, mode="RAG")
