@@ -638,9 +638,9 @@ def vapi_webhook():
         if function_name in ("soul_query", "search_projects", "webhook_search"):
             query = params.get("query", "")
             if query:
-                print(f"   🔍 soul_query_fast: {query[:100]}")
-                # Use fast direct Qdrant retrieval (~1-2s) — VAPI times out after ~3s
-                answer = soul_query_fast(query)
+                enriched = _enrich_query(query)
+                print(f"   🔍 soul_query_fast: {enriched[:100]}")
+                answer = soul_query_fast(enriched)
                 # VAPI requires single-line strings — strip newlines and markdown
                 answer = re.sub(r'[#*_~`|]', '', answer)
                 answer = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', answer)
@@ -1115,6 +1115,42 @@ def _chat_with_anthropic(messages):
     return resp.json()["content"][0]["text"]
 
 
+def _enrich_query(query):
+    """Enrich user query for better RAG retrieval.
+    Handles abbreviations, case-insensitive matching, and adds synonyms."""
+    import re as _re
+
+    enriched = query
+
+    # Known acronyms / abbreviations → expand so embeddings match
+    expansions = {
+        r'\bdarpa\b': 'DARPA (Defense Advanced Research Projects Agency) defense military funded',
+        r'\bnasa\b': 'NASA (National Aeronautics and Space Administration) space aerospace',
+        r'\bbmw\b': 'BMW automotive manufacturing',
+        r'\bnlp\b': 'NLP natural language processing text analysis',
+        r'\bml\b': 'ML machine learning artificial intelligence',
+        r'\bai\b': 'AI artificial intelligence machine learning',
+        r'\biot\b': 'IoT Internet of Things sensors connected devices',
+        r'\bcyber\b': 'cybersecurity information security',
+        r'\brobotics?\b': 'robotics automation robotic systems',
+        r'\b3d\s*print': '3D printing additive manufacturing',
+        r'\bdod\b': 'DoD Department of Defense military defense',
+        r'\bnih\b': 'NIH National Institutes of Health biomedical',
+        r'\bnist\b': 'NIST National Institute of Standards and Technology',
+    }
+
+    for pattern, expansion in expansions.items():
+        if _re.search(pattern, query, _re.IGNORECASE):
+            enriched += f" {expansion}"
+
+    # If query mentions "projects" generically with a keyword, add "funded" "customer" "partner"
+    if _re.search(r'(?:what|which|any|show|list|tell).*project', query, _re.IGNORECASE):
+        enriched += " projects portfolio funding customer partner tags"
+
+    print(f"🔍 Query enrichment: '{query[:80]}' → +{len(enriched)-len(query)} chars")
+    return enriched
+
+
 @app.route("/api/chat", methods=["POST"])
 def api_chat():
     """Conversational chat endpoint with RAG context injection."""
@@ -1132,12 +1168,15 @@ def api_chat():
     if session_id:
         _track_chat_message(session_id, "user", user_message, project_context=project_context)
 
+    # Enrich query for better RAG retrieval (handles abbreviations, case, synonyms)
+    enriched_query = _enrich_query(user_message)
+
     # Use soul_query — routes automatically between RAG and RLM, also searches calls
     # If a specific project is focused, search for that project explicitly
     soul_result = {}
     route = "LLM only"
     try:
-        search_query = (project_context + " " + user_message).strip() if project_context else user_message
+        search_query = (project_context + " " + enriched_query).strip() if project_context else enriched_query
         soul_result = soul_query(search_query, mode="auto")
         route = soul_result.get("route", "FOCUSED")
         print(f"💡 soul_query route={route}, ms={soul_result.get('total_ms',0):.0f}")
