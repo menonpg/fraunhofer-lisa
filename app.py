@@ -638,9 +638,8 @@ def vapi_webhook():
         if function_name in ("soul_query", "search_projects", "webhook_search"):
             query = params.get("query", "")
             if query:
-                enriched = _enrich_query(query)
-                print(f"   🔍 soul_query_fast: {enriched[:100]}")
-                answer = soul_query_fast(enriched)
+                print(f"   🔍 soul_query_fast: {query[:100]}")
+                answer = soul_query_fast(query)
                 # VAPI requires single-line strings — strip newlines and markdown
                 answer = re.sub(r'[#*_~`|]', '', answer)
                 answer = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', answer)
@@ -1116,31 +1115,8 @@ def _chat_with_anthropic(messages):
 
 
 def _enrich_query(query):
-    """Enrich user query for better RAG retrieval.
-    Handles abbreviations, case-insensitive matching, and adds synonyms.
-    Keep expansions minimal to avoid diluting embedding similarity."""
-    import re as _re
-
-    enriched = query
-
-    # Known acronyms — expand ONLY the acronym itself, keep it short
-    expansions = {
-        r'\bdarpa\b': 'DARPA',
-        r'\bnasa\b': 'NASA aerospace',
-        r'\bbmw\b': 'BMW automotive',
-        r'\bnlp\b': 'NLP natural language processing',
-        r'\biot\b': 'IoT Internet of Things',
-        r'\bdod\b': 'DoD Department of Defense',
-        r'\bnih\b': 'NIH biomedical',
-        r'\bnist\b': 'NIST',
-    }
-
-    for pattern, expansion in expansions.items():
-        if _re.search(pattern, query, _re.IGNORECASE):
-            enriched += f" {expansion}"
-
-    print(f"🔍 Query enrichment: '{query[:80]}' → +{len(enriched)-len(query)} chars")
-    return enriched
+    """Pass-through — enrichment removed, relying on always-retrieve approach."""
+    return query
 
 
 @app.route("/api/chat", methods=["POST"])
@@ -1161,16 +1137,16 @@ def api_chat():
         _track_chat_message(session_id, "user", user_message, project_context=project_context)
 
     # Enrich query for better RAG retrieval (handles abbreviations, case, synonyms)
-    enriched_query = _enrich_query(user_message)
 
     # Use soul_query — routes automatically between RAG and RLM, also searches calls
     # If a specific project is focused, search for that project explicitly
     soul_result = {}
     route = "LLM only"
     try:
-        search_query = (project_context + " " + enriched_query).strip() if project_context else enriched_query
+        search_query = (project_context + " " + user_message).strip() if project_context else user_message
 
-        # First: always get raw Qdrant results — this is the most reliable path
+        # ALWAYS retrieve from Qdrant — never skip retrieval regardless of query type
+        # This ensures portfolio context is always available for the LLM to use (or ignore)
         raw_context = soul_query_fast(search_query, k=12)
         has_raw = raw_context and len(raw_context.strip()) > 30 and "No knowledge" not in raw_context
 
