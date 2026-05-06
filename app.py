@@ -1177,30 +1177,20 @@ def api_chat():
     route = "LLM only"
     try:
         search_query = (project_context + " " + enriched_query).strip() if project_context else enriched_query
-        # Always force RAG mode for the chat — the auto-router often misclassifies portfolio queries as general knowledge
-        soul_result = soul_query(search_query, mode="RAG")
-        route = soul_result.get("route", "RAG")
-        print(f"💡 soul_query route={route}, ms={soul_result.get('total_ms',0):.0f}")
 
-        # If auto-router skipped RAG (LLM only), force a RAG lookup as fallback
-        soul_answer = soul_result.get("answer", "") or ""
-        if route in ("LLM only", "error") or "not available" in soul_answer.lower() or len(soul_answer.strip()) < 30:
-            print(f"🔄 Auto-route gave '{route}' — forcing RAG fallback")
+        # First: always get raw Qdrant results — this is the most reliable path
+        raw_context = soul_query_fast(search_query)
+        has_raw = raw_context and len(raw_context.strip()) > 30 and "No knowledge" not in raw_context
 
-            # Go straight to raw Qdrant retrieval — it's fast and reliable
-            raw = soul_query_fast(search_query)
-            if raw and len(raw.strip()) > 30 and "No knowledge" not in raw:
-                soul_result["answer"] = raw
-                route = "RAG-fast (fallback)"
-                print(f"✅ RAG-fast fallback returned {len(raw)} chars")
-            else:
-                # Try full RAG with LLM synthesis
-                rag_result = soul_query(search_query, mode="RAG")
-                rag_answer = rag_result.get("answer", "") or ""
-                if len(rag_answer.strip()) > len(soul_answer.strip()):
-                    soul_result = rag_result
-                    route = "RAG (fallback)"
-                    print(f"✅ RAG fallback returned {len(rag_answer)} chars")
+        if has_raw:
+            soul_result = {"answer": raw_context, "route": "RAG-direct"}
+            route = "RAG-direct"
+            print(f"✅ Direct Qdrant retrieval: {len(raw_context)} chars")
+        else:
+            # Fallback to full soul_query with RAG mode
+            soul_result = soul_query(search_query, mode="RAG")
+            route = soul_result.get("route", "RAG")
+            print(f"💡 soul_query route={route}, ms={soul_result.get('total_ms',0):.0f}")
     except Exception as e:
         print(f"⚠️ soul_query error: {e}")
 
