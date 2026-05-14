@@ -1,5 +1,25 @@
 [
   {
+    "session_id": "1778780426138-iwbrxjhif",
+    "type": "chatbot",
+    "started_at": "2026-05-14T17:40:30.199956+00:00",
+    "ended_at": "2026-05-14T17:40:35.524522+00:00",
+    "message_count": 2,
+    "ended_reason": "inactivity_timeout",
+    "summary": "The visitor inquired about BMW projects, and Lisa described two BMW-funded initiatives: predictive maintenance for equipment and an AI-driven material planning tool. Lisa offered to provide more details on either project's technical aspects.",
+    "chat_reason": "project_inquiry",
+    "sentiment": "curious",
+    "domains": [
+      "predictive maintenance",
+      "AI",
+      "supply chain optimization"
+    ],
+    "projects": [
+      "BMW Predictive Maintenance",
+      "BMW Material Planner"
+    ]
+  },
+  {
     "session_id": "1778073546451-c18r9ymze",
     "type": "chatbot",
     "started_at": "2026-05-06T13:19:41.517166+00:00",
