@@ -1,0 +1,45 @@
+{
+  "call_id": "chat-chat-1778780426138-iwbrxjhif",
+  "type": "chatbot",
+  "source": "chatbot",
+  "started_at": "2026-05-14T17:40:30.199956+00:00",
+  "ended_at": "2026-05-14T17:40:35.524522+00:00",
+  "ended_reason": "inactivity_timeout",
+  "duration": 2,
+  "message_count": 2,
+  "user_message_count": 1,
+  "transcript": "Visitor: BMW projects\nLisa: We have two BMW‑funded projects in our portfolio right now:  \n\n1. **BMW Predictive Maintenance** – Uses a combination of AI and analytical models to predict failures in critical equipment at BMW Spartanburg, like large fan motors in the paint shop. It’s designed to prevent costly production stops, integrates with BMW’s cloud, and provides real‑time dashboards and alerts.  \n\n2. **BMW Material Planner** – An AI‑driven supply chain optimization tool that works with BMW’s SAP system to improve material planning, reduce the need for expedited shipments, and give planners clear dashboards for decision‑making.  \n\nWould you like me to dive deeper into how the predictive maintenance system’s self‑retraining AI works, or how the material planner reduces expedite costs?",
+  "messages": [
+    {
+      "role": "user",
+      "content": "BMW projects",
+      "timestamp": "2026-05-14T17:40:30.199956+00:00"
+    },
+    {
+      "role": "assistant",
+      "content": "We have two BMW‑funded projects in our portfolio right now:  \n\n1. **BMW Predictive Maintenance** – Uses a combination of AI and analytical models to predict failures in critical equipment at BMW Spartanburg, like large fan motors in the paint shop. It’s designed to prevent costly production stops, integrates with BMW’s cloud, and provides real‑time dashboards and alerts.  \n\n2. **BMW Material Planner** – An AI‑driven supply chain optimization tool that works with BMW’s SAP system to improve material planning, reduce the need for expedited shipments, and give planners clear dashboards for decision‑making.  \n\nWould you like me to dive deeper into how the predictive maintenance system’s self‑retraining AI works, or how the material planner reduces expedite costs?",
+      "timestamp": "2026-05-14T17:40:35.524522+00:00"
+    }
+  ],
+  "project_context": null,
+  "timestamp": "2026-05-14T17:46:21.142596+00:00",
+  "analysis": {
+    "chat_reason": "project_inquiry",
+    "chat_reason_detail": "Visitor asked about BMW projects in the portfolio",
+    "sentiment": "curious",
+    "resolution": "followup_needed",
+    "summary": "The visitor inquired about BMW projects, and Lisa described two BMW-funded initiatives: predictive maintenance for equipment and an AI-driven material planning tool. Lisa offered to provide more details on either project's technical aspects.",
+    "key_insights": "Visitor is specifically interested in BMW-related projects, indicating potential automotive industry relevance.",
+    "visitor_type": "industry",
+    "domains_discussed": [
+      "predictive maintenance",
+      "AI",
+      "supply chain optimization"
+    ],
+    "projects_discussed": [
+      "BMW Predictive Maintenance",
+      "BMW Material Planner"
+    ],
+    "learning": "Lisa should note that the visitor is focused on BMW projects and may want deeper technical details on AI self-retraining or supply chain cost reduction."
+  }
+}
